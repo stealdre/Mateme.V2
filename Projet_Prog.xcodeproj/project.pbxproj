@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		3821369F1F8FEA7200C93641 /* AddGameUITableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3821369E1F8FEA7200C93641 /* AddGameUITableView.swift */; };
+		382136A11F8FED4600C93641 /* AddGameTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 382136A01F8FED4600C93641 /* AddGameTableViewCell.swift */; };
+		382136A51F8FEF3200C93641 /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 382136A41F8FEF3200C93641 /* MenuViewController.swift */; };
 		388C6CC61F8E6FF100F5E24A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 388C6CC51F8E6FF100F5E24A /* AppDelegate.swift */; };
 		388C6CC81F8E6FF100F5E24A /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 388C6CC71F8E6FF100F5E24A /* ViewController.swift */; };
 		388C6CCB1F8E6FF100F5E24A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 388C6CC91F8E6FF100F5E24A /* Main.storyboard */; };
@@ -41,6 +43,8 @@
 		1373144107C980EE1253667B /* Pods-Projet_Prog.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Projet_Prog.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Projet_Prog/Pods-Projet_Prog.debug.xcconfig"; sourceTree = "<group>"; };
 		2F0300303EC0E93AB8A3369A /* Pods-Projet_ProgUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Projet_ProgUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-Projet_ProgUITests/Pods-Projet_ProgUITests.release.xcconfig"; sourceTree = "<group>"; };
 		3821369E1F8FEA7200C93641 /* AddGameUITableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddGameUITableView.swift; sourceTree = "<group>"; };
+		382136A01F8FED4600C93641 /* AddGameTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddGameTableViewCell.swift; sourceTree = "<group>"; };
+		382136A41F8FEF3200C93641 /* MenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
 		388C6CC21F8E6FF100F5E24A /* Projet_Prog.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Projet_Prog.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		388C6CC51F8E6FF100F5E24A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		388C6CC71F8E6FF100F5E24A /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -104,6 +108,23 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		382136A21F8FED4C00C93641 /* Add Game */ = {
+			isa = PBXGroup;
+			children = (
+				388C6CC71F8E6FF100F5E24A /* ViewController.swift */,
+				3821369E1F8FEA7200C93641 /* AddGameUITableView.swift */,
+				382136A01F8FED4600C93641 /* AddGameTableViewCell.swift */,
+			);
+			path = "Add Game";
+			sourceTree = "<group>";
+		};
+		382136A31F8FEE5500C93641 /* Profile */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Profile;
+			sourceTree = "<group>";
+		};
 		388C6CB91F8E6FF100F5E24A = {
 			isa = PBXGroup;
 			children = (
@@ -130,8 +151,9 @@
 			isa = PBXGroup;
 			children = (
 				388C6CC51F8E6FF100F5E24A /* AppDelegate.swift */,
-				388C6CC71F8E6FF100F5E24A /* ViewController.swift */,
-				3821369E1F8FEA7200C93641 /* AddGameUITableView.swift */,
+				382136A41F8FEF3200C93641 /* MenuViewController.swift */,
+				382136A31F8FEE5500C93641 /* Profile */,
+				382136A21F8FED4C00C93641 /* Add Game */,
 				388C6CC91F8E6FF100F5E24A /* Main.storyboard */,
 				388C6CCC1F8E6FF100F5E24A /* Assets.xcassets */,
 				388C6CCE1F8E6FF100F5E24A /* LaunchScreen.storyboard */,
@@ -450,8 +472,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				388C6CC81F8E6FF100F5E24A /* ViewController.swift in Sources */,
+				382136A51F8FEF3200C93641 /* MenuViewController.swift in Sources */,
 				388C6CC61F8E6FF100F5E24A /* AppDelegate.swift in Sources */,
 				3821369F1F8FEA7200C93641 /* AddGameUITableView.swift in Sources */,
+				382136A11F8FED4600C93641 /* AddGameTableViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

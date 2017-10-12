@@ -70,7 +70,6 @@ class ViewController: UIViewController, UITableViewDelegate {
                 make.bottom.equalTo(containerView.snp.bottom).inset(10)
             }
             
-            
             didSetupConstraints = true
         }
         
