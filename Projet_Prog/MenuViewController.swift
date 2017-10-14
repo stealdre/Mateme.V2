@@ -8,8 +8,29 @@
 
 import UIKit
 
-class MenuViewController: UIViewController {
+class MenuViewController: UIViewController, UIScrollViewDelegate {
+    
+    var didSetupConstraints = false
 
+    lazy var horizontalScrollView: UIScrollView = {
+        let view = UIScrollView()
+        view.delegate = self
+        view.isPagingEnabled = true
+        view.showsHorizontalScrollIndicator = false
+        view.showsHorizontalScrollIndicator = false
+        view.tag = 10
+        view.backgroundColor = .clear
+        view.bounces = false
+        view.contentSize = CGSize(width: 1, height: 1)
+        if #available(iOS 11.0, *) {
+            view.contentInsetAdjustmentBehavior = .never
+        }
+        return view
+    }()
+    
+    //let profileVC =
+    //let
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
