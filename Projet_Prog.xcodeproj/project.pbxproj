@@ -98,6 +98,7 @@
 		388C6CE71F8E6FF200F5E24A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3D8DFDF7516C230BDD1F69D1 /* Pods-Projet_ProgTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Projet_ProgTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Projet_ProgTests/Pods-Projet_ProgTests.debug.xcconfig"; sourceTree = "<group>"; };
 		51A4E5584357054FD47B38EE /* Pods-Projet_Prog.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Projet_Prog.release.xcconfig"; path = "Pods/Target Support Files/Pods-Projet_Prog/Pods-Projet_Prog.release.xcconfig"; sourceTree = "<group>"; };
+		874C47401F92B1710056AC8A /* ProfilViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfilViewController.swift; sourceTree = "<group>"; };
 		95FFAA67781F06414B87989B /* Pods-Projet_ProgUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Projet_ProgUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Projet_ProgUITests/Pods-Projet_ProgUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		9C24B88D9A5D34B5AA593A1C /* Pods_Projet_ProgTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Projet_ProgTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A55F2D17F496A7CF3B993C88 /* Pods_Projet_Prog.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Projet_Prog.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -154,13 +155,6 @@
 				382136A01F8FED4600C93641 /* AddGameTableViewCell.swift */,
 			);
 			path = "Add Game";
-			sourceTree = "<group>";
-		};
-		382136A31F8FEE5500C93641 /* Profile */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Profile;
 			sourceTree = "<group>";
 		};
 		386FCCB71F9274F400E1EE4B /* Ressources */ = {
@@ -242,7 +236,7 @@
 				382136A41F8FEF3200C93641 /* MenuViewController.swift */,
 				386FCCDE1F927FAC00E1EE4B /* Views */,
 				386FCCD91F927EA900E1EE4B /* Models */,
-				382136A31F8FEE5500C93641 /* Profile */,
+				874C473F1F92B0CB0056AC8A /* Profil */,
 				382136A21F8FED4C00C93641 /* Add Game */,
 				386FCCB71F9274F400E1EE4B /* Ressources */,
 				388C6CCE1F8E6FF100F5E24A /* LaunchScreen.storyboard */,
@@ -267,6 +261,14 @@
 				388C6CE71F8E6FF200F5E24A /* Info.plist */,
 			);
 			path = Projet_ProgUITests;
+			sourceTree = "<group>";
+		};
+		874C473F1F92B0CB0056AC8A /* Profil */ = {
+			isa = PBXGroup;
+			children = (
+				874C47401F92B1710056AC8A /* ProfilViewController.swift */,
+			);
+			path = Profil;
 			sourceTree = "<group>";
 		};
 		F4081194E15D18D6B587465B /* Frameworks */ = {
