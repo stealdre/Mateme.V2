@@ -36,6 +36,7 @@
 		388C6CD01F8E6FF100F5E24A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 388C6CCE1F8E6FF100F5E24A /* LaunchScreen.storyboard */; };
 		388C6CDB1F8E6FF100F5E24A /* Projet_ProgTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 388C6CDA1F8E6FF100F5E24A /* Projet_ProgTests.swift */; };
 		388C6CE61F8E6FF200F5E24A /* Projet_ProgUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 388C6CE51F8E6FF200F5E24A /* Projet_ProgUITests.swift */; };
+		38919B461F95032100F76343 /* ProfileTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38919B451F95032100F76343 /* ProfileTableViewCell.swift */; };
 		38DBFEF01F93C5D100AFDB8D /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38DBFEEE1F93C5C200AFDB8D /* ProfileViewController.swift */; };
 		38DBFEF31F93C6BA00AFDB8D /* PlayNowViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38DBFEF21F93C6BA00AFDB8D /* PlayNowViewController.swift */; };
 		38DBFEF51F93CB2300AFDB8D /* OwnedGameUICollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38DBFEF41F93CB2300AFDB8D /* OwnedGameUICollectionViewCell.swift */; };
@@ -100,6 +101,7 @@
 		388C6CE11F8E6FF200F5E24A /* Projet_ProgUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Projet_ProgUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		388C6CE51F8E6FF200F5E24A /* Projet_ProgUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Projet_ProgUITests.swift; sourceTree = "<group>"; };
 		388C6CE71F8E6FF200F5E24A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		38919B451F95032100F76343 /* ProfileTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileTableViewCell.swift; sourceTree = "<group>"; };
 		38DBFEEE1F93C5C200AFDB8D /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		38DBFEF21F93C6BA00AFDB8D /* PlayNowViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayNowViewController.swift; sourceTree = "<group>"; };
 		38DBFEF41F93CB2300AFDB8D /* OwnedGameUICollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OwnedGameUICollectionViewCell.swift; sourceTree = "<group>"; };
@@ -285,6 +287,7 @@
 			isa = PBXGroup;
 			children = (
 				38DBFEEE1F93C5C200AFDB8D /* ProfileViewController.swift */,
+				38919B451F95032100F76343 /* ProfileTableViewCell.swift */,
 			);
 			path = Profil;
 			sourceTree = "<group>";
@@ -596,6 +599,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				386FCCB51F926FBB00E1EE4B /* AddGameViewController.swift in Sources */,
+				38919B461F95032100F76343 /* ProfileTableViewCell.swift in Sources */,
 				382136A51F8FEF3200C93641 /* MenuViewController.swift in Sources */,
 				38DBFEF01F93C5D100AFDB8D /* ProfileViewController.swift in Sources */,
 				388C6CC61F8E6FF100F5E24A /* AppDelegate.swift in Sources */,
