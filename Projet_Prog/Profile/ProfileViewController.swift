@@ -117,9 +117,11 @@ extension ProfileViewController: UITableViewDelegate {
         
         let cell: ProfileTableViewCell? = tableView.dequeueReusableCell(withIdentifier: "historyCell", for: indexPath) as? ProfileTableViewCell
         
-        //cell?.mateName.text = historyList[indexPath.row]
+		
         cell?.gamePic.image = UIImage(named: "\(indexPath.row)")
-        
+		cell?.mateName.text = "Player \(indexPath.row)"
+		cell?.gameName.text = historyList[indexPath.row]
+		
         cell?.selectionStyle = .none
         
         return cell!

@@ -13,7 +13,8 @@ class ProfileTableViewCell: UITableViewCell {
     var didSetupConstraints = false
     
     var mateName = UILabel()
-    var gameDate = UILabel()
+	var gameName = UILabel()
+    var sessionDate = UILabel()
     
     var gamePic = RoundImageView()
     
@@ -33,11 +34,19 @@ class ProfileTableViewCell: UITableViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
         
-        contentView.addSubview(gamePic)
-        
         gamePic.image = UIImage(named: "profilPic")
         gamePic.contentMode = .scaleAspectFill
-        
+		
+		mateName.font = UIFont(name: "Roboto-Regular", size: 20)
+		
+		gameName.font = UIFont(name: "Roboto-Light", size: 15)
+		gameName.textColor = UIColor(red:0.45, green:0.45, blue:0.45, alpha:1.0)
+		
+		
+		contentView.addSubview(gamePic)
+		contentView.addSubview(mateName)
+		contentView.addSubview(gameName)
+		
         contentView.setNeedsUpdateConstraints()
     }
     
@@ -52,6 +61,19 @@ class ProfileTableViewCell: UITableViewCell {
                 make.leftMargin.equalTo(15)
                 make.centerY.equalTo(contentView.snp.centerY)
             }
+			mateName.snp.makeConstraints { (make) -> Void in
+				make.width.equalTo(contentView.snp.width).multipliedBy(0.7)
+				make.height.equalTo(30)
+				make.left.equalTo(gamePic.snp.right).offset(20)
+				make.top.equalTo(contentView.snp.top).inset(10)
+			}
+			gameName.snp.makeConstraints { (make) -> Void in
+				make.width.equalTo(contentView.snp.width).multipliedBy(0.7)
+				make.height.equalTo(30)
+				make.left.equalTo(gamePic.snp.right).offset(20)
+				make.bottom.equalTo(contentView.snp.bottom).inset(10)
+			}
+			
             
             didSetupConstraints = true
         }

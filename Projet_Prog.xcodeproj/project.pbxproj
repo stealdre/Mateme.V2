@@ -243,7 +243,7 @@
 			children = (
 				388C6CC51F8E6FF100F5E24A /* AppDelegate.swift */,
 				382136A41F8FEF3200C93641 /* MenuViewController.swift */,
-				874C473F1F92B0CB0056AC8A /* Profil */,
+				874C473F1F92B0CB0056AC8A /* Profile */,
 				38DBFEF11F93C69300AFDB8D /* Play Now */,
 				382136A21F8FED4C00C93641 /* Add Game */,
 				386FCCDE1F927FAC00E1EE4B /* Views */,
@@ -283,13 +283,13 @@
 			path = "Play Now";
 			sourceTree = "<group>";
 		};
-		874C473F1F92B0CB0056AC8A /* Profil */ = {
+		874C473F1F92B0CB0056AC8A /* Profile */ = {
 			isa = PBXGroup;
 			children = (
 				38DBFEEE1F93C5C200AFDB8D /* ProfileViewController.swift */,
 				38919B451F95032100F76343 /* ProfileTableViewCell.swift */,
 			);
-			path = Profil;
+			path = Profile;
 			sourceTree = "<group>";
 		};
 		F4081194E15D18D6B587465B /* Frameworks */ = {
