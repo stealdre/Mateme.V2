@@ -42,3 +42,32 @@ class RoundedCornerNgradientImageView: UIImageView {
         self.layer.addSublayer(gradientLayer)
     }
 }
+
+class GradientImageView: UIImageView {
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        
+        let gradientLayer = CAGradientLayer()
+        gradientLayer.colors = [UIColor.clear.cgColor, UIColor(red:0.00, green:0.00, blue:0.00, alpha:0.7).cgColor]
+        gradientLayer.frame = CGRect(x: self.frame.origin.x, y: self.frame.origin.y + self.frame.height / 2, width: self.frame.width, height: self.frame.height / 2)
+        
+        self.layer.shouldRasterize = true
+        self.layer.rasterizationScale = UIScreen.main.scale;
+        
+        self.layer.addSublayer(gradientLayer)
+    }
+}
+
+class ShadowNCornerRadiusImageView: UIImageView {
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        
+        let cornerRadius = CGFloat(10)
+        
+        self.layer.cornerRadius = cornerRadius
+        
+        self.addShadow(offset: CGSize(width: 0, height: 18.0), color: UIColor.black, radius: 15, opacity: 0.1)
+        
+    }
+}

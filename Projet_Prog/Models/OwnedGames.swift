@@ -6,12 +6,13 @@
 //  Copyright © 2017 Paul Bénéteau. All rights reserved.
 //
 
-import Foundation
 import UIKit
 
-struct Games {
+struct OwnedGames {
     
     var name: String?
     var type: String?
     var image: UIImage?
 }
+
+

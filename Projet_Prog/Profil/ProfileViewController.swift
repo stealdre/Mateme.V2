@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ProfilViewController: UIViewController {
+class ProfileViewController: UIViewController {
 
 	var didSetupConstraints = false
 	
