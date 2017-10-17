@@ -10,6 +10,9 @@
 		3821369F1F8FEA7200C93641 /* AddGameUITableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3821369E1F8FEA7200C93641 /* AddGameUITableView.swift */; };
 		382136A11F8FED4600C93641 /* AddGameTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 382136A01F8FED4600C93641 /* AddGameTableViewCell.swift */; };
 		382136A51F8FEF3200C93641 /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 382136A41F8FEF3200C93641 /* MenuViewController.swift */; };
+		3835A7141F96361E00BF57D1 /* SearchGameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3835A7131F96361E00BF57D1 /* SearchGameViewController.swift */; };
+		3835A7161F96413000BF57D1 /* CustomSearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3835A7151F96413000BF57D1 /* CustomSearchBar.swift */; };
+		3835A7181F96430200BF57D1 /* CustomSearchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3835A7171F96430200BF57D1 /* CustomSearchController.swift */; };
 		386FCCB51F926FBB00E1EE4B /* AddGameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 386FCCB41F926FBB00E1EE4B /* AddGameViewController.swift */; };
 		386FCCC91F92756100E1EE4B /* Roboto-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 386FCCC21F92754F00E1EE4B /* Roboto-Black.ttf */; };
 		386FCCCA1F92756100E1EE4B /* Roboto-BlackItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 386FCCC11F92754F00E1EE4B /* Roboto-BlackItalic.ttf */; };
@@ -69,6 +72,9 @@
 		3821369E1F8FEA7200C93641 /* AddGameUITableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddGameUITableView.swift; sourceTree = "<group>"; };
 		382136A01F8FED4600C93641 /* AddGameTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddGameTableViewCell.swift; sourceTree = "<group>"; };
 		382136A41F8FEF3200C93641 /* MenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
+		3835A7131F96361E00BF57D1 /* SearchGameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchGameViewController.swift; sourceTree = "<group>"; };
+		3835A7151F96413000BF57D1 /* CustomSearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSearchBar.swift; sourceTree = "<group>"; };
+		3835A7171F96430200BF57D1 /* CustomSearchController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSearchController.swift; sourceTree = "<group>"; };
 		386FCCB41F926FBB00E1EE4B /* AddGameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddGameViewController.swift; sourceTree = "<group>"; };
 		386FCCB91F92754E00E1EE4B /* Roboto-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Light.ttf"; sourceTree = "<group>"; };
 		386FCCBA1F92754E00E1EE4B /* Roboto-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Bold.ttf"; sourceTree = "<group>"; };
@@ -276,6 +282,9 @@
 		38DBFEF11F93C69300AFDB8D /* Play Now */ = {
 			isa = PBXGroup;
 			children = (
+				3835A7131F96361E00BF57D1 /* SearchGameViewController.swift */,
+				3835A7171F96430200BF57D1 /* CustomSearchController.swift */,
+				3835A7151F96413000BF57D1 /* CustomSearchBar.swift */,
 				38DBFEF21F93C6BA00AFDB8D /* PlayNowViewController.swift */,
 				38DBFEF41F93CB2300AFDB8D /* OwnedGameUICollectionViewCell.swift */,
 				38DBFEF61F93CC6400AFDB8D /* OwnedGamesCollectionView.swift */,
@@ -603,6 +612,7 @@
 				382136A51F8FEF3200C93641 /* MenuViewController.swift in Sources */,
 				38DBFEF01F93C5D100AFDB8D /* ProfileViewController.swift in Sources */,
 				388C6CC61F8E6FF100F5E24A /* AppDelegate.swift in Sources */,
+				3835A7141F96361E00BF57D1 /* SearchGameViewController.swift in Sources */,
 				386FCCDD1F927EF800E1EE4B /* OwnedGames.swift in Sources */,
 				386FCCE01F92802C00E1EE4B /* CustomImageViews.swift in Sources */,
 				38DBFEF51F93CB2300AFDB8D /* OwnedGameUICollectionViewCell.swift in Sources */,
@@ -610,8 +620,10 @@
 				3821369F1F8FEA7200C93641 /* AddGameUITableView.swift in Sources */,
 				386FCCDB1F927ECA00E1EE4B /* Fonts.swift in Sources */,
 				386FCCE21F92807B00E1EE4B /* CustomViews.swift in Sources */,
+				3835A7181F96430200BF57D1 /* CustomSearchController.swift in Sources */,
 				382136A11F8FED4600C93641 /* AddGameTableViewCell.swift in Sources */,
 				38DBFEF31F93C6BA00AFDB8D /* PlayNowViewController.swift in Sources */,
+				3835A7161F96413000BF57D1 /* CustomSearchBar.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

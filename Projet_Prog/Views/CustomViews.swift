@@ -21,3 +21,15 @@ class ShadowNCornerRadiusView: UIView {
         
     }
 }
+
+class ShadowView: UIView {
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        
+        self.addShadow(offset: CGSize(width: 0, height: 10), color: UIColor.black, radius: 10, opacity: 0.05)
+        
+        self.backgroundColor = .white
+        
+    }
+}
