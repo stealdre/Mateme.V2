@@ -28,13 +28,18 @@ class MenuViewController: UIViewController, UIScrollViewDelegate {
         return view
     }()
     
-    let playNowVC = PlayNowViewController()
-    let profileVC = ProfileViewController()
+    let searchVC = SearchGameViewController() // Left
+    let playNowVC = PlayNowViewController() // Middle
+    let profileVC = ProfileViewController() // Right
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
         view.addSubview(horizontalScrollView)
+        
+        addChildViewController(searchVC)
+        horizontalScrollView.addSubview(searchVC.view)
+        searchVC.didMove(toParentViewController: self)
         
         addChildViewController(profileVC)
         horizontalScrollView.addSubview(profileVC.view)
@@ -44,8 +49,8 @@ class MenuViewController: UIViewController, UIScrollViewDelegate {
         horizontalScrollView.addSubview(playNowVC.view)
         playNowVC.didMove(toParentViewController: self)
 
-        horizontalScrollView.contentOffset = CGPoint(x: 0, y: 0)
-        horizontalScrollView.contentSize = CGSize(width: view.frame.size.width * 2, height: view.frame.size.height)
+        horizontalScrollView.contentOffset = CGPoint(x: view.frame.size.width, y: 0)
+        horizontalScrollView.contentSize = CGSize(width: view.frame.size.width * 3, height: view.frame.size.height)
 
         view.setNeedsUpdateConstraints()
     }
@@ -66,8 +71,15 @@ class MenuViewController: UIViewController, UIScrollViewDelegate {
                 make.height.equalTo(view.snp.height)
             }
             
-            playNowVC.view.snp.makeConstraints { (make) -> Void in
+            searchVC.view.snp.makeConstraints { (make) -> Void in
                 make.left.equalTo(horizontalScrollView.snp.left)
+                make.bottom.equalTo(view.snp.bottom)
+                make.width.equalTo(view.snp.width)
+                make.height.equalTo(view.snp.height)
+            }
+            
+            playNowVC.view.snp.makeConstraints { (make) -> Void in
+                make.left.equalTo(horizontalScrollView.snp.left).offset(view.frame.size.width)
                 make.bottom.equalTo(view.snp.bottom)
                 make.width.equalTo(view.snp.width)
                 make.height.equalTo(view.snp.height)
@@ -76,7 +88,7 @@ class MenuViewController: UIViewController, UIScrollViewDelegate {
             profileVC.view.snp.makeConstraints { (make) -> Void in
                 make.width.equalTo(view.snp.width)
                 make.height.equalTo(view.snp.height)
-                make.left.equalTo(playNowVC.view.snp.left).offset(view.frame.size.width)
+                make.left.equalTo(horizontalScrollView.snp.left).offset(view.frame.size.width * 2)
                 make.bottom.equalTo(view.snp.bottom)
             }
             
@@ -86,6 +98,8 @@ class MenuViewController: UIViewController, UIScrollViewDelegate {
     }
     
      func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        searchVC.resultSearchController.searchBar.resignFirstResponder()
+        searchVC.resultSearchController.isActive = false
     }
 
 }

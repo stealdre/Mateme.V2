@@ -27,7 +27,6 @@ class AddGameViewController: UIViewController, UITableViewDelegate {
         super.viewDidLoad()
         
         containerView.backgroundColor = .white
-        
   
         VCtitleLabel.text = "Call of Duty WW1"
         VCtitleLabel.font = UIFont(name: "Roboto-Black", size: 30)
