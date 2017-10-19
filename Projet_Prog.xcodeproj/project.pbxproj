@@ -13,6 +13,7 @@
 		3835A7141F96361E00BF57D1 /* SearchGameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3835A7131F96361E00BF57D1 /* SearchGameViewController.swift */; };
 		3835A7161F96413000BF57D1 /* CustomSearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3835A7151F96413000BF57D1 /* CustomSearchBar.swift */; };
 		3835A7181F96430200BF57D1 /* CustomSearchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3835A7171F96430200BF57D1 /* CustomSearchController.swift */; };
+		38440D5D1F9908C000FE9DD4 /* SearchGameTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38440D5C1F9908C000FE9DD4 /* SearchGameTableViewCell.swift */; };
 		386FCCB51F926FBB00E1EE4B /* AddGameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 386FCCB41F926FBB00E1EE4B /* AddGameViewController.swift */; };
 		386FCCC91F92756100E1EE4B /* Roboto-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 386FCCC21F92754F00E1EE4B /* Roboto-Black.ttf */; };
 		386FCCCA1F92756100E1EE4B /* Roboto-BlackItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 386FCCC11F92754F00E1EE4B /* Roboto-BlackItalic.ttf */; };
@@ -31,7 +32,7 @@
 		386FCCD71F92756100E1EE4B /* Roboto-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 386FCCC31F92754F00E1EE4B /* Roboto-Thin.ttf */; };
 		386FCCD81F92756100E1EE4B /* Roboto-ThinItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 386FCCC41F92754F00E1EE4B /* Roboto-ThinItalic.ttf */; };
 		386FCCDB1F927ECA00E1EE4B /* Fonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 386FCCDA1F927ECA00E1EE4B /* Fonts.swift */; };
-		386FCCDD1F927EF800E1EE4B /* OwnedGames.swift in Sources */ = {isa = PBXBuildFile; fileRef = 386FCCDC1F927EF800E1EE4B /* OwnedGames.swift */; };
+		386FCCDD1F927EF800E1EE4B /* Games.swift in Sources */ = {isa = PBXBuildFile; fileRef = 386FCCDC1F927EF800E1EE4B /* Games.swift */; };
 		386FCCE01F92802C00E1EE4B /* CustomImageViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 386FCCDF1F92802C00E1EE4B /* CustomImageViews.swift */; };
 		386FCCE21F92807B00E1EE4B /* CustomViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 386FCCE11F92807B00E1EE4B /* CustomViews.swift */; };
 		388C6CC61F8E6FF100F5E24A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 388C6CC51F8E6FF100F5E24A /* AppDelegate.swift */; };
@@ -75,6 +76,7 @@
 		3835A7131F96361E00BF57D1 /* SearchGameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchGameViewController.swift; sourceTree = "<group>"; };
 		3835A7151F96413000BF57D1 /* CustomSearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSearchBar.swift; sourceTree = "<group>"; };
 		3835A7171F96430200BF57D1 /* CustomSearchController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSearchController.swift; sourceTree = "<group>"; };
+		38440D5C1F9908C000FE9DD4 /* SearchGameTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchGameTableViewCell.swift; sourceTree = "<group>"; };
 		386FCCB41F926FBB00E1EE4B /* AddGameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddGameViewController.swift; sourceTree = "<group>"; };
 		386FCCB91F92754E00E1EE4B /* Roboto-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Light.ttf"; sourceTree = "<group>"; };
 		386FCCBA1F92754E00E1EE4B /* Roboto-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Bold.ttf"; sourceTree = "<group>"; };
@@ -93,7 +95,7 @@
 		386FCCC71F92754F00E1EE4B /* Roboto-BoldCondensed.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-BoldCondensed.ttf"; sourceTree = "<group>"; };
 		386FCCC81F92755000E1EE4B /* Roboto-LightItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-LightItalic.ttf"; sourceTree = "<group>"; };
 		386FCCDA1F927ECA00E1EE4B /* Fonts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fonts.swift; sourceTree = "<group>"; };
-		386FCCDC1F927EF800E1EE4B /* OwnedGames.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OwnedGames.swift; sourceTree = "<group>"; };
+		386FCCDC1F927EF800E1EE4B /* Games.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Games.swift; sourceTree = "<group>"; };
 		386FCCDF1F92802C00E1EE4B /* CustomImageViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomImageViews.swift; sourceTree = "<group>"; };
 		386FCCE11F92807B00E1EE4B /* CustomViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomViews.swift; sourceTree = "<group>"; };
 		388C6CC21F8E6FF100F5E24A /* Projet_Prog.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Projet_Prog.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -172,6 +174,15 @@
 			path = "Add Game";
 			sourceTree = "<group>";
 		};
+		38440D5E1F9908D600FE9DD4 /* Search */ = {
+			isa = PBXGroup;
+			children = (
+				3835A7131F96361E00BF57D1 /* SearchGameViewController.swift */,
+				38440D5C1F9908C000FE9DD4 /* SearchGameTableViewCell.swift */,
+			);
+			path = Search;
+			sourceTree = "<group>";
+		};
 		386FCCB71F9274F400E1EE4B /* Ressources */ = {
 			isa = PBXGroup;
 			children = (
@@ -208,7 +219,7 @@
 			isa = PBXGroup;
 			children = (
 				386FCCDA1F927ECA00E1EE4B /* Fonts.swift */,
-				386FCCDC1F927EF800E1EE4B /* OwnedGames.swift */,
+				386FCCDC1F927EF800E1EE4B /* Games.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -282,7 +293,7 @@
 		38DBFEF11F93C69300AFDB8D /* Play Now */ = {
 			isa = PBXGroup;
 			children = (
-				3835A7131F96361E00BF57D1 /* SearchGameViewController.swift */,
+				38440D5E1F9908D600FE9DD4 /* Search */,
 				3835A7171F96430200BF57D1 /* CustomSearchController.swift */,
 				3835A7151F96413000BF57D1 /* CustomSearchBar.swift */,
 				38DBFEF21F93C6BA00AFDB8D /* PlayNowViewController.swift */,
@@ -613,9 +624,10 @@
 				38DBFEF01F93C5D100AFDB8D /* ProfileViewController.swift in Sources */,
 				388C6CC61F8E6FF100F5E24A /* AppDelegate.swift in Sources */,
 				3835A7141F96361E00BF57D1 /* SearchGameViewController.swift in Sources */,
-				386FCCDD1F927EF800E1EE4B /* OwnedGames.swift in Sources */,
+				386FCCDD1F927EF800E1EE4B /* Games.swift in Sources */,
 				386FCCE01F92802C00E1EE4B /* CustomImageViews.swift in Sources */,
 				38DBFEF51F93CB2300AFDB8D /* OwnedGameUICollectionViewCell.swift in Sources */,
+				38440D5D1F9908C000FE9DD4 /* SearchGameTableViewCell.swift in Sources */,
 				38DBFEF71F93CC6400AFDB8D /* OwnedGamesCollectionView.swift in Sources */,
 				3821369F1F8FEA7200C93641 /* AddGameUITableView.swift in Sources */,
 				386FCCDB1F927ECA00E1EE4B /* Fonts.swift in Sources */,

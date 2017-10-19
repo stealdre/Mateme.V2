@@ -44,6 +44,7 @@ class RoundedCornerNgradientImageView: UIImageView {
 }
 
 class GradientImageView: UIImageView {
+    
     override func layoutSubviews() {
         super.layoutSubviews()
         
@@ -69,5 +70,16 @@ class ShadowNCornerRadiusImageView: UIImageView {
         
         self.addShadow(offset: CGSize(width: 0, height: 18.0), color: UIColor.black, radius: 15, opacity: 0.1)
         
+    }
+}
+
+class roundedCornerImageView: UIImageView {
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        
+        let cornerRadius = CGFloat(10)
+        self.layer.cornerRadius = cornerRadius
+        self.layer.masksToBounds = true
     }
 }

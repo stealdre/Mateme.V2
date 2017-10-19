@@ -8,11 +8,11 @@
 
 import UIKit
 
-struct OwnedGames {
+struct Games {
     
-    var name: String?
-    var type: String?
-    var image: UIImage?
+    let name: String
+    let type: String
+    let image: UIImage
 }
 
 

@@ -16,7 +16,7 @@ class PlayNowViewController: UIViewController, UICollectionViewDataSource {
     
     var collectionView = OwnedGamesCollectionView()
     
-    var ownedGames = [OwnedGames]()
+    var ownedGames = [Games]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -48,7 +48,7 @@ class PlayNowViewController: UIViewController, UICollectionViewDataSource {
         
         for i in 0..<20 {
             
-            ownedGames.append(OwnedGames(name: "LEAGUE OF LEGENDS \(i)", type: "MOBA", image: UIImage(named: "\(imagesName[i])")))
+            ownedGames.append(Games(name: "LEAGUE OF LEGENDS \(i)", type: "MOBA", image: UIImage(named: "\(imagesName[i])")!))
         }
     }
     

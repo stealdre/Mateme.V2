@@ -101,6 +101,8 @@ extension AddGameViewController: UITableViewDataSource {
         return cell!
     }
     
+    
+    
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         
         if indexPath.row == 0 {
