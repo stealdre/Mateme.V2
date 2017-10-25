@@ -7,8 +7,8 @@
 //
 
 import UIKit
-import SnapKit
 import Firebase
+import SnapKit
 
 
 @UIApplicationMain
