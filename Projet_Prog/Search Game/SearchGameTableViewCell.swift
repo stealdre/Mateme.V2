@@ -17,7 +17,6 @@ class SearchGameTableViewCell: UITableViewCell {
     var gameTypeLabel = UILabel()
     var ownedGameIndicatorView = UIView()
     
-    
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         prepareForReuse()
@@ -33,9 +32,10 @@ class SearchGameTableViewCell: UITableViewCell {
         gameImage.contentMode = .scaleAspectFill
         
         gameNameLabel.font = UIFont(name: "Roboto-Bold", size: 20)
+        gameNameLabel.textColor = .white
         
         gameTypeLabel.font = UIFont(name: "Roboto-Bold", size: 15)
-        gameTypeLabel.textColor = UIColor(red:0.45, green:0.45, blue:0.45, alpha:1.0)
+        gameTypeLabel.textColor = UIColor(red:1, green:1, blue:1, alpha:0.5)
         
 
         contentView.addSubview(gameImage)
@@ -54,21 +54,18 @@ class SearchGameTableViewCell: UITableViewCell {
             make.left.equalTo(self.contentView.snp.left).offset(10)
             make.centerY.equalTo(self.contentView.snp.centerY)
         }
-        
         gameNameLabel.snp.makeConstraints { (make) -> Void in
             make.width.equalTo(self.contentView.snp.width)
             make.height.equalTo(30)
             make.left.equalTo(gameImage.snp.right).offset(15)
             make.top.equalTo(contentView.snp.top).offset(27)
         }
-        
         gameTypeLabel.snp.makeConstraints { (make) -> Void in
             make.width.equalTo(self.contentView.snp.width)
             make.height.equalTo(30)
             make.left.equalTo(gameImage.snp.right).offset(15)
             make.bottom.equalTo(self.contentView.snp.bottom).inset(27)
         }
-        
         ownedGameIndicatorView.snp.makeConstraints { (make) -> Void in
             make.width.equalTo(5)
             make.height.equalTo(self.contentView.snp.height)
@@ -79,4 +76,11 @@ class SearchGameTableViewCell: UITableViewCell {
         super.updateConstraints()
     }
 
+}
+
+class SerialOperationQueue: OperationQueue {
+    override init() {
+        super.init()
+        maxConcurrentOperationCount = 1
+    }
 }

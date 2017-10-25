@@ -28,7 +28,7 @@ class MenuViewController: UIViewController, UIScrollViewDelegate {
         return view
     }()
     
-    let searchVC = SearchGameViewController() // Left
+    let searchVC = OwnedGamesViewController() // Left
     let playNowVC = PlayNowViewController() // Middle
     let profileVC = ProfileViewController() // Right
     

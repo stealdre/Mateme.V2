@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>AD_UNIT_ID_FOR_BANNER_TEST</key>
+	<string>ca-app-pub-3940256099942544/2934735716</string>
+	<key>AD_UNIT_ID_FOR_INTERSTITIAL_TEST</key>
+	<string>ca-app-pub-3940256099942544/4411468910</string>
+	<key>CLIENT_ID</key>
+	<string>1020999194242-q09oik4m8tcdn8hvci0v2n6iq4kaustf.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.1020999194242-q09oik4m8tcdn8hvci0v2n6iq4kaustf</string>
+	<key>API_KEY</key>
+	<string>AIzaSyBq9U5pTxVsJ2EU3e_dTX0Amx0wLdqy4aY</string>
+	<key>GCM_SENDER_ID</key>
+	<string>1020999194242</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>Hemisphere.Projet-Prog</string>
+	<key>PROJECT_ID</key>
+	<string>mateme-e1c02</string>
+	<key>STORAGE_BUCKET</key>
+	<string>mateme-e1c02.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<true></true>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<false></false>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:1020999194242:ios:fa944b8f7b545390</string>
+	<key>DATABASE_URL</key>
+	<string>https://mateme-e1c02.firebaseio.com</string>
+</dict>
+</plist>

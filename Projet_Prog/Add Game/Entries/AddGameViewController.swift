@@ -10,8 +10,6 @@ import UIKit
 
 class AddGameViewController: UIViewController, UITableViewDelegate {
     
-    var didSetupConstraints = false
-    
     var containerView = ShadowNCornerRadiusView()
     
     var imageView = RoundedCornerNgradientImageView()
@@ -62,26 +60,10 @@ class AddGameViewController: UIViewController, UITableViewDelegate {
         
     }
     
-    
     override func updateViewConstraints() {
-        
-        if !didSetupConstraints {
-            
             addConstraints()
-            
-            didSetupConstraints = true
-        }
-        
         super.updateViewConstraints()
     }
-    
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    
-    
 }
 
 extension AddGameViewController: UITableViewDataSource {
@@ -94,14 +76,10 @@ extension AddGameViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell: UITableViewCell? = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-        
         cell?.textLabel?.text = "Cell \(indexPath.row)"
-        
         
         return cell!
     }
-    
-    
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         

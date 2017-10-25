@@ -5,8 +5,12 @@ target 'Projet_Prog' do
   # Comment the next line if you're not using Swift and don't want to use dynamic frameworks
   use_frameworks!
 
+  pod 'Firebase/Core'
   pod 'SnapKit'
-    
+  pod 'Hero', '1.0.0-alpha.4'
+  pod 'CircleMenu'
+  pod 'SwiftSpinner'
+  
   target 'Projet_ProgTests' do
     inherit! :search_paths
     # Pods for testing
