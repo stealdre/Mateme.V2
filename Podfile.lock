@@ -1,5 +1,6 @@
 PODS:
   - CircleMenu (2.0.5)
+  - Cosmos (12.0.1)
   - Firebase/Core (4.3.0):
     - FirebaseAnalytics (= 4.0.4)
     - FirebaseCore (= 4.0.8)
@@ -26,6 +27,7 @@ PODS:
 
 DEPENDENCIES:
   - CircleMenu
+  - Cosmos
   - Firebase/Core
   - Hero (= 1.0.0-alpha.4)
   - SnapKit
@@ -33,6 +35,7 @@ DEPENDENCIES:
 
 SPEC CHECKSUMS:
   CircleMenu: 7cef16b4401de5b545e5f06d720cb202ec64800d
+  Cosmos: 4a9f57998a08788a1062c7b8eefbc62d2b590f39
   Firebase: 83283761a1ef6dc9846e03d08059f51421afbd65
   FirebaseAnalytics: 722b53c7b32bfc7806b06e0093a2f5180d4f2c5a
   FirebaseCore: 69b1a5ac5f857ba6d5fd9d5fe794f4786dd5e579
@@ -43,6 +46,6 @@ SPEC CHECKSUMS:
   SnapKit: a42d492c16e80209130a3379f73596c3454b7694
   SwiftSpinner: bf7c13332ad008952a09358cadf24a186510ae31
 
-PODFILE CHECKSUM: e4e5499c9afd7d826edc9c8f28bb62b2c014cca6
+PODFILE CHECKSUM: b5b1f2b8096968bdaafcf86db6ff576d0ac231e5
 
 COCOAPODS: 1.2.0

@@ -10,6 +10,7 @@ target 'Projet_Prog' do
   pod 'Hero', '1.0.0-alpha.4'
   pod 'CircleMenu'
   pod 'SwiftSpinner'
+  pod 'Cosmos'
   
   target 'Projet_ProgTests' do
     inherit! :search_paths
