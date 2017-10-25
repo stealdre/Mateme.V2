@@ -42,10 +42,17 @@ class ProfileTableViewCell: UITableViewCell {
 		gameName.font = UIFont(name: "Roboto-Light", size: 15)
 		gameName.textColor = UIColor(red:0.45, green:0.45, blue:0.45, alpha:1.0)
 		
+		sessionDate.font = UIFont(name: "Roboto-Regular", size: 13)
+		sessionDate.textColor = UIColor(red:1, green:1, blue:1, alpha:0.6)
+		
+		sessionDate.textAlignment = .right
+		
+		contentView.backgroundColor = .clear
 		
 		contentView.addSubview(gamePic)
 		contentView.addSubview(mateName)
 		contentView.addSubview(gameName)
+		contentView.addSubview(sessionDate)
 		
         contentView.setNeedsUpdateConstraints()
     }
@@ -72,6 +79,12 @@ class ProfileTableViewCell: UITableViewCell {
 				make.height.equalTo(30)
 				make.left.equalTo(gamePic.snp.right).offset(20)
 				make.bottom.equalTo(contentView.snp.bottom).inset(10)
+			}
+			sessionDate.snp.makeConstraints { (make) -> Void in
+				make.width.equalTo(contentView.snp.width).multipliedBy(0.7)
+				make.height.equalTo(30)
+				make.right.equalTo(contentView.snp.right).inset(20)
+				make.bottom.equalTo(contentView.snp.bottom).inset(15)
 			}
 			
             

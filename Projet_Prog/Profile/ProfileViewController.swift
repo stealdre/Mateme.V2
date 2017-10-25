@@ -11,8 +11,7 @@ import UIKit
 class ProfileViewController: UIViewController, UITableViewDataSource {
     
     var didSetupConstraints = false
-    
-    
+	
     var imageViewBackground = UIImageView()
     
     var profileName = ProfileName()
@@ -29,7 +28,7 @@ class ProfileViewController: UIViewController, UITableViewDataSource {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        imageViewBackground.image = UIImage(named: "Profile_bg")
+        imageViewBackground.image = UIImage(named: "Background")
         imageViewBackground.contentMode = .scaleAspectFill
         
         view.addSubview(historyTitle)
@@ -49,6 +48,8 @@ class ProfileViewController: UIViewController, UITableViewDataSource {
         historyTableView.reloadData()
         
         profilePic.image = UIImage(named: "profilPic")
+		
+		historyTableView.backgroundColor = .clear
         
         view.setNeedsUpdateConstraints()
     }
@@ -121,6 +122,13 @@ extension ProfileViewController: UITableViewDelegate {
         cell?.gamePic.image = UIImage(named: "\(indexPath.row)")
 		cell?.mateName.text = "Player \(indexPath.row)"
 		cell?.gameName.text = historyList[indexPath.row]
+		
+		cell?.backgroundColor = .clear
+
+		let date = Date()
+		let formatter = DateFormatter()
+		formatter.dateFormat = "dd-MM-yyyy"
+		cell?.sessionDate.text = formatter.string(from: date)
 		
         cell?.selectionStyle = .none
         
