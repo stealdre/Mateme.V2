@@ -16,6 +16,7 @@
 		3835A7161F96413000BF57D1 /* CustomSearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3835A7151F96413000BF57D1 /* CustomSearchBar.swift */; };
 		3835A7181F96430200BF57D1 /* CustomSearchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3835A7171F96430200BF57D1 /* CustomSearchController.swift */; };
 		38440D5D1F9908C000FE9DD4 /* SearchGameTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38440D5C1F9908C000FE9DD4 /* SearchGameTableViewCell.swift */; };
+		386086031FA3A42900C0DE1B /* UIImageColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 386086021FA3A42800C0DE1B /* UIImageColors.swift */; };
 		3863C7C61FA0D2E5007AFDE5 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3863C7C51FA0D2E5007AFDE5 /* GoogleService-Info.plist */; };
 		386FCCB51F926FBB00E1EE4B /* AddGameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 386FCCB41F926FBB00E1EE4B /* AddGameViewController.swift */; };
 		386FCCC91F92756100E1EE4B /* Roboto-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 386FCCC21F92754F00E1EE4B /* Roboto-Black.ttf */; };
@@ -40,7 +41,6 @@
 		386FCCE21F92807B00E1EE4B /* CustomViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 386FCCE11F92807B00E1EE4B /* CustomViews.swift */; };
 		388C6CC61F8E6FF100F5E24A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 388C6CC51F8E6FF100F5E24A /* AppDelegate.swift */; };
 		388C6CCD1F8E6FF100F5E24A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 388C6CCC1F8E6FF100F5E24A /* Assets.xcassets */; };
-		388C6CD01F8E6FF100F5E24A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 388C6CCE1F8E6FF100F5E24A /* LaunchScreen.storyboard */; };
 		388C6CDB1F8E6FF100F5E24A /* Projet_ProgTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 388C6CDA1F8E6FF100F5E24A /* Projet_ProgTests.swift */; };
 		388C6CE61F8E6FF200F5E24A /* Projet_ProgUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 388C6CE51F8E6FF200F5E24A /* Projet_ProgUITests.swift */; };
 		38919B461F95032100F76343 /* ProfileTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38919B451F95032100F76343 /* ProfileTableViewCell.swift */; };
@@ -83,6 +83,7 @@
 		3835A7151F96413000BF57D1 /* CustomSearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSearchBar.swift; sourceTree = "<group>"; };
 		3835A7171F96430200BF57D1 /* CustomSearchController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSearchController.swift; sourceTree = "<group>"; };
 		38440D5C1F9908C000FE9DD4 /* SearchGameTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchGameTableViewCell.swift; sourceTree = "<group>"; };
+		386086021FA3A42800C0DE1B /* UIImageColors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIImageColors.swift; sourceTree = "<group>"; };
 		3863C7C51FA0D2E5007AFDE5 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		386FCCB41F926FBB00E1EE4B /* AddGameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddGameViewController.swift; sourceTree = "<group>"; };
 		386FCCB91F92754E00E1EE4B /* Roboto-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Light.ttf"; sourceTree = "<group>"; };
@@ -108,7 +109,6 @@
 		388C6CC21F8E6FF100F5E24A /* Projet_Prog.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Projet_Prog.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		388C6CC51F8E6FF100F5E24A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		388C6CCC1F8E6FF100F5E24A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		388C6CCF1F8E6FF100F5E24A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		388C6CD11F8E6FF100F5E24A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		388C6CD61F8E6FF100F5E24A /* Projet_ProgTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Projet_ProgTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		388C6CDA1F8E6FF100F5E24A /* Projet_ProgTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Projet_ProgTests.swift; sourceTree = "<group>"; };
@@ -238,6 +238,7 @@
 				386FCCDC1F927EF800E1EE4B /* Games.swift */,
 				3823F7E31F9D138100651746 /* Gradient.swift */,
 				38BD6F521F9E66F50074D9A9 /* SpinnerView.swift */,
+				386086021FA3A42800C0DE1B /* UIImageColors.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -287,7 +288,6 @@
 				386FCCDE1F927FAC00E1EE4B /* Views */,
 				386FCCD91F927EA900E1EE4B /* Models */,
 				386FCCB71F9274F400E1EE4B /* Ressources */,
-				388C6CCE1F8E6FF100F5E24A /* LaunchScreen.storyboard */,
 				388C6CD11F8E6FF100F5E24A /* Info.plist */,
 				3863C7C51FA0D2E5007AFDE5 /* GoogleService-Info.plist */,
 			);
@@ -458,7 +458,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				388C6CD01F8E6FF100F5E24A /* LaunchScreen.storyboard in Resources */,
 				386FCCD51F92756100E1EE4B /* Roboto-MediumItalic.ttf in Resources */,
 				386FCCD71F92756100E1EE4B /* Roboto-Thin.ttf in Resources */,
 				386FCCD61F92756100E1EE4B /* Roboto-Regular.ttf in Resources */,
@@ -640,6 +639,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				386FCCB51F926FBB00E1EE4B /* AddGameViewController.swift in Sources */,
+				386086031FA3A42900C0DE1B /* UIImageColors.swift in Sources */,
 				38919B461F95032100F76343 /* ProfileTableViewCell.swift in Sources */,
 				382136A51F8FEF3200C93641 /* MenuViewController.swift in Sources */,
 				38CFC6061F9FC7B2006597AC /* OwnedGamesCollectionViewCell.swift in Sources */,
@@ -693,17 +693,6 @@
 			targetProxy = 388C6CE21F8E6FF200F5E24A /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
-
-/* Begin PBXVariantGroup section */
-		388C6CCE1F8E6FF100F5E24A /* LaunchScreen.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				388C6CCF1F8E6FF100F5E24A /* Base */,
-			);
-			name = LaunchScreen.storyboard;
-			sourceTree = "<group>";
-		};
-/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		388C6CE81F8E6FF200F5E24A /* Debug */ = {
