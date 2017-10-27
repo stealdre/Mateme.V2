@@ -30,6 +30,9 @@ class ProfileViewController: UIViewController, UITableViewDataSource {
         
         imageViewBackground.image = UIImage(named: "Background")
         imageViewBackground.contentMode = .scaleAspectFill
+		
+		historyTitle.textColor = UIColor(red:1, green:1, blue:1, alpha:1)
+		profileName.textColor = UIColor(red:1, green:1, blue:1, alpha:1)
         
         view.addSubview(historyTitle)
         
@@ -89,7 +92,6 @@ class ProfileViewController: UIViewController, UITableViewDataSource {
                 make.top.equalTo(historyTitle.snp.bottom).offset(10)
                 make.centerX.equalTo(view.snp.centerX)
                 make.bottom.equalTo(view.snp.bottom).inset(10)
-                
             }
             
             didSetupConstraints = true
@@ -146,7 +148,7 @@ class ProfileName: UILabel {
     func addProprieties() {
         self.textAlignment = .center
         self.font = UIFont(name: self.font.fontName, size: 25)
-        self.text = "Boby"
+        self.text = "MAX"
     }
 }
 
@@ -195,4 +197,3 @@ class RoundImageView: UIImageView {
     }
     
 }
-

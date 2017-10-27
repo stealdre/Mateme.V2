@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Cosmos
 
 class ProfileTableViewCell: UITableViewCell {
     
@@ -17,6 +18,8 @@ class ProfileTableViewCell: UITableViewCell {
     var sessionDate = UILabel()
     
     var gamePic = RoundImageView()
+	
+	var stars = ratingStars()
     
     required init(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -33,16 +36,17 @@ class ProfileTableViewCell: UITableViewCell {
     
     override func prepareForReuse() {
         super.prepareForReuse()
-        
+		
         gamePic.image = UIImage(named: "profilPic")
         gamePic.contentMode = .scaleAspectFill
 		
 		mateName.font = UIFont(name: "Roboto-Regular", size: 20)
+		mateName.textColor = UIColor(red:1, green:1, blue:1, alpha:1)
 		
-		gameName.font = UIFont(name: "Roboto-Light", size: 15)
+		gameName.font = UIFont(name: "Roboto-Regular", size: 15)
 		gameName.textColor = UIColor(red:0.45, green:0.45, blue:0.45, alpha:1.0)
 		
-		sessionDate.font = UIFont(name: "Roboto-Regular", size: 13)
+		sessionDate.font = UIFont(name: "Roboto-Light", size: 13)
 		sessionDate.textColor = UIColor(red:1, green:1, blue:1, alpha:0.6)
 		
 		sessionDate.textAlignment = .right
@@ -53,7 +57,8 @@ class ProfileTableViewCell: UITableViewCell {
 		contentView.addSubview(mateName)
 		contentView.addSubview(gameName)
 		contentView.addSubview(sessionDate)
-		
+		contentView.addSubview(stars)
+
         contentView.setNeedsUpdateConstraints()
     }
     
@@ -84,7 +89,13 @@ class ProfileTableViewCell: UITableViewCell {
 				make.width.equalTo(contentView.snp.width).multipliedBy(0.7)
 				make.height.equalTo(30)
 				make.right.equalTo(contentView.snp.right).inset(20)
-				make.bottom.equalTo(contentView.snp.bottom).inset(15)
+				make.bottom.equalTo(contentView.snp.bottom).inset(5)
+			}
+			stars.snp.makeConstraints { (make) -> Void in
+				make.width.equalTo(contentView.snp.width).multipliedBy(0.3)
+				make.height.equalTo(30)
+				make.right.equalTo(contentView.snp.right).inset(20)
+				make.bottom.equalTo(contentView.snp.bottom).inset(33)
 			}
 			
             
@@ -92,4 +103,27 @@ class ProfileTableViewCell: UITableViewCell {
         }
         super.updateConstraints()
     }
+}
+
+class ratingStars: CosmosView {
+	
+	override init(frame: CGRect) {
+		super.init(frame: frame)
+
+		self.rating = 3
+		self.settings.fillMode = .full
+		
+		// Set the color of a filled star
+		self.settings.filledColor = UIColor.white
+		
+		// Set the border color of an empty star
+		self.settings.emptyBorderColor = UIColor.white
+		
+		// Set the border color of a filled star
+		self.settings.filledBorderColor = UIColor.white
+	}
+	
+	required init?(coder aDecoder: NSCoder) {
+		fatalError("init(coder:) has not been implemented")
+	}
 }
