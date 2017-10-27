@@ -10,7 +10,6 @@ import UIKit
 
 class OwnedGamesViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate {
     
-    
     var containerView = UIView()
     var VCtitleLabel = UILabel()
     
@@ -233,7 +232,7 @@ extension OwnedGamesViewController {
             make.width.equalTo(view.snp.width).multipliedBy(0.6)
             make.height.equalTo(20)
             make.centerX.equalTo(view.snp.centerX)
-            make.topMargin.equalTo(20)
+            make.top.equalTo(view.snp.top).offset(30)
         }
         containerView.snp.makeConstraints { (make) -> Void in
             make.width.equalTo(view.snp.width)

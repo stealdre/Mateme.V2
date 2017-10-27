@@ -10,6 +10,8 @@ import UIKit
 
 class ProfileViewController: UIViewController, UITableViewDataSource {
     
+    var VCtitleLabel = UILabel()
+
     var profileName = ProfileName()
     var historyTitle = HistoryCellTitle()
     
@@ -27,6 +29,11 @@ class ProfileViewController: UIViewController, UITableViewDataSource {
         super.viewDidLoad()
         
         view.backgroundColor = .clear
+        
+        VCtitleLabel.text = "Profile"
+        VCtitleLabel.textColor = .white
+        VCtitleLabel.font = UIFont(name: "Roboto-Bold", size: 19)
+        VCtitleLabel.textAlignment = .center
         
         profileName.text = "UserName"
         profileName.textColor = .white
@@ -46,6 +53,7 @@ class ProfileViewController: UIViewController, UITableViewDataSource {
         
         historyTableView.backgroundColor = .clear
         
+        view.addSubview(VCtitleLabel)
         view.addSubview(historyTitle)
         view.addSubview(profilePicOrnament)
         view.addSubview(profilePic)
@@ -126,7 +134,12 @@ extension ProfileViewController {
 extension ProfileViewController {
     
     override func updateViewConstraints() {
-        
+        VCtitleLabel.snp.makeConstraints { (make) -> Void in
+            make.width.equalTo(view.snp.width).multipliedBy(0.6)
+            make.height.equalTo(20)
+            make.centerX.equalTo(view.snp.centerX)
+            make.top.equalTo(view.snp.top).offset(30)
+        }
         profilePic.snp.makeConstraints { (make) -> Void in
             make.width.equalTo(view.snp.width).multipliedBy(0.4)
             make.height.equalTo(profilePic.snp.width)
