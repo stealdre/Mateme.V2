@@ -11,6 +11,7 @@ target 'Projet_Prog' do
   pod 'CircleMenu'
   pod 'SwiftSpinner'
   pod 'Cosmos'
+  pod 'CHIPageControl'
   
   target 'Projet_ProgTests' do
     inherit! :search_paths

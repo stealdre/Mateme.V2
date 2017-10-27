@@ -12,8 +12,6 @@ import SwiftSpinner
 
 class PlayNowViewController: UIViewController, CircleMenuDelegate {
     
-    let background = UIImageView()
-    
     let buttonView = PlayNowButtonView()
     
     let buttonViewIcon = UIImageView()
@@ -29,8 +27,6 @@ class PlayNowViewController: UIViewController, CircleMenuDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        background.image = UIImage(named: "Background")
         
         infoLabel.text = "Touch to find a mate"
         infoLabel.textColor = .white
@@ -52,7 +48,6 @@ class PlayNowViewController: UIViewController, CircleMenuDelegate {
         spinnerLoadingView.isHidden = true
         spinnerLoadingView.alpha = 0
         
-        self.view.addSubview(background)
         self.view.addSubview(infoLabel)
         self.view.addSubview(buttonView)
         self.view.addSubview(spinnerLoadingView)
@@ -152,12 +147,7 @@ class PlayNowViewController: UIViewController, CircleMenuDelegate {
 extension PlayNowViewController {
     
     override func updateViewConstraints() {
-        
-        background.snp.makeConstraints {(make) -> Void in
-            make.width.equalTo(view.snp.width)
-            make.height.equalTo(view.snp.height)
-            make.center.equalTo(view.snp.center)
-        }
+
         infoLabel.snp.makeConstraints {(make) -> Void in
             make.width.equalTo(view.snp.width).multipliedBy(0.9)
             make.height.equalTo(30)

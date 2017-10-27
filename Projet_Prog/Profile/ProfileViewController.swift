@@ -10,16 +10,14 @@ import UIKit
 
 class ProfileViewController: UIViewController, UITableViewDataSource {
     
-    var didSetupConstraints = false
-	
-    var imageViewBackground = UIImageView()
-    
     var profileName = ProfileName()
     var historyTitle = HistoryCellTitle()
     
-    var profilePic = RoundImageView()
+    let profilePic = RoundImageView()
     let ProfilePicWhiteBorder = UIView()
     let ProfilePicAlphaBorder = UIView()
+    let profilePicOrnament = UIImageView()
+    let lineView = UIView()
     
     var historyList = ["Fifa 18", "League of Legends", "Tera", "Overwatch", "Minecraft"]
     
@@ -28,84 +26,42 @@ class ProfileViewController: UIViewController, UITableViewDataSource {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        imageViewBackground.image = UIImage(named: "Background")
-        imageViewBackground.contentMode = .scaleAspectFill
-		
-		historyTitle.textColor = UIColor(red:1, green:1, blue:1, alpha:1)
-		profileName.textColor = UIColor(red:1, green:1, blue:1, alpha:1)
+        view.backgroundColor = .clear
         
-        view.addSubview(historyTitle)
-        
-        view.addSubview(profilePic)
-        
-        view.addSubview(imageViewBackground)
-        view.sendSubview(toBack: imageViewBackground)
-        
-        view.addSubview(profileName)
-        
-        view.addSubview(historyTableView)
+        profileName.text = "UserName"
+        profileName.textColor = .white
+        profileName.font = UIFont(name: "Roboto-Medium", size: 20)
         
         historyTableView.delegate = self
         historyTableView.dataSource = self
         
-        historyTableView.reloadData()
+        profilePicOrnament.image = UIImage(named: "profilePicOrnament")
         
         profilePic.image = UIImage(named: "profilPic")
-		
-		historyTableView.backgroundColor = .clear
+        
+        lineView.backgroundColor = .white
+        lineView.alpha = 0.2
+        
+        historyTitle.textColor = .white
+        
+        historyTableView.backgroundColor = .clear
+        
+        view.addSubview(historyTitle)
+        view.addSubview(profilePicOrnament)
+        view.addSubview(profilePic)
+        view.addSubview(profileName)
+        view.addSubview(lineView)
+        
+        view.addSubview(historyTableView)
+        
+        historyTableView.reloadData()
         
         view.setNeedsUpdateConstraints()
     }
     
-    override func updateViewConstraints() {
-        
-        if !didSetupConstraints {
-            
-            imageViewBackground.snp.makeConstraints { (make) -> Void in
-                make.width.equalTo(view.snp.width)
-                make.height.equalTo(view.snp.height)
-                make.center.equalTo(view.snp.center)
-            }
-            
-            profilePic.snp.makeConstraints { (make) -> Void in
-                make.width.equalTo(view.snp.width).multipliedBy(0.4)
-                make.height.equalTo(profilePic.snp.width)
-                make.centerX.equalTo(view.snp.centerX)
-                make.centerY.equalTo(view.snp.centerY).multipliedBy(0.5)
-            }
-            
-            profileName.snp.makeConstraints { (make) -> Void in
-                make.width.equalTo(view.snp.width).multipliedBy(0.9)
-                make.height.equalTo(view.snp.height).multipliedBy(0.05)
-                make.centerX.equalTo(view.snp.centerX)
-                make.centerY.equalTo(view.snp.centerY).multipliedBy(0.8)
-            }
-            
-            historyTitle.snp.makeConstraints { (make) -> Void in
-                make.width.equalTo(view.snp.width).multipliedBy(0.9)
-                make.height.equalTo(view.snp.height).multipliedBy(0.05)
-                make.leftMargin.equalTo(15)
-                make.centerY.equalTo(view.snp.centerY)
-            }
-            historyTableView.snp.makeConstraints { (make) -> Void in
-                make.width.equalTo(view.snp.width)
-                make.top.equalTo(historyTitle.snp.bottom).offset(10)
-                make.centerX.equalTo(view.snp.centerX)
-                make.bottom.equalTo(view.snp.bottom).inset(10)
-            }
-            
-            didSetupConstraints = true
-        }
-        super.updateViewConstraints()
-    }
-    
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
 }
 
+// MARK: Table view delegate
 extension ProfileViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -120,21 +76,94 @@ extension ProfileViewController: UITableViewDelegate {
         
         let cell: ProfileTableViewCell? = tableView.dequeueReusableCell(withIdentifier: "historyCell", for: indexPath) as? ProfileTableViewCell
         
-		
         cell?.gamePic.image = UIImage(named: "\(indexPath.row)")
-		cell?.mateName.text = "Player \(indexPath.row)"
-		cell?.gameName.text = historyList[indexPath.row]
-		
-		cell?.backgroundColor = .clear
-
-		let date = Date()
-		let formatter = DateFormatter()
-		formatter.dateFormat = "dd-MM-yyyy"
-		cell?.sessionDate.text = formatter.string(from: date)
-		
+        cell?.mateName.text = "Player \(indexPath.row)"
+        cell?.gameName.text = historyList[indexPath.row]
+        
+        cell?.backgroundColor = .clear
+        
+        let date = Date()
+        var dateString = ""
+        switch dayDifference(date: date) {
+        case 0:
+            dateString = "Today"
+            cell?.sessionDate.text = dateString
+            break
+        case -1:
+            dateString = "Yesterday"
+            cell?.sessionDate.text = dateString
+            break
+        default:
+            let formatter = DateFormatter()
+            formatter.dateFormat = "dd-MM-yyyy"
+            cell?.sessionDate.text = formatter.string(from: date)
+        }
+        
         cell?.selectionStyle = .none
         
         return cell!
+    }
+}
+
+// MARK: Data
+extension ProfileViewController {
+    
+    func dayDifference(date : Date) -> Int {
+        let calendar = Calendar.current
+        if calendar.isDateInYesterday(date) { return -1 }
+        else if calendar.isDateInToday(date) { return 0 }
+        else {
+            let startOfNow = calendar.startOfDay(for: Date())
+            let startOfTimeStamp = calendar.startOfDay(for: date)
+            let components = calendar.dateComponents([.day], from: startOfNow, to: startOfTimeStamp)
+            let day = components.day!
+            return day
+        }
+    }
+}
+
+// MARK: Constraints
+extension ProfileViewController {
+    
+    override func updateViewConstraints() {
+        
+        profilePic.snp.makeConstraints { (make) -> Void in
+            make.width.equalTo(view.snp.width).multipliedBy(0.4)
+            make.height.equalTo(profilePic.snp.width)
+            make.centerX.equalTo(view.snp.centerX)
+            make.centerY.equalTo(view.snp.centerY).multipliedBy(0.5)
+        }
+        profilePicOrnament.snp.makeConstraints { (make) -> Void in
+            make.width.equalTo(340)
+            make.height.equalTo(176)
+            make.center.equalTo(profilePic.snp.center)
+        }
+        profileName.snp.makeConstraints { (make) -> Void in
+            make.width.equalTo(view.snp.width).multipliedBy(0.9)
+            make.height.equalTo(view.snp.height).multipliedBy(0.05)
+            make.centerX.equalTo(view.snp.centerX)
+            make.top.equalTo(profilePicOrnament.snp.bottom).offset(10)
+        }
+        lineView.snp.makeConstraints { (make) -> Void in
+            make.width.equalTo(100)
+            make.height.equalTo(1)
+            make.centerX.equalTo(view.snp.centerX)
+            make.top.equalTo(profileName.snp.bottom).offset(10)
+        }
+        historyTitle.snp.makeConstraints { (make) -> Void in
+            make.width.equalTo(view.snp.width).multipliedBy(0.9)
+            make.height.equalTo(view.snp.height).multipliedBy(0.05)
+            make.leftMargin.equalTo(15)
+            make.centerY.equalTo(view.snp.centerY)
+        }
+        historyTableView.snp.makeConstraints { (make) -> Void in
+            make.width.equalTo(view.snp.width)
+            make.top.equalTo(historyTitle.snp.bottom).offset(10)
+            make.centerX.equalTo(view.snp.centerX)
+            make.bottom.equalTo(view.snp.bottom).inset(10)
+        }
+        
+        super.updateViewConstraints()
     }
 }
 
@@ -142,13 +171,12 @@ class ProfileName: UILabel {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        self.addProprieties()
+        self.addProperties()
     }
     
-    func addProprieties() {
+    func addProperties() {
         self.textAlignment = .center
         self.font = UIFont(name: self.font.fontName, size: 25)
-        self.text = "MAX"
     }
 }
 

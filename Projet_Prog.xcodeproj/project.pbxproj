@@ -199,6 +199,16 @@
 			path = "Search Game";
 			sourceTree = "<group>";
 		};
+		386086041FA3D60200C0DE1B /* Owned Games */ = {
+			isa = PBXGroup;
+			children = (
+				38CFC6011F9FC6ED006597AC /* OwnedGamesViewController.swift */,
+				38CFC6051F9FC7B2006597AC /* OwnedGamesCollectionViewCell.swift */,
+				38CFC6031F9FC762006597AC /* OwnedGamesCollectionViewLayout.swift */,
+			);
+			path = "Owned Games";
+			sourceTree = "<group>";
+		};
 		386FCCB71F9274F400E1EE4B /* Ressources */ = {
 			isa = PBXGroup;
 			children = (
@@ -283,6 +293,7 @@
 				382136A41F8FEF3200C93641 /* MenuViewController.swift */,
 				874C473F1F92B0CB0056AC8A /* Profile */,
 				38DBFEF11F93C69300AFDB8D /* Play Now */,
+				386086041FA3D60200C0DE1B /* Owned Games */,
 				38440D5E1F9908D600FE9DD4 /* Search Game */,
 				382136A21F8FED4C00C93641 /* Add Game */,
 				386FCCDE1F927FAC00E1EE4B /* Views */,
@@ -316,9 +327,6 @@
 			isa = PBXGroup;
 			children = (
 				3823F7E11F9CD83D00651746 /* PlayNowViewController.swift */,
-				38CFC6011F9FC6ED006597AC /* OwnedGamesViewController.swift */,
-				38CFC6031F9FC762006597AC /* OwnedGamesCollectionViewLayout.swift */,
-				38CFC6051F9FC7B2006597AC /* OwnedGamesCollectionViewCell.swift */,
 			);
 			path = "Play Now";
 			sourceTree = "<group>";
@@ -415,7 +423,7 @@
 			attributes = {
 				LastSwiftUpdateCheck = 0900;
 				LastUpgradeCheck = 0900;
-				ORGANIZATIONNAME = "Paul Bénéteau";
+				ORGANIZATIONNAME = Hemispher;
 				TargetAttributes = {
 					388C6CC11F8E6FF100F5E24A = {
 						CreatedOnToolsVersion = 9.0;

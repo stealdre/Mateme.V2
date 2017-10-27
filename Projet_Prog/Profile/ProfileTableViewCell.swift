@@ -44,10 +44,12 @@ class ProfileTableViewCell: UITableViewCell {
 		mateName.textColor = UIColor(red:1, green:1, blue:1, alpha:1)
 		
 		gameName.font = UIFont(name: "Roboto-Regular", size: 15)
-		gameName.textColor = UIColor(red:0.45, green:0.45, blue:0.45, alpha:1.0)
-		
+		gameName.textColor = .white
+		gameName.alpha = 0.7
+        
 		sessionDate.font = UIFont(name: "Roboto-Light", size: 13)
-		sessionDate.textColor = UIColor(red:1, green:1, blue:1, alpha:0.6)
+		sessionDate.textColor = .white
+        sessionDate.alpha = 0.6
 		
 		sessionDate.textAlignment = .right
 		

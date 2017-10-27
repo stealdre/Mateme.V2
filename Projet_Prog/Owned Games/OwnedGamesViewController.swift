@@ -10,9 +10,13 @@ import UIKit
 
 class OwnedGamesViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate {
     
-    let background = UIImageView()
-
+    
+    var containerView = UIView()
     var VCtitleLabel = UILabel()
+    
+    var noGamesImage = UIImageView()
+    var noGamesInfoLabel = UILabel()
+    var noGamesHelpLabel = UILabel()
     
     var resultSearchController = CustomSearchController()
     
@@ -24,27 +28,48 @@ class OwnedGamesViewController: UIViewController, UICollectionViewDataSource, UI
     
     override func viewDidLoad() {
         super.viewDidLoad()
-                
-        background.image = UIImage(named: "Background")
+        
+        view.backgroundColor = .clear
+        containerView.backgroundColor = .clear
         
         VCtitleLabel.text = "My Games"
         VCtitleLabel.textColor = .white
-        VCtitleLabel.font = UIFont(name: "Roboto-Bold", size: 35)
+        VCtitleLabel.font = UIFont(name: "Roboto-Bold", size: 19)
+        VCtitleLabel.textAlignment = .center
         
-        GamesArray = allGames()
+        noGamesImage.image = UIImage(named: "addGame_ic")
+        noGamesImage.isHidden = true
         
-        commonInit()
+        noGamesInfoLabel.text = "You don’t have any game yet"
+        noGamesInfoLabel.font = UIFont(name: "Roboto-Medium", size: 20)
+        noGamesInfoLabel.textColor = .white
+        noGamesInfoLabel.textAlignment = .center
         
-        self.view.addSubview(background)
-        self.view.addSubview(VCtitleLabel)
-        self.view.addSubview(collectionView)
+        noGamesHelpLabel.text = "Search a game and add it to your collection !"
+        noGamesHelpLabel.font = UIFont(name: "Roboto-Medium", size: 16)
+        noGamesHelpLabel.textColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.7)
+        noGamesHelpLabel.textAlignment = .center
+        
+        //GamesArray = allGames()
+        
+        initCollectionView()
+        initSearchBar()
+
+        view.addSubview(VCtitleLabel)
+        view.addSubview(containerView)
+        containerView.addSubview(noGamesImage)
+        containerView.addSubview(noGamesInfoLabel)
+        containerView.addSubview(noGamesHelpLabel)
+        containerView.addSubview(collectionView)
+        containerView.addSubview(resultSearchController.searchBar)
+
         
         view.setNeedsUpdateConstraints()
+        
     }
     
-    func commonInit() {
+    func initCollectionView() {
         
-        initSearchBar()
         
         let layout = OwnedGamesCollectionViewLayout()
         
@@ -62,10 +87,15 @@ class OwnedGamesViewController: UIViewController, UICollectionViewDataSource, UI
         
         collectionView.register(OwnedGamesCollectionViewCell.self, forCellWithReuseIdentifier: "OGCell")
         
-        self.collectionView.reloadData()
+        if GamesArray.isEmpty {
+            noGamesImage.isHidden = false
+        } else {
+            self.collectionView.reloadData()
+        }
     }
 }
 
+// Table view delegate
 extension OwnedGamesViewController {
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
@@ -118,9 +148,23 @@ extension OwnedGamesViewController: OwnedGamesLayoutDelegate {
     }
 }
 
+// MARK: Search bar delegate
 extension OwnedGamesViewController: UISearchBarDelegate {
     
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        containerView.addGestureRecognizer(tap)
+        collectionView.addGestureRecognizer(tap)
+    }
+    
+    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        containerView.removeGestureRecognizer(tap)
+        collectionView.removeGestureRecognizer(tap)
+    }
+    
+    @objc func dismissKeyboard() {
+        resultSearchController.searchBar.endEditing(true)
     }
 }
 
@@ -129,9 +173,7 @@ extension OwnedGamesViewController: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
         
         filteredGamesArray.removeAll(keepingCapacity: false)
-        
         let searchText = resultSearchController.searchBar.text!
-        
         let filered = GamesArray.filter { $0.name.range(of: searchText, options: [.caseInsensitive]) != nil
             || $0.type.range(of: searchText, options: [.caseInsensitive]) != nil }
         
@@ -160,7 +202,8 @@ extension OwnedGamesViewController {
             controller.searchBar.setBackgroundImage(UIImage(), for: .any, barMetrics: .default)
             controller.searchBar.showsCancelButton = false
             controller.searchBar.delegate = self
-            
+            controller.searchBar.setImage(UIImage(named: "search_ic"), for: .search, state: .normal)
+            controller.searchBar.frame.origin.x = 0
             for view in controller.searchBar.subviews.last!.subviews {
                 if type(of: view) == NSClassFromString("UISearchBarBackground") {
                     view.alpha = 0
@@ -168,6 +211,11 @@ extension OwnedGamesViewController {
                 if type(of: view) == NSClassFromString("UISearchBarTextField") {
                     let searchField: UITextField = view as! UITextField
                     searchField.font = UIFont(name: "Roboto-Light", size: 23)
+                    searchField.backgroundColor = .clear
+                    searchField.textColor = .white
+                    searchField.attributedPlaceholder = NSAttributedString(string: "Search a game ...",
+                                                                           attributes: [NSAttributedStringKey.foregroundColor: UIColor(red: 1, green: 1, blue: 1, alpha: 0.7)])
+                    searchField.clearButtonMode = .never
                 }
             }
             return controller
@@ -181,22 +229,41 @@ extension OwnedGamesViewController {
     
     override func updateViewConstraints() {
         
-        background.snp.makeConstraints {(make) -> Void in
-            make.width.equalTo(self.view.snp.width)
-            make.height.equalTo(self.view.snp.height)
-            make.center.equalTo(self.view.snp.center)
-        }
         VCtitleLabel.snp.makeConstraints { (make) -> Void in
-            make.width.equalTo(self.view.snp.width).multipliedBy(0.9)
-            make.height.equalTo(38)
-            make.left.equalTo(self.view.snp.left).offset(20)
+            make.width.equalTo(view.snp.width).multipliedBy(0.6)
+            make.height.equalTo(20)
+            make.centerX.equalTo(view.snp.centerX)
             make.topMargin.equalTo(20)
         }
+        containerView.snp.makeConstraints { (make) -> Void in
+            make.width.equalTo(view.snp.width)
+            make.height.equalTo(view.snp.height).multipliedBy(0.88)
+            make.centerX.equalTo(view.snp.centerX)
+            make.bottom.equalTo(view.snp.bottom)
+        }
+        noGamesImage.snp.makeConstraints { (make) -> Void in
+            make.width.equalTo(120)
+            make.height.equalTo(96)
+            make.centerX.equalTo(containerView.snp.centerX)
+            make.centerY.equalTo(containerView.snp.centerY).offset(-40)
+        }
+        noGamesInfoLabel.snp.makeConstraints { (make) -> Void in
+            make.width.equalTo(containerView.snp.width).multipliedBy(0.9)
+            make.height.equalTo(22)
+            make.centerX.equalTo(containerView.snp.centerX)
+            make.top.equalTo(noGamesImage.snp.bottom).offset(40)
+        }
+        noGamesHelpLabel.snp.makeConstraints { (make) -> Void in
+            make.width.equalTo(containerView.snp.width).multipliedBy(0.9)
+            make.height.equalTo(22)
+            make.centerX.equalTo(containerView.snp.centerX)
+            make.top.equalTo(noGamesInfoLabel.snp.bottom).offset(10)
+        }
         collectionView.snp.makeConstraints { (make) -> Void in
-            make.width.equalTo(self.view.snp.width)
-            make.height.equalTo(self.view.snp.height).multipliedBy(0.88)
-            make.centerX.equalTo(self.view.snp.centerX)
-            make.bottom.equalTo(self.view.snp.bottom)
+            make.width.equalTo(containerView.snp.width)
+            make.height.equalTo(containerView.snp.height).inset(30)
+            make.centerX.equalTo(containerView.snp.centerX)
+            make.bottom.equalTo(containerView.snp.bottom)
         }
         
         super.updateViewConstraints()

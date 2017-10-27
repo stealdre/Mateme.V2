@@ -14,7 +14,7 @@ class OwnedGamesCollectionViewCell: UICollectionViewCell {
     
     let shadowEffectView = UIView()
     
-    let gameImage = GradientImageView()
+    let gameImage = UIImageView()
 
     
     required init?(coder aDecoder: NSCoder) {
