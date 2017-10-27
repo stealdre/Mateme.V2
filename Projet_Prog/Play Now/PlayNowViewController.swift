@@ -29,7 +29,7 @@ class PlayNowViewController: UIViewController, CircleMenuDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-                
+        
         background.image = UIImage(named: "Background")
         
         infoLabel.text = "Touch to find a mate"
@@ -49,119 +49,135 @@ class PlayNowViewController: UIViewController, CircleMenuDelegate {
         button.backgroundColor = .clear
         button.delegate = self
         
-        self.buttonView.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
-        self.button.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
-        
+        spinnerLoadingView.isHidden = true
         spinnerLoadingView.alpha = 0
         
         self.view.addSubview(background)
         self.view.addSubview(infoLabel)
         self.view.addSubview(buttonView)
-        self.view.addSubview(button)
         self.view.addSubview(spinnerLoadingView)
-        
-        animateButton()
+        self.view.addSubview(button)
         
         self.view.setNeedsUpdateConstraints()
+        
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        animateButton(buttonView, self.button, animate: true)
     }
     
     func circleMenu(_ circleMenu: CircleMenu, willDisplay button: UIButton, atIndex: Int) {
-        button.backgroundColor = UIColor(red:0.44, green:0.32, blue:0.66, alpha:1.0)
-        if atIndex != 6 - 1 {
-            button.contentMode = .scaleAspectFill
-            button.clipsToBounds = true
-            let gameImage = UIImage(named: "\(arc4random_uniform(30))")
-            button.setBackgroundImage(gameImage, for: .normal)
-        } else {
-            let morePic = UIImage(named: "more_ic")
-            button.setBackgroundImage(morePic, for: .normal)
-        }
-    }
-    
-    func menuCollapsed(_ circleMenu: CircleMenu) {
+        button.backgroundColor = UIColor(red:0.25, green:0.25, blue:0.25, alpha:1.0)
+
+        button.contentMode = .scaleAspectFill
+        button.clipsToBounds = true
+        let gameImage = UIImage(named: "\(arc4random_uniform(30))")
         
-        UIView.animate(withDuration: 0.5, delay: 0.0, options: [.curveEaseInOut, .allowUserInteraction], animations: {() -> Void in
-            self.buttonView.transform = CGAffineTransform(scaleX: 1.05, y: 1.05)
-            self.button.transform = CGAffineTransform(scaleX: 1.05, y: 1.05)
-        }, completion: {(_ finished: Bool) -> Void in
-            self.spinnerLoadingView.snp.makeConstraints {(make) -> Void in
-                make.width.equalTo(self.buttonView.snp.width).multipliedBy(1.55)
-                make.height.equalTo(self.spinnerLoadingView.snp.width)
-                make.center.equalTo(self.buttonView.snp.center)
-            }
-            SwiftSpinner.show("")
-            UIView.animate(withDuration: 0.5, delay: 0.5, options: [.curveEaseInOut, .allowUserInteraction], animations: {() -> Void in
-                self.spinnerLoadingView.alpha = 1
-            })
-        })
+        button.setBackgroundImage(gameImage, for: .normal)
+        
     }
     
     @objc func playNowButtonTouched(sender: CircleMenu) {
-        if animatingButton {
-            
-            canAnimateButton = false
-            animatingButton = false
-            
-            buttonView.layer.removeAllAnimations()
-            button.layer.removeAllAnimations()
-            
-            UIView.animate(withDuration: 0.1, delay: 0.0, options: [.curveEaseInOut, .allowUserInteraction], animations: {() -> Void in
-                self.infoLabel.alpha = 0
-                self.buttonView.transform = CGAffineTransform(scaleX: 0.7, y: 0.7)
-                self.button.transform = CGAffineTransform(scaleX: 0.7, y: 0.7)
+        
+        switchButtonState()
+        
+    }
+    
+    func circleMenu(_ circleMenu: CircleMenu, buttonDidSelected button: UIButton, atIndex: Int) {
+        print("button did selected: \(atIndex)")
+        
+        animateLoading(buttonView, button, animate: true)
+    }
+    
+    func animateLoading(_ view: UIView, _ button: UIButton, animate: Bool) {
+        if animate {
+            UIView.animate(withDuration: 0.5, delay: 0, options: [.beginFromCurrentState , .curveEaseInOut], animations: {() -> Void in
+                view.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
+                button.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
             }, completion: {(_ finished: Bool) -> Void in
-                self.buttonView.layer.removeAllAnimations()
-                self.button.layer.removeAllAnimations()
+
+                //SwiftSpinner.show("")
+                UIView.animate(withDuration: 0.5, delay: 0, options: [.allowUserInteraction], animations: {() -> Void in
+                    self.spinnerLoadingView.isHidden = false
+                    self.spinnerLoadingView.alpha = 1
+                })
+            })
+        } else {
+            
+        }
+    }
+    
+    func switchButtonState() {
+        if !animatingButton { // start animating
+            if buttonView.transform.a == 0.7 {
+                UIView.animate(withDuration: 0.2, delay: 0, options: [.beginFromCurrentState], animations: {
+                    self.buttonView.transform = CGAffineTransform.identity
+                    self.button.transform = CGAffineTransform.identity
+                    self.infoLabel.alpha = 1
+                }, completion: {(_ finished: Bool) -> Void in
+                    self.animateButton(self.buttonView, self.button, animate: true)
+                })
+            } else {
+                self.animateButton(self.buttonView, self.button, animate: true) // First animation start
+            }
+        } else { // stop animating
+            UIView.animate(withDuration: 0.1, delay: 0, options: [.curveEaseIn], animations: {
+                self.infoLabel.alpha = 0
+            })
+            self.animateButton(self.buttonView, self.button, animate: false)
+        }
+    }
+    
+    func animateButton(_ view: UIView, _ button: UIButton, animate: Bool) {
+        if animate {
+            animatingButton = true
+            UIView.animate(withDuration: 3.0, delay: 0, options: [.autoreverse, .repeat, .allowUserInteraction, .beginFromCurrentState], animations: {
+                view.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
+                button.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
+            })
+        } else {
+            animatingButton = false
+            self.buttonView.layer.removeAllAnimations()
+            self.button.layer.removeAllAnimations()
+            UIView.animate(withDuration: 0.1, delay: 0, options: [.curveEaseOut, .beginFromCurrentState], animations: {
+                view.transform = CGAffineTransform(scaleX: 0.7, y: 0.7)
+                button.transform = CGAffineTransform(scaleX: 0.7, y: 0.7)
             })
         }
     }
     
-    func animateButton() {
-        animatingButton = true
-        
-        UIView.animate(withDuration: 3, delay: 0.0, options: [.curveEaseInOut, .allowUserInteraction], animations: {() -> Void in
-            if self.canAnimateButton {
-                print("animating")
-                self.buttonView.transform = CGAffineTransform(scaleX: 1, y: 1)
-                self.button.transform = CGAffineTransform(scaleX: 1, y: 1)
-            }
-        }, completion: {(_ finished: Bool) -> Void in
-            UIView.animate(withDuration: 3, delay: 1.0, options: [.curveEaseInOut, .allowUserInteraction], animations: {() -> Void in
-                if self.canAnimateButton {
-                    self.buttonView.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
-                    self.button.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
-                }
-            }, completion: {(_ finished: Bool) -> Void in
-                if self.canAnimateButton {
-                    self.animateButton()
-                }
-            })
-        })
-        
-    }
+}
+
+// MARK: Constraints
+extension PlayNowViewController {
     
     override func updateViewConstraints() {
         
         background.snp.makeConstraints {(make) -> Void in
-            make.width.equalTo(self.view.snp.width)
-            make.height.equalTo(self.view.snp.height)
-            make.center.equalTo(self.view.snp.center)
+            make.width.equalTo(view.snp.width)
+            make.height.equalTo(view.snp.height)
+            make.center.equalTo(view.snp.center)
         }
         infoLabel.snp.makeConstraints {(make) -> Void in
-            make.width.equalTo(self.view.snp.width).multipliedBy(0.9)
+            make.width.equalTo(view.snp.width).multipliedBy(0.9)
             make.height.equalTo(30)
-            make.centerX.equalTo(self.view.snp.centerX)
-            make.top.equalTo(self.view.snp.top).offset(170)
+            make.centerX.equalTo(view.snp.centerX)
+            make.top.equalTo(view.snp.top).offset(170)
         }
         buttonView.snp.makeConstraints {(make) -> Void in
             make.width.equalTo(150)
-            make.height.equalTo(self.buttonView.snp.width)
-            make.center.equalTo(self.view.snp.center)
+            make.height.equalTo(buttonView.snp.width)
+            make.center.equalTo(view.snp.center)
         }
         button.snp.makeConstraints {(make) -> Void in
             make.width.equalTo(150)
-            make.height.equalTo(self.button.snp.width)
-            make.center.equalTo(self.view.snp.center)
+            make.height.equalTo(button.snp.width)
+            make.center.equalTo(view.snp.center)
+        }
+        spinnerLoadingView.snp.makeConstraints {(make) -> Void in
+            make.width.equalTo(buttonView.snp.width).multipliedBy(1.35)
+            make.height.equalTo(spinnerLoadingView.snp.width)
+            make.center.equalTo(buttonView.snp.center)
         }
         
         super.updateViewConstraints()
