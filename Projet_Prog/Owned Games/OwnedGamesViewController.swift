@@ -28,6 +28,8 @@ class OwnedGamesViewController: UIViewController, UICollectionViewDataSource, UI
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        isHeroEnabled = true
+        
         view.backgroundColor = .clear
         containerView.backgroundColor = .clear
         
@@ -49,7 +51,7 @@ class OwnedGamesViewController: UIViewController, UICollectionViewDataSource, UI
         noGamesHelpLabel.textColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.7)
         noGamesHelpLabel.textAlignment = .center
         
-        //GamesArray = allGames()
+        GamesArray = allGames()
         
         initCollectionView()
         initSearchBar()
@@ -60,21 +62,21 @@ class OwnedGamesViewController: UIViewController, UICollectionViewDataSource, UI
         containerView.addSubview(noGamesInfoLabel)
         containerView.addSubview(noGamesHelpLabel)
         containerView.addSubview(collectionView)
-        containerView.addSubview(resultSearchController.searchBar)
 
+        collectionView.addSubview(resultSearchController.searchBar)
         
         view.setNeedsUpdateConstraints()
         
+        self.modalPresentationStyle = UIModalPresentationStyle.overCurrentContext
+
     }
     
     func initCollectionView() {
         
         
-        let layout = OwnedGamesCollectionViewLayout()
+        let layout = UICollectionViewFlowLayout()
         
-        layout.itemSize = CGSize(width: 90, height: 120)
-        layout.sectionInset = UIEdgeInsets(top: 11, left: 10, bottom: 10, right: 11)
-        layout.delegate = self
+        layout.sectionInset = UIEdgeInsets(top: 5, left: 10, bottom: 10, right: 5)
         
         collectionView = UICollectionView(frame: self.view.frame, collectionViewLayout: layout)
         
@@ -84,12 +86,15 @@ class OwnedGamesViewController: UIViewController, UICollectionViewDataSource, UI
         collectionView.backgroundColor = .clear
         collectionView.allowsMultipleSelection = false
         
+        collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "OGSearchbarCell")
         collectionView.register(OwnedGamesCollectionViewCell.self, forCellWithReuseIdentifier: "OGCell")
         
         if GamesArray.isEmpty {
             noGamesImage.isHidden = false
         } else {
-            self.collectionView.reloadData()
+            collectionView.reloadData()
+            noGamesInfoLabel.isHidden = true
+            noGamesHelpLabel.isHidden = true
         }
     }
 }
@@ -107,6 +112,9 @@ extension OwnedGamesViewController {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
+        if indexPath.row == 0 { // SearchBar padding cell
+          return collectionView.dequeueReusableCell(withReuseIdentifier: "OGSearchbarCell", for: indexPath)
+        }
         let cell: OwnedGamesCollectionViewCell? = collectionView.dequeueReusableCell(withReuseIdentifier: "OGCell", for: indexPath) as? OwnedGamesCollectionViewCell
         
         return cell!
@@ -131,19 +139,36 @@ extension OwnedGamesViewController {
                 if let operation = operation, operation.isCancelled { return }
                 
                 cell.gameImage.image = self.GamesArray[indexPath.row].image
+                //cell.gameImage.heroID = "OGImage"
+                cell.isHeroEnabled = true
+                
+                cell.heroID = "OGImage"
+                
+                cell.contentView.layer.cornerRadius = 10
+                cell.contentView.clipsToBounds = true
+                
                 cell.backgroundColor = .clear
             })
         }
         cell.queue.addOperation(operation)
     }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        //show(GameViewController(), sender: Any.self)
+        present(GameViewController(), animated: true, completion: nil)
+    }
 }
 
 // MARK: Items Sizes
-extension OwnedGamesViewController: OwnedGamesLayoutDelegate {
+extension OwnedGamesViewController: UICollectionViewDelegateFlowLayout {
     
-    func collectionView(_ collectionView: UICollectionView, heightForPhotoAtIndexPath indexPath: IndexPath) -> CGFloat {
+    func collectionView(_ collectionView : UICollectionView, layout collectionViewLayout: UICollectionViewLayout,sizeForItemAt indexPath: IndexPath) -> CGSize {
+
+        if indexPath.row == 0 { // SearchBar padding cell
+            return CGSize(width: view.frame.width * 0.95, height: 40)
+        }
+        return CGSize(width: view.frame.width * 0.95, height: 250)
         
-        return CGFloat(GamesArray[indexPath.row].image.size.height / 3.7 + CGFloat(arc4random_uniform(50)))
     }
 }
 
@@ -182,18 +207,31 @@ extension OwnedGamesViewController: UISearchResultsUpdating {
     }
 }
 
+// MARK: Segues
+extension OwnedGamesViewController {
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let vc = segue.destination as? GameViewController {
+            //vc.view.heroModifiers = [.source(heroID: "OGImage")]
+            //vc.gameImage.heroModifiers = [.durationMatchLongest]
+        }
+    }
+}
+
 // MARK: Search Bar
 extension OwnedGamesViewController {
     
     func initSearchBar() {
+        definesPresentationContext = true
+
         self.resultSearchController = ({
             let controller = CustomSearchController(searchResultsController: nil)
             controller.searchResultsUpdater = self
-            controller.searchBar.sizeToFit()
-            controller.searchBar.placeholder = "Search a game ..."
             controller.dimsBackgroundDuringPresentation = false
             controller.hidesNavigationBarDuringPresentation = false
             controller.obscuresBackgroundDuringPresentation = false
+            controller.searchBar.sizeToFit()
+            controller.searchBar.placeholder = "Search a game ..."
             controller.searchBar.searchBarStyle = .default
             controller.searchBar.barTintColor = UIColor.clear
             controller.searchBar.backgroundColor = UIColor.clear
@@ -202,7 +240,7 @@ extension OwnedGamesViewController {
             controller.searchBar.showsCancelButton = false
             controller.searchBar.delegate = self
             controller.searchBar.setImage(UIImage(named: "search_ic"), for: .search, state: .normal)
-            controller.searchBar.frame.origin.x = 0
+            
             for view in controller.searchBar.subviews.last!.subviews {
                 if type(of: view) == NSClassFromString("UISearchBarBackground") {
                     view.alpha = 0
@@ -244,7 +282,7 @@ extension OwnedGamesViewController {
             make.width.equalTo(120)
             make.height.equalTo(96)
             make.centerX.equalTo(containerView.snp.centerX)
-            make.centerY.equalTo(containerView.snp.centerY).offset(-40)
+            make.centerY.equalTo(containerView.snp.centerY).offset(-50)
         }
         noGamesInfoLabel.snp.makeConstraints { (make) -> Void in
             make.width.equalTo(containerView.snp.width).multipliedBy(0.9)
@@ -260,7 +298,7 @@ extension OwnedGamesViewController {
         }
         collectionView.snp.makeConstraints { (make) -> Void in
             make.width.equalTo(containerView.snp.width)
-            make.height.equalTo(containerView.snp.height).inset(30)
+            make.height.equalTo(containerView.snp.height)
             make.centerX.equalTo(containerView.snp.centerX)
             make.bottom.equalTo(containerView.snp.bottom)
         }

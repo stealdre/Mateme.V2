@@ -12,6 +12,7 @@ target 'Projet_Prog' do
   pod 'SwiftSpinner'
   pod 'Cosmos'
   pod 'CHIPageControl'
+  pod 'TTGEmojiRate'
   
   target 'Projet_ProgTests' do
     inherit! :search_paths

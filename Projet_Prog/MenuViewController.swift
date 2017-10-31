@@ -9,7 +9,7 @@
 import UIKit
 import CHIPageControl
 
-class MenuViewController: UIViewController, UIScrollViewDelegate {
+class MenuViewController: UIViewController {
     
     let pageControl = CHIPageControlAleppo()
     
@@ -41,7 +41,9 @@ class MenuViewController: UIViewController, UIScrollViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        backgroundGradient.image = UIImage(named: "Background")
+        definesPresentationContext = true
+        
+        backgroundGradient.image = UIImage(named: "background")
         
         pageControl.numberOfPages = 3
         pageControl.padding = 6
@@ -83,11 +85,16 @@ class MenuViewController: UIViewController, UIScrollViewDelegate {
         view.setNeedsUpdateConstraints()
     }
     
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        pageControl.progress = 1
+    }
+    
     
 }
 
 // MARK: Scroll view Delegate
-extension MenuViewController {
+extension MenuViewController: UIScrollViewDelegate {
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let xOffset = scrollView.contentOffset.x
@@ -96,8 +103,8 @@ extension MenuViewController {
             profileButton.alpha = (1  - ((xOffset - view.frame.width) / view.frame.width) * 1.5)
             gamesButton.alpha = (1  - ((xOffset - view.frame.width) / view.frame.width) * 1.5)
         } else {
-            gamesButton.alpha = xOffset / view.frame.width
-            profileButton.alpha = xOffset / view.frame.width
+            gamesButton.alpha = xOffset / (view.frame.width * 0.5)
+            profileButton.alpha = xOffset / (view.frame.width * 0.5)
         }
         
         pageControl.progress = Double(xOffset / scrollView.frame.width)

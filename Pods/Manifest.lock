@@ -41,6 +41,7 @@ PODS:
   - nanopb/encode (0.3.8)
   - SnapKit (4.0.0)
   - SwiftSpinner (1.4.1)
+  - TTGEmojiRate (0.3.0)
 
 DEPENDENCIES:
   - CHIPageControl
@@ -50,6 +51,7 @@ DEPENDENCIES:
   - Hero (= 1.0.0-alpha.4)
   - SnapKit
   - SwiftSpinner
+  - TTGEmojiRate
 
 SPEC CHECKSUMS:
   CHIPageControl: 2d3a0edacd7e3bc113bc88cbf187ba8f0b045548
@@ -64,7 +66,8 @@ SPEC CHECKSUMS:
   nanopb: 5601e6bca2dbf1ed831b519092ec110f66982ca3
   SnapKit: a42d492c16e80209130a3379f73596c3454b7694
   SwiftSpinner: bf7c13332ad008952a09358cadf24a186510ae31
+  TTGEmojiRate: 9b295b22e42874acfd717a9ae606e259995b83d0
 
-PODFILE CHECKSUM: de594ebcbf690753880365ff7714f7c5a86cb072
+PODFILE CHECKSUM: 4d6a9ad0f76497712ff506b7a2e4d185615261a7
 
 COCOAPODS: 1.2.0

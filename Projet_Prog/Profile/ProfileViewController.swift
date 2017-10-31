@@ -47,7 +47,7 @@ class ProfileViewController: UIViewController, UITableViewDataSource {
         profilePic.image = UIImage(named: "profilPic")
         
         lineView.backgroundColor = .white
-        lineView.alpha = 0.2
+        lineView.alpha = 0.1
         
         historyTitle.textColor = .white
         
@@ -59,7 +59,6 @@ class ProfileViewController: UIViewController, UITableViewDataSource {
         view.addSubview(profilePic)
         view.addSubview(profileName)
         view.addSubview(lineView)
-        
         view.addSubview(historyTableView)
         
         historyTableView.reloadData()
@@ -158,7 +157,7 @@ extension ProfileViewController {
             make.top.equalTo(profilePicOrnament.snp.bottom).offset(10)
         }
         lineView.snp.makeConstraints { (make) -> Void in
-            make.width.equalTo(100)
+            make.width.equalTo(70)
             make.height.equalTo(1)
             make.centerX.equalTo(view.snp.centerX)
             make.top.equalTo(profileName.snp.bottom).offset(10)
@@ -202,7 +201,7 @@ class HistoryCellTitle: UILabel {
     
     func addProprieties() {
         self.textAlignment = .left
-        self.font = UIFont(name: self.font.fontName, size: 30)
+        self.font = UIFont(name: self.font.fontName, size: 20)
         self.text = "HISTORY"
     }
 }

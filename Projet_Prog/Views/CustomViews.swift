@@ -40,7 +40,7 @@ class BGGradientView: UIImageView {
         super.layoutSubviews()
         
         let gradientLayer = CAGradientLayer()
-        gradientLayer.colors = [UIColor(red:1, green:1, blue:1, alpha:0.025).cgColor, UIColor.black.cgColor]
+        gradientLayer.colors = [UIColor.clear.cgColor, UIColor.black.cgColor]
         gradientLayer.frame = self.frame
         gradientLayer.locations = [0.0, 1.0]
         

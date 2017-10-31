@@ -52,8 +52,8 @@ class GradientImageView: UIImageView {
         gradientLayer.colors = [UIColor.clear.cgColor, UIColor(red:0.00, green:0.00, blue:0.00, alpha:0.7).cgColor]
         gradientLayer.frame = CGRect(x: self.frame.origin.x, y: self.frame.origin.y + self.frame.height / 2, width: self.frame.width, height: self.frame.height / 2)
         
-        self.layer.shouldRasterize = true
-        self.layer.rasterizationScale = UIScreen.main.scale;
+        //self.layer.shouldRasterize = true
+        //self.layer.rasterizationScale = UIScreen.main.scale;
         
         self.layer.addSublayer(gradientLayer)
     }
