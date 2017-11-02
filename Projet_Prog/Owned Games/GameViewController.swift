@@ -58,7 +58,7 @@ class GameViewController: UIViewController {
         topContainerView.backgroundColor = .clear
         botContainerView.backgroundColor = .clear
         
-        gameImage.image = UIImage(named: "22")
+        gameImage.image = UIImage(named: "35")
         gameImage.contentMode = .scaleAspectFill
         gameImage.heroID = "OGImage"
         gameImage.alpha = 0.1

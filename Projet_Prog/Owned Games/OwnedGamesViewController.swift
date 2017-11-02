@@ -209,13 +209,6 @@ extension OwnedGamesViewController: UISearchResultsUpdating {
 
 // MARK: Segues
 extension OwnedGamesViewController {
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if let vc = segue.destination as? GameViewController {
-            //vc.view.heroModifiers = [.source(heroID: "OGImage")]
-            //vc.gameImage.heroModifiers = [.durationMatchLongest]
-        }
-    }
 }
 
 // MARK: Search Bar

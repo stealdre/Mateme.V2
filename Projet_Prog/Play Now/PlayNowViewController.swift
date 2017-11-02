@@ -20,6 +20,8 @@ class PlayNowViewController: UIViewController, CircleMenuDelegate {
     
     let infoLabel = UILabel()
     
+    let gameImage = UIImageView()
+    
     let spinnerLoadingView = SpinnerView()
     
     var canAnimateButton = true
@@ -27,6 +29,11 @@ class PlayNowViewController: UIViewController, CircleMenuDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        gameImage.isHidden = true
+        gameImage.alpha = 0
+        gameImage.image = UIImage(named: "35")
+        gameImage.contentMode = .scaleAspectFill
         
         infoLabel.text = "Touch to find a mate"
         infoLabel.textColor = .white
@@ -48,12 +55,13 @@ class PlayNowViewController: UIViewController, CircleMenuDelegate {
         spinnerLoadingView.isHidden = true
         spinnerLoadingView.alpha = 0
         
-        self.view.addSubview(infoLabel)
-        self.view.addSubview(buttonView)
-        self.view.addSubview(spinnerLoadingView)
-        self.view.addSubview(button)
+        view.addSubview(gameImage)
+        view.addSubview(infoLabel)
+        view.addSubview(buttonView)
+        view.addSubview(spinnerLoadingView)
+        view.addSubview(button)
         
-        self.view.setNeedsUpdateConstraints()
+        view.setNeedsUpdateConstraints()
         
     }
     
@@ -95,6 +103,8 @@ class PlayNowViewController: UIViewController, CircleMenuDelegate {
                 UIView.animate(withDuration: 0.5, delay: 0, options: [.allowUserInteraction], animations: {() -> Void in
                     self.spinnerLoadingView.isHidden = false
                     self.spinnerLoadingView.alpha = 1
+                    self.gameImage.isHidden = false
+                    self.gameImage.alpha = 0.05
                 })
             })
         } else {
@@ -148,6 +158,11 @@ extension PlayNowViewController {
     
     override func updateViewConstraints() {
 
+        gameImage.snp.makeConstraints { (make) -> Void in
+            make.width.equalTo(view.snp.width)
+            make.height.equalTo(view.snp.height)
+            make.center.equalTo(view.snp.center)
+        }
         infoLabel.snp.makeConstraints {(make) -> Void in
             make.width.equalTo(view.snp.width).multipliedBy(0.9)
             make.height.equalTo(30)
