@@ -17,7 +17,8 @@ class OwnedGamesViewController: UIViewController, UICollectionViewDataSource, UI
     var noGamesInfoLabel = UILabel()
     var noGamesHelpLabel = UILabel()
     
-    var resultSearchController = CustomSearchController()
+    var searchBar = UISearchBar()
+    var searchActive = false
     
     var collectionView: UICollectionView!
     
@@ -55,20 +56,18 @@ class OwnedGamesViewController: UIViewController, UICollectionViewDataSource, UI
         
         initCollectionView()
         initSearchBar()
-
+        
         view.addSubview(VCtitleLabel)
         view.addSubview(containerView)
         containerView.addSubview(noGamesImage)
         containerView.addSubview(noGamesInfoLabel)
         containerView.addSubview(noGamesHelpLabel)
         containerView.addSubview(collectionView)
-
-        collectionView.addSubview(resultSearchController.searchBar)
+        
+        containerView.addSubview(searchBar)
         
         view.setNeedsUpdateConstraints()
         
-        self.modalPresentationStyle = UIModalPresentationStyle.overCurrentContext
-
     }
     
     func initCollectionView() {
@@ -86,10 +85,9 @@ class OwnedGamesViewController: UIViewController, UICollectionViewDataSource, UI
         collectionView.backgroundColor = .clear
         collectionView.allowsMultipleSelection = false
         
-        collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "OGSearchbarCell")
         collectionView.register(OwnedGamesCollectionViewCell.self, forCellWithReuseIdentifier: "OGCell")
         
-        if GamesArray.isEmpty {
+        if GamesArray.isEmpty && !searchActive {
             noGamesImage.isHidden = false
         } else {
             collectionView.reloadData()
@@ -107,14 +105,15 @@ extension OwnedGamesViewController {
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return GamesArray.count
+        if searchActive {
+            return filteredGamesArray.count
+        } else {
+            return GamesArray.count
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        if indexPath.row == 0 { // SearchBar padding cell
-          return collectionView.dequeueReusableCell(withReuseIdentifier: "OGSearchbarCell", for: indexPath)
-        }
         let cell: OwnedGamesCollectionViewCell? = collectionView.dequeueReusableCell(withReuseIdentifier: "OGCell", for: indexPath) as? OwnedGamesCollectionViewCell
         
         return cell!
@@ -138,13 +137,19 @@ extension OwnedGamesViewController {
                 
                 if let operation = operation, operation.isCancelled { return }
                 
-                cell.gameImage.image = self.GamesArray[indexPath.row].image
-                cell.isHeroEnabled = true
-                
+                cell.backgroundColor = .clear
                 cell.contentView.layer.cornerRadius = 10
                 cell.contentView.clipsToBounds = true
                 
-                cell.backgroundColor = .clear
+                if self.searchActive {
+                    cell.gameImage.image = self.filteredGamesArray[indexPath.row].image
+                    cell.gameNameLabel.text = self.filteredGamesArray[indexPath.row].name
+                    cell.gameTypeLabel.text = self.filteredGamesArray[indexPath.row].type
+                } else {
+                    cell.gameImage.image = self.GamesArray[indexPath.row].image
+                    cell.gameNameLabel.text = self.GamesArray[indexPath.row].name
+                    cell.gameTypeLabel.text = self.GamesArray[indexPath.row].type
+                }
             })
         }
         cell.queue.addOperation(operation)
@@ -165,10 +170,7 @@ extension OwnedGamesViewController {
 extension OwnedGamesViewController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView : UICollectionView, layout collectionViewLayout: UICollectionViewLayout,sizeForItemAt indexPath: IndexPath) -> CGSize {
-
-        if indexPath.row == 0 { // SearchBar padding cell
-            return CGSize(width: view.frame.width * 0.95, height: 40)
-        }
+        
         return CGSize(width: view.frame.width * 0.95, height: 250)
         
     }
@@ -178,80 +180,78 @@ extension OwnedGamesViewController: UICollectionViewDelegateFlowLayout {
 extension OwnedGamesViewController: UISearchBarDelegate {
     
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        searchActive = true
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         containerView.addGestureRecognizer(tap)
         collectionView.addGestureRecognizer(tap)
     }
     
     func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
+        searchActive = false
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         containerView.removeGestureRecognizer(tap)
         collectionView.removeGestureRecognizer(tap)
     }
     
-    @objc func dismissKeyboard() {
-        resultSearchController.searchBar.endEditing(true)
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        searchActive = false
     }
-}
-
-extension OwnedGamesViewController: UISearchResultsUpdating {
     
-    func updateSearchResults(for searchController: UISearchController) {
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        searchActive = false
+    }
+    
+    @objc func dismissKeyboard() {
+        searchBar.endEditing(true)
+    }
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         
         filteredGamesArray.removeAll(keepingCapacity: false)
-        let searchText = resultSearchController.searchBar.text!
-        let filered = GamesArray.filter { $0.name.range(of: searchText, options: [.caseInsensitive]) != nil
+
+        filteredGamesArray = GamesArray.filter { $0.name.range(of: searchText, options: [.caseInsensitive]) != nil
             || $0.type.range(of: searchText, options: [.caseInsensitive]) != nil }
         
-        filteredGamesArray = filered as [Games]
+        if searchText.isEmpty {
+            searchActive = false
+        } else {
+            searchActive = true
+        }
         
-        self.collectionView.reloadData()
+        collectionView.reloadData()
     }
-}
-
-// MARK: Segues
-extension OwnedGamesViewController {
 }
 
 // MARK: Search Bar
 extension OwnedGamesViewController {
     
     func initSearchBar() {
-        definesPresentationContext = true
-
-        self.resultSearchController = ({
-            let controller = CustomSearchController(searchResultsController: nil)
-            controller.searchResultsUpdater = self
-            controller.dimsBackgroundDuringPresentation = false
-            controller.hidesNavigationBarDuringPresentation = false
-            controller.obscuresBackgroundDuringPresentation = false
-            controller.searchBar.sizeToFit()
-            controller.searchBar.placeholder = "Search a game ..."
-            controller.searchBar.searchBarStyle = .default
-            controller.searchBar.barTintColor = UIColor.clear
-            controller.searchBar.backgroundColor = UIColor.clear
-            controller.searchBar.isTranslucent = false
-            controller.searchBar.setBackgroundImage(UIImage(), for: .any, barMetrics: .default)
-            controller.searchBar.showsCancelButton = false
-            controller.searchBar.delegate = self
-            controller.searchBar.setImage(UIImage(named: "search_ic"), for: .search, state: .normal)
-            
-            for view in controller.searchBar.subviews.last!.subviews {
-                if type(of: view) == NSClassFromString("UISearchBarBackground") {
-                    view.alpha = 0
-                }
-                if type(of: view) == NSClassFromString("UISearchBarTextField") {
-                    let searchField: UITextField = view as! UITextField
-                    searchField.font = UIFont(name: "Roboto-Light", size: 23)
-                    searchField.backgroundColor = .clear
-                    searchField.textColor = .white
-                    searchField.attributedPlaceholder = NSAttributedString(string: "Search a game ...",
-                                                                           attributes: [NSAttributedStringKey.foregroundColor: UIColor(red: 1, green: 1, blue: 1, alpha: 0.7)])
-                    searchField.clearButtonMode = .never
-                }
+        
+        searchBar.delegate = self
+        searchBar.sizeToFit()
+        searchBar.placeholder = "Search a game ..."
+        searchBar.searchBarStyle = .default
+        searchBar.barTintColor = .clear
+        searchBar.backgroundColor = .clear
+        searchBar.isTranslucent = false
+        searchBar.setBackgroundImage(UIImage(), for: .any, barMetrics: .default)
+        searchBar.showsCancelButton = false
+        searchBar.setImage(UIImage(named: "search_ic"), for: .search, state: .normal)
+        
+        for view in searchBar.subviews.last!.subviews {
+            if type(of: view) == NSClassFromString("UISearchBarBackground") {
+                view.alpha = 0
             }
-            return controller
-        })()
+            if type(of: view) == NSClassFromString("UISearchBarTextField") {
+                let searchField: UITextField = view as! UITextField
+                searchField.font = UIFont(name: "Roboto-Light", size: 23)
+                searchField.backgroundColor = .clear
+                searchField.textColor = .white
+                searchField.attributedPlaceholder = NSAttributedString(string: "Search a game ...",
+                                                                       attributes: [NSAttributedStringKey.foregroundColor: UIColor(red: 1, green: 1, blue: 1, alpha: 0.7)])
+                searchField.clearButtonMode = .never
+            }
+        }
     }
 }
 
@@ -293,7 +293,7 @@ extension OwnedGamesViewController {
         }
         collectionView.snp.makeConstraints { (make) -> Void in
             make.width.equalTo(containerView.snp.width)
-            make.height.equalTo(containerView.snp.height)
+            make.height.equalTo(containerView.snp.height).offset(-50)
             make.centerX.equalTo(containerView.snp.centerX)
             make.bottom.equalTo(containerView.snp.bottom)
         }

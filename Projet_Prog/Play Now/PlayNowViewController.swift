@@ -156,7 +156,7 @@ class PlayNowViewController: UIViewController, CircleMenuDelegate {
                     self.infoLabel.fadeTransition(0.2)
                     self.infoLabel.text = "Touch to find a mate"
                     self.infoLabel.frame.origin.y += self.view.frame.height * 0.12
-                    self.infoLabel.snp.updateConstraints {(make) -> Void in
+                    self.infoLabel.snp.remakeConstraints {(make) -> Void in
                         make.centerY.equalTo(self.view.snp.centerY).offset(-150 + self.view.frame.height * 0.12)
                     }
                 }, completion: {(_ finished: Bool) -> Void in
@@ -168,7 +168,7 @@ class PlayNowViewController: UIViewController, CircleMenuDelegate {
         } else { // stop animating : game selection
             UIView.animate(withDuration: 0.2, delay: 0, options: [.beginFromCurrentState], animations: {
                 self.infoLabel.frame.origin.y -= self.view.frame.height * 0.12
-                self.infoLabel.snp.updateConstraints {(make) -> Void in
+                self.infoLabel.snp.remakeConstraints {(make) -> Void in
                     make.centerY.equalTo(self.view.snp.centerY).offset(-150 - self.view.frame.height * 0.12)
                 }
             })

@@ -67,20 +67,20 @@ class GameViewController: UIViewController {
         
         gameIcon.image = UIImage(named: "League_of_Legends_Icon")
         
-        gameTypeLabel.text = "MOBA"
-        gameTypeLabel.textColor = .black
-        gameTypeLabel.alpha = 0.4
-        gameTypeLabel.font = UIFont(name: "Roboto-Medium", size: 30)
-        gameTypeLabel.textAlignment = .left
-        
         gameNameLabel.text = "LEAGUE OF LEGENDS OF LEGENDS"
-        gameNameLabel.lineBreakMode = .byWordWrapping
-        gameNameLabel.numberOfLines = 3
-        gameNameLabel.minimumScaleFactor = 0.2
-        gameNameLabel.adjustsFontSizeToFitWidth = true
         gameNameLabel.textColor = .black
         gameNameLabel.font = UIFont(name: "Roboto-Black", size: 49)
         gameNameLabel.textAlignment = .left
+        gameNameLabel.numberOfLines = 3
+        gameNameLabel.lineBreakMode = .byTruncatingTail
+        gameNameLabel.adjustsFontSizeToFitWidth = true
+        gameNameLabel.minimumScaleFactor = 0.1
+        
+        gameTypeLabel.text = "MOBA"
+        gameTypeLabel.textColor = .black
+        gameTypeLabel.alpha = 0.4
+        gameTypeLabel.textAlignment = .left
+        gameTypeLabel.font = UIFont(name: "Roboto-Medium", size: 39)
         
         sessionNumberIcon.image = UIImage(named: "gamepad_ic")
         sessionNumberIcon.image = sessionNumberIcon.image!.withRenderingMode(.alwaysTemplate)
@@ -154,6 +154,11 @@ class GameViewController: UIViewController {
         super.viewDidAppear(animated)
         UIApplication.shared.isStatusBarHidden = true
     }
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+
+    }
+    
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         UIApplication.shared.isStatusBarHidden = false
@@ -230,7 +235,7 @@ extension GameViewController {
             make.bottom.equalTo(gameNameLabel.snp.top)
         }
         gameNameLabel.snp.makeConstraints { (make) -> Void in
-            make.width.equalTo(topContainerView.snp.width).multipliedBy(0.8)
+            make.width.equalTo(topContainerView.snp.width).multipliedBy(0.9)
             make.height.equalTo(heightForView(text: "LEAGUE OF LEGENDS", font: UIFont(name: "Roboto-Black", size: 49)!, width: view.frame.width * 0.8))
             make.left.equalTo(topContainerView.snp.left).offset(20)
             make.bottom.equalTo(sessionNumberIcon.snp.top).offset(-20)
@@ -294,3 +299,4 @@ extension GameViewController {
     }
     
 }
+
