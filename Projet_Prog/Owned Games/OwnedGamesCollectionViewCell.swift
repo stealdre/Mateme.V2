@@ -38,7 +38,6 @@ class OwnedGamesCollectionViewCell: UICollectionViewCell {
         gameImage.clipsToBounds = true
         gameImage.contentMode = .scaleAspectFill
         gameImage.layer.cornerRadius = 10
-       // gameImage.heroID = "OGImage"
         
         favoriteGameLabel.text = "FAVORITE GAME"
         favoriteGameLabel.font = UIFont(name: "Roboto-Medium", size: 12)

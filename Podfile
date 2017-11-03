@@ -13,6 +13,7 @@ target 'Projet_Prog' do
   pod 'Cosmos'
   pod 'CHIPageControl'
   pod 'TTGEmojiRate'
+  pod 'NVActivityIndicatorView'
   
   target 'Projet_ProgTests' do
     inherit! :search_paths

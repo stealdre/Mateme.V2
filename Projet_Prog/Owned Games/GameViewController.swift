@@ -45,13 +45,16 @@ class GameViewController: UIViewController {
     let playButton = UIButton()
     let saveButton = UIButton()
     
+    let closeButton = UIButton()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         definesPresentationContext = true
-                
-        isHeroEnabled = true
         
+        isHeroEnabled = true
+        heroModalAnimationType = .selectBy(presenting:.zoom, dismissing:.zoomOut)
+
         VerticalScrollView.contentOffset = CGPoint(x: 0, y: 0)
         VerticalScrollView.contentSize = CGSize(width: view.frame.size.width, height: view.frame.size.height * 2)
         
@@ -60,7 +63,6 @@ class GameViewController: UIViewController {
         
         gameImage.image = UIImage(named: "35")
         gameImage.contentMode = .scaleAspectFill
-        gameImage.heroID = "OGImage"
         gameImage.alpha = 0.1
         
         gameIcon.image = UIImage(named: "League_of_Legends_Icon")
@@ -73,8 +75,9 @@ class GameViewController: UIViewController {
         
         gameNameLabel.text = "LEAGUE OF LEGENDS OF LEGENDS"
         gameNameLabel.lineBreakMode = .byWordWrapping
-        gameTypeLabel.minimumScaleFactor = 0.2
-        gameTypeLabel.adjustsFontSizeToFitWidth = true
+        gameNameLabel.numberOfLines = 3
+        gameNameLabel.minimumScaleFactor = 0.2
+        gameNameLabel.adjustsFontSizeToFitWidth = true
         gameNameLabel.textColor = .black
         gameNameLabel.font = UIFont(name: "Roboto-Black", size: 49)
         gameNameLabel.textAlignment = .left
@@ -115,6 +118,8 @@ class GameViewController: UIViewController {
         saveButton.tintColor = UIColor(red:0.29, green:0.56, blue:0.89, alpha:1.0)
         saveButton.alpha = 0
         
+        closeButton.setImage(UIImage(named: "close_ic"), for: .normal)
+        closeButton.addTarget(self, action: #selector(closeAction), for: .touchUpInside)
         
         view.addSubview(gameImage)
         view.addSubview(gameIcon)
@@ -135,15 +140,25 @@ class GameViewController: UIViewController {
         
         view.addSubview(playButton)
         view.addSubview(saveButton)
+        view.addSubview(closeButton)
         
         view.setNeedsUpdateConstraints()
+        setNeedsStatusBarAppearanceUpdate()
         
     }
     
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-
+    override var prefersStatusBarHidden: Bool {
+        return true
     }
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        UIApplication.shared.isStatusBarHidden = true
+    }
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        UIApplication.shared.isStatusBarHidden = false
+    }
+
     
     @objc func moreButtonAction(sender: UIButton!) {
         VerticalScrollView.setContentOffset(CGPoint(x: 0, y: view.frame.height), animated: true)
@@ -160,6 +175,10 @@ class GameViewController: UIViewController {
         return label.frame.height
     }
     
+    @objc func closeAction() {
+        dismiss(animated: true, completion: nil)
+    }
+    
 }
 
 // MARK: Scroll view Delegate
@@ -167,7 +186,6 @@ extension GameViewController: UIScrollViewDelegate {
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let scrollY = scrollView.contentOffset.y
-        print(scrollY)
         if scrollY < view.frame.height * 0.5 { // addressBook
             let alpha = (1  - (scrollY / (self.view.frame.height * 0.5)))
             self.playButton.alpha = alpha
@@ -264,6 +282,12 @@ extension GameViewController {
             make.height.equalTo(43)
             make.centerX.equalTo(view.snp.centerX)
             make.bottom.equalTo(view.snp.bottom).offset(-20)
+        }
+        closeButton.snp.makeConstraints { (make) -> Void in
+            make.width.equalTo(40)
+            make.height.equalTo(40)
+            make.right.equalTo(view.snp.right).offset(-20)
+            make.top.equalTo(view.snp.top).offset(30)
         }
         
         super.updateViewConstraints()

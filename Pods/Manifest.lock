@@ -39,6 +39,9 @@ PODS:
     - nanopb/encode (= 0.3.8)
   - nanopb/decode (0.3.8)
   - nanopb/encode (0.3.8)
+  - NVActivityIndicatorView (4.0.0):
+    - NVActivityIndicatorView/Presenter (= 4.0.0)
+  - NVActivityIndicatorView/Presenter (4.0.0)
   - SnapKit (4.0.0)
   - SwiftSpinner (1.4.1)
   - TTGEmojiRate (0.3.0)
@@ -49,6 +52,7 @@ DEPENDENCIES:
   - Cosmos
   - Firebase/Core
   - Hero (= 1.0.0-alpha.4)
+  - NVActivityIndicatorView
   - SnapKit
   - SwiftSpinner
   - TTGEmojiRate
@@ -64,10 +68,11 @@ SPEC CHECKSUMS:
   GoogleToolboxForMac: 2501e2ad72a52eb3dfe7bd9aee7dad11b858bd20
   Hero: 6ab58fdfb16c75ce9c6bfad48ef6abb54780b263
   nanopb: 5601e6bca2dbf1ed831b519092ec110f66982ca3
+  NVActivityIndicatorView: 54c9b93b6f25a4f467512680c0c90c09a1095cf2
   SnapKit: a42d492c16e80209130a3379f73596c3454b7694
   SwiftSpinner: bf7c13332ad008952a09358cadf24a186510ae31
   TTGEmojiRate: 9b295b22e42874acfd717a9ae606e259995b83d0
 
-PODFILE CHECKSUM: 4d6a9ad0f76497712ff506b7a2e4d185615261a7
+PODFILE CHECKSUM: 8029ed23e4b26e0fcd7bc920debaa36b3fc3f870
 
 COCOAPODS: 1.2.0

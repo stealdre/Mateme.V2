@@ -11,7 +11,7 @@ import UIKit
 class ProfileViewController: UIViewController, UITableViewDataSource {
     
     var VCtitleLabel = UILabel()
-
+    
     var profileName = ProfileName()
     var historyTitle = HistoryCellTitle()
     
@@ -52,6 +52,8 @@ class ProfileViewController: UIViewController, UITableViewDataSource {
         historyTitle.textColor = .white
         
         historyTableView.backgroundColor = .clear
+        historyTableView.separatorStyle = .none
+        historyTableView.rowHeight = 90
         
         view.addSubview(VCtitleLabel)
         view.addSubview(historyTitle)
@@ -83,31 +85,38 @@ extension ProfileViewController: UITableViewDelegate {
         
         let cell: ProfileTableViewCell? = tableView.dequeueReusableCell(withIdentifier: "historyCell", for: indexPath) as? ProfileTableViewCell
         
-        cell?.gamePic.image = UIImage(named: "\(indexPath.row)")
-        cell?.mateName.text = "Player \(indexPath.row)"
-        cell?.gameName.text = historyList[indexPath.row]
-        
-        cell?.backgroundColor = .clear
-        
-        let date = Date()
-        var dateString = ""
-        switch dayDifference(date: date) {
-        case 0:
-            dateString = "Today"
-            cell?.sessionDate.text = dateString
-            break
-        case -1:
-            dateString = "Yesterday"
-            cell?.sessionDate.text = dateString
-            break
-        default:
-            let formatter = DateFormatter()
-            formatter.dateFormat = "dd-MM-yyyy"
-            cell?.sessionDate.text = formatter.string(from: date)
+        if cell != nil {
+            
+            cell?.backgroundColor = .clear
+            cell?.contentView.backgroundColor = .clear
+            
+            cell?.containerView.layer.cornerRadius = 10
+            cell?.containerView.clipsToBounds = true
+            
+            cell?.gamePic.image = UIImage(named: "\(indexPath.row)")
+            cell?.mateName.text = "Player \(indexPath.row)"
+            cell?.gameName.text = historyList[indexPath.row]
+            
+            
+            let date = Date()
+            var dateString = ""
+            switch dayDifference(date: date) {
+            case 0:
+                dateString = "Today"
+                cell?.sessionDate.text = dateString
+                break
+            case -1:
+                dateString = "Yesterday"
+                cell?.sessionDate.text = dateString
+                break
+            default:
+                let formatter = DateFormatter()
+                formatter.dateFormat = "dd-MM-yyyy"
+                cell?.sessionDate.text = formatter.string(from: date)
+            }
+            
+            cell?.selectionStyle = .none
         }
-        
-        cell?.selectionStyle = .none
-        
         return cell!
     }
 }

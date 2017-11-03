@@ -139,10 +139,7 @@ extension OwnedGamesViewController {
                 if let operation = operation, operation.isCancelled { return }
                 
                 cell.gameImage.image = self.GamesArray[indexPath.row].image
-                //cell.gameImage.heroID = "OGImage"
                 cell.isHeroEnabled = true
-                
-                cell.heroID = "OGImage"
                 
                 cell.contentView.layer.cornerRadius = 10
                 cell.contentView.clipsToBounds = true
@@ -155,7 +152,12 @@ extension OwnedGamesViewController {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         //show(GameViewController(), sender: Any.self)
-        present(GameViewController(), animated: true, completion: nil)
+        
+        let vc = GameViewController()
+        vc.gameImage.alpha = 0.1
+        vc.view.backgroundColor = .white
+        
+        present(vc, animated: true, completion: nil)
     }
 }
 
