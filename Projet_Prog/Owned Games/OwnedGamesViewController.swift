@@ -89,6 +89,8 @@ class OwnedGamesViewController: UIViewController, UICollectionViewDataSource, UI
         
         if GamesArray.isEmpty && !searchActive {
             noGamesImage.isHidden = false
+            noGamesInfoLabel.isHidden = false
+            noGamesHelpLabel.isHidden = false
         } else {
             collectionView.reloadData()
             noGamesInfoLabel.isHidden = true
@@ -101,6 +103,11 @@ class OwnedGamesViewController: UIViewController, UICollectionViewDataSource, UI
 extension OwnedGamesViewController {
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
+//        if searchActive {
+//            return 2
+//        } else {
+//            return 1
+//        }
         return 1
     }
     
@@ -164,15 +171,17 @@ extension OwnedGamesViewController {
         
         present(vc, animated: true, completion: nil)
     }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        view.endEditing(true)
+    }
 }
 
 // MARK: Items Sizes
 extension OwnedGamesViewController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView : UICollectionView, layout collectionViewLayout: UICollectionViewLayout,sizeForItemAt indexPath: IndexPath) -> CGSize {
-        
         return CGSize(width: view.frame.width * 0.95, height: 250)
-        
     }
 }
 
@@ -187,10 +196,20 @@ extension OwnedGamesViewController: UISearchBarDelegate {
     }
     
     func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
-        searchActive = false
-        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
-        containerView.removeGestureRecognizer(tap)
-        collectionView.removeGestureRecognizer(tap)
+        if containerView.gestureRecognizers != nil {
+            for gesture in containerView.gestureRecognizers! {
+                if let recognizer = gesture as? UITapGestureRecognizer {
+                    containerView.removeGestureRecognizer(recognizer)
+                }
+            }
+        }
+        if collectionView.gestureRecognizers != nil {
+            for gesture in collectionView.gestureRecognizers! {
+                if let recognizer = gesture as? UITapGestureRecognizer {
+                    collectionView.removeGestureRecognizer(recognizer)
+                }
+            }
+        }
     }
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
@@ -217,7 +236,6 @@ extension OwnedGamesViewController: UISearchBarDelegate {
         } else {
             searchActive = true
         }
-        
         collectionView.reloadData()
     }
 }
@@ -277,7 +295,7 @@ extension OwnedGamesViewController {
             make.width.equalTo(120)
             make.height.equalTo(96)
             make.centerX.equalTo(containerView.snp.centerX)
-            make.centerY.equalTo(containerView.snp.centerY).offset(-50)
+            make.centerY.equalTo(containerView.snp.centerY).offset(-70)
         }
         noGamesInfoLabel.snp.makeConstraints { (make) -> Void in
             make.width.equalTo(containerView.snp.width).multipliedBy(0.9)
@@ -299,5 +317,11 @@ extension OwnedGamesViewController {
         }
         
         super.updateViewConstraints()
+    }
+}
+
+extension MenuViewController {
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        view.endEditing(true)
     }
 }
