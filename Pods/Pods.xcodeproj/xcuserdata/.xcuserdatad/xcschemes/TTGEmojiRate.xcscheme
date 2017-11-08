@@ -14,7 +14,7 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = '41F939928A3D99C075D2A254B854053F'
+               BlueprintIdentifier = '5C29B9C0B6A7334C27389A57FF7FA60C'
                BlueprintName = 'TTGEmojiRate'
                ReferencedContainer = 'container:Pods.xcodeproj'
                BuildableName = 'TTGEmojiRate.framework'>

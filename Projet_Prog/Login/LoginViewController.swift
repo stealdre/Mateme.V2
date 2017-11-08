@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import Firebase
+import FirebaseAuth
 
 class LoginViewController: UIViewController {
 
@@ -24,9 +24,10 @@ class LoginViewController: UIViewController {
 	
 	override func viewWillAppear(_ animated: Bool) {
 		
-		handle = Auth.auth().addStateDidChangeListener { (auth, user) in
-			// ...
-		}
+        Auth.auth().addStateDidChangeListener { (auth, user) in
+
+        }
+        // [END auth_listener]
 	}
     
 
