@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import FirebaseAuth
 
 class ProfileViewController: UIViewController, UITableViewDataSource {
     
@@ -24,9 +25,21 @@ class ProfileViewController: UIViewController, UITableViewDataSource {
     var historyList = ["Fifa 18", "League of Legends", "Tera", "Overwatch", "Minecraft"]
     
     var historyTableView = ProfileTableView()
-    
+	
+	let user = Auth.auth().currentUser
+
     override func viewDidLoad() {
         super.viewDidLoad()
+		
+		if let user = user {
+			let uid = user.uid
+			let email = user.email
+			let photoURL = user.photoURL
+			
+			print(email!)
+			
+		}
+
         
         view.backgroundColor = .clear
         
