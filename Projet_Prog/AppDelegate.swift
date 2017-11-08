@@ -31,7 +31,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         window!.rootViewController = navigationVC
         window!.makeKeyAndVisible()
-        
+
+		
+		FirebaseApp.configure()
+
+
         return true
         
     }
