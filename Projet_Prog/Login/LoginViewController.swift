@@ -10,6 +10,9 @@ import UIKit
 import FirebaseAuth
 
 class LoginViewController: UIViewController {
+    
+    let emailField = UITextField()
+    let passwordField = UITextField()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,22 +26,30 @@ class LoginViewController: UIViewController {
     }
 	
 	override func viewWillAppear(_ animated: Bool) {
-		
-        Auth.auth().addStateDidChangeListener { (auth, user) in
-
-        }
-        // [END auth_listener]
 	}
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+    
+    func signUp() {
+        
+        Auth.auth().createUser(withEmail: emailField.text!, password: passwordField.text!) { (user, error) in
+            // ...
+        }
     }
-    */
+    
+    func signIn() {
+        Auth.auth().signIn(withEmail: emailField.text!, password: passwordField.text!) { (user, error) in
+            // ...
+        }
 
+    }
+
+}
+
+extension LoginViewController {
+    
+    override func updateViewConstraints() {
+        
+        
+        super.updateViewConstraints()
+    }
 }
