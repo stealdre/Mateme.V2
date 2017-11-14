@@ -26,7 +26,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         window = UIWindow.init(frame: UIScreen.main.bounds)
         window?.backgroundColor = UIColor.white
-        let navigationVC = UINavigationController(rootViewController: MenuViewController())
+        //let navigationVC = UINavigationController(rootViewController: MenuViewController())
+		let navigationVC = UINavigationController(rootViewController: LoginViewController())
         navigationVC.setNavigationBarHidden(true, animated: false)
         
         window!.rootViewController = navigationVC
