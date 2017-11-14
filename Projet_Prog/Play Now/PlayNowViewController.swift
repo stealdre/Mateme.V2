@@ -9,9 +9,15 @@
 import UIKit
 import CircleMenu
 import SwiftSpinner
+import FirebaseDatabase
+import FirebaseAuth
 
 
 class PlayNowViewController: UIViewController, CircleMenuDelegate {
+    
+    var user: User!
+    var ref: DatabaseReference!
+    private var databaseHandle: DatabaseHandle!
     
     let buttonView = PlayNowButtonView()
     

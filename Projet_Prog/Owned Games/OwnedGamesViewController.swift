@@ -7,8 +7,14 @@
 //
 
 import UIKit
+import FirebaseDatabase
+import FirebaseAuth
 
 class OwnedGamesViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate {
+    
+    var user: User!
+    var ref: DatabaseReference!
+    private var databaseHandle: DatabaseHandle!
     
     var containerView = UIView()
     var VCtitleLabel = UILabel()
@@ -28,6 +34,10 @@ class OwnedGamesViewController: UIViewController, UICollectionViewDataSource, UI
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        user = Auth.auth().currentUser
+        ref = Database.database().reference()
+        startObservingDatabase()
         
         isHeroEnabled = true
         
@@ -51,9 +61,7 @@ class OwnedGamesViewController: UIViewController, UICollectionViewDataSource, UI
         noGamesHelpLabel.font = UIFont(name: "Roboto-Medium", size: 16)
         noGamesHelpLabel.textColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.7)
         noGamesHelpLabel.textAlignment = .center
-        
-        GamesArray = allGames()
-        
+                
         initCollectionView()
         initSearchBar()
         
@@ -97,9 +105,35 @@ class OwnedGamesViewController: UIViewController, UICollectionViewDataSource, UI
             noGamesHelpLabel.isHidden = true
         }
     }
+    
+    deinit {
+        ref.child("games").removeObserver(withHandle: databaseHandle)
+    }
 }
 
-// Table view delegate
+// MARK: Data
+extension OwnedGamesViewController {
+    
+    func startObservingDatabase () {
+        databaseHandle = ref.child("games").observe(.value, with: { (snapshot) in
+            
+            var newItems = [Games]()
+            
+            for itemSnapShot in snapshot.children {
+                print(itemSnapShot)
+                let item = Games(snapshot: itemSnapShot as! DataSnapshot)
+                newItems.append(item)
+            }
+            
+            self.GamesArray = newItems
+                        
+            self.collectionView.reloadData()
+        })
+    }
+    
+}
+
+// MARK: Table view delegate
 extension OwnedGamesViewController {
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {

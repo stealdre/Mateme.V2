@@ -44,9 +44,7 @@ class SearchGameViewController: UIViewController, UITableViewDataSource {
         self.SearchContainerView.addSubview(shadowEffectView)
         self.SearchContainerView.addSubview(tableView)
         self.SearchContainerView.addSubview(resultSearchController.searchBar)
-        
-        GamesArray = allGames()
-        
+                
         tableView.reloadData()
         
         view.setNeedsUpdateConstraints()

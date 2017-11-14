@@ -7,34 +7,30 @@
 //
 
 import UIKit
+import FirebaseDatabase
 
-struct Games {
-    
-    let name: String
-    let type: String
-    let image: UIImage
-    let description: String
-    
-}
 
-// MARK: Replace with Firebase request
-func allGames() -> [Games] {
+class Games {
     
-    var games = [Games]()
+    var name: String = ""
+    var type: String = ""
+    var image: UIImage = UIImage()
+    var description: String = ""
+
+    var ref: DatabaseReference?
     
-    var imagesName = [String]()
-    
-    for _ in 0..<30 {
-        imagesName.append("\(arc4random_uniform(33))")
-    }
-    
-    for i in 0..<20 {
+    init (snapshot: DataSnapshot) {
         
-        games.append(Games(name: "LEAGUE OF LEGENDS \(i)", type: "MOBA", image: UIImage(named: "\(imagesName[i])")!, description: "League of Legends est un jeu vidéo de type arène de bataille en ligne gratuit développé et édité par Riot Games sur Windows et Mac OS X. Fin janvier 2013, un nouveau client bêta pour Mac a été distribué par Riot Games."))
+        ref = snapshot.ref
+        
+        let data = snapshot.value as! [String : Any]
+        
+        name = data["name"]! as! String
+        type = data["type"]! as! String
+        description = data["description"]! as! String
     }
     
-    return games
+    
 }
-
 
 
