@@ -39,7 +39,7 @@ class ProfileTableViewCell: UITableViewCell {
         
         containerView.backgroundColor = .white
         
-        gamePic.image = UIImage(named: "profilPic")
+		//gamePic.image = UIImage(named: "profilPic")
         gamePic.contentMode = .scaleAspectFill
         
         mateName.font = UIFont(name: "Roboto-Regular", size: 20)

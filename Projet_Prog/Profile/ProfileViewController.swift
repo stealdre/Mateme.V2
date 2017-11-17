@@ -162,11 +162,18 @@ extension ProfileViewController: UITableViewDelegate {
 			cell?.containerView.layer.cornerRadius = 10
 			cell?.containerView.clipsToBounds = true
 			
-			cell?.gamePic.image = UIImage(named: "\(indexPath.row)")
 			cell?.mateName.text = profileDB.historiesArray[indexPath.row].mateName
 			cell?.gameName.text = profileDB.historiesArray[indexPath.row].gameName
 			
-			
+			if let gameName = cell?.gameName.text {
+				
+				let url = "gamesImage/\(gameName).png"
+				print(url)
+				getGameImage(url: url) { image in
+					cell?.gamePic.image = image
+				}
+			}
+
 			let date = Date()
 			var dateString = ""
 			switch dayDifference(date: date) {
