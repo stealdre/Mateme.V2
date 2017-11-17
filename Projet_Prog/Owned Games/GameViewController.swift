@@ -61,13 +61,12 @@ class GameViewController: UIViewController {
         topContainerView.backgroundColor = .clear
         botContainerView.backgroundColor = .clear
         
-        gameImage.image = UIImage(named: "35")
+        //gameImage.image = UIImage(named: "35")
         gameImage.contentMode = .scaleAspectFill
         gameImage.alpha = 0.1
         
         gameIcon.image = UIImage(named: "League_of_Legends_Icon")
         
-        gameNameLabel.text = "LEAGUE OF LEGENDS OF LEGENDS"
         gameNameLabel.textColor = .black
         gameNameLabel.font = UIFont(name: "Roboto-Black", size: 49)
         gameNameLabel.textAlignment = .left
@@ -76,7 +75,6 @@ class GameViewController: UIViewController {
         gameNameLabel.adjustsFontSizeToFitWidth = true
         gameNameLabel.minimumScaleFactor = 0.1
         
-        gameTypeLabel.text = "MOBA"
         gameTypeLabel.textColor = .black
         gameTypeLabel.alpha = 0.4
         gameTypeLabel.textAlignment = .left
