@@ -10,30 +10,60 @@ import UIKit
 import FirebaseAuth
 import FirebaseDatabase
 import FirebaseStorage
+import SkyFloatingLabelTextField
 
 class RegisterViewController: UIViewController {
 
 	var ref: DatabaseReference!
 	var user: User!
 	
-	var pseudo = UITextField()
-	var phoneNumber = UITextField()
-	var emailField = UITextField()
-	var passwordField = UITextField()
-	var confirmPasswordField = UITextField()
-	var registerButton = UIButton()
+	var pseudo = SkyFloatingLabelTextFieldWithIcon()
+	var phoneNumber = SkyFloatingLabelTextFieldWithIcon()
+	var emailField = SkyFloatingLabelTextFieldWithIcon()
+	var passwordField = SkyFloatingLabelTextFieldWithIcon()
+	var confirmPasswordField = SkyFloatingLabelTextFieldWithIcon()
+    
+	var registerButton = RegisterButton()
 	
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
+        
+        view.backgroundColor = .black
 		
-		pseudo.placeholder = "Pseudo here"
-		phoneNumber.placeholder = "Phone number here (Facetime)"
-		emailField.placeholder = "Email here"
-		passwordField.placeholder = "Password here"
-		confirmPasswordField.placeholder = "Confirm password here"
+		pseudo.placeholder = "Pseudo"
+        pseudo.selectedTitleColor = .white
+        pseudo.placeholder = "Pseudo"
+        pseudo.selectedLineColor = .white
+        pseudo.lineColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.8)
+        
+        phoneNumber.placeholder = "Phone Number"
+        phoneNumber.selectedTitleColor = .white
+        phoneNumber.placeholder = "Phone Number"
+        phoneNumber.selectedLineColor = .white
+        phoneNumber.lineColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.8)
+        
+        emailField.placeholder = "Email"
+        emailField.selectedTitleColor = .white
+        emailField.placeholder = "Email"
+        emailField.selectedLineColor = .white
+        emailField.lineColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.8)
+        
+		passwordField.placeholder = "Password"
+        passwordField.selectedTitleColor = .white
+        passwordField.placeholder = "Password"
+        passwordField.selectedLineColor = .white
+        passwordField.lineColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.8)
+        
+        confirmPasswordField.title = "Confirm Password"
+        confirmPasswordField.selectedTitleColor = .white
+		confirmPasswordField.placeholder = "Confirm Password"
+        confirmPasswordField.selectedLineColor = .white
+        confirmPasswordField.lineColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.8)
+        
 		registerButton.setTitle("Register", for: .normal)
-		registerButton.backgroundColor = .black
+		registerButton.backgroundColor = .clear
+        registerButton.setTitleColor(.white, for: .normal)
 		
 		registerButton.addTarget(self, action: #selector(createAccountAction), for: .touchUpInside)
 		
@@ -107,6 +137,14 @@ class RegisterViewController: UIViewController {
 	}
 
 }
+class roundButton: UIButton {
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        
+        self.layer.cornerRadius = self.frame.height / 2
+    }
+}
 
 extension RegisterViewController {
 	
@@ -143,10 +181,22 @@ extension RegisterViewController {
 		}
 		registerButton.snp.makeConstraints { (make) -> Void in
 			make.width.equalTo(view.snp.width).multipliedBy(0.6)
-			make.height.equalTo(50)
+			make.height.equalTo(100)
 			make.centerX.equalTo(view.snp.centerX)
-			make.centerY.equalTo(confirmPasswordField.snp.bottom).offset(30)
+			make.centerY.equalTo(confirmPasswordField.snp.bottom).offset(50)
 		}
 		super.updateViewConstraints()
 	}
+}
+
+class RegisterButton: UIButton {
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        
+        self.layer.cornerRadius = 10
+        
+        self.layer.borderColor = UIColor.white.cgColor
+        self.layer.borderWidth = 1
+    }
 }

@@ -19,6 +19,7 @@ target 'Projet_Prog' do
   pod 'NVActivityIndicatorView'
   pod 'EFCountingLabel'
   pod 'BubbleTransition'
+  pod 'SkyFloatingLabelTextField'
   
   target 'Projet_ProgTests' do
     inherit! :search_paths

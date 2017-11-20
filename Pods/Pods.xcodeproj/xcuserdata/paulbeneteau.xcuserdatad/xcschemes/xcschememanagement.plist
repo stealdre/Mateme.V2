@@ -79,20 +79,25 @@
 			<key>orderHint</key>
 			<integer>13</integer>
 		</dict>
-		<key>SnapKit.xcscheme</key>
+		<key>SkyFloatingLabelTextField.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>14</integer>
 		</dict>
-		<key>SwiftSpinner.xcscheme</key>
+		<key>SnapKit.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>15</integer>
 		</dict>
-		<key>TTGEmojiRate.xcscheme</key>
+		<key>SwiftSpinner.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>16</integer>
+		</dict>
+		<key>TTGEmojiRate.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>17</integer>
 		</dict>
 		<key>VegaScrollFlowLayout.xcscheme</key>
 		<dict>

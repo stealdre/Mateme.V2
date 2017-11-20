@@ -7,26 +7,36 @@
 //
 import UIKit
 import FirebaseAuth
+import BubbleTransition
+import SkyFloatingLabelTextField
 
-class LoginViewController: UIViewController {
+class LoginViewController: UIViewController, UIViewControllerTransitioningDelegate {
+    
+    let transition = BubbleTransition()
 	
-	var emailField = UITextField()
-	var passwordField = UITextField()
-	var signInButton = UIButton()
-	var registerButton = UIButton()
+	var emailField = SkyFloatingLabelTextFieldWithIcon()
+	var passwordField = SkyFloatingLabelTextFieldWithIcon()
+	var signInButton = LoginButton()
+	var registerButton = roundButton()
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
         emailField.autocapitalizationType = .none
-		emailField.placeholder = "Email here"
+        emailField.title = "Email"
+        emailField.selectedTitleColor = .black
+		emailField.placeholder = "Email"
         
-		passwordField.placeholder = "Password here"
+		passwordField.placeholder = "Password"
+        passwordField.title = "Password"
+        passwordField.selectedTitleColor = .black
         passwordField.autocapitalizationType = .none
         passwordField.isSecureTextEntry = true
         
-		signInButton.setTitle("Signe In", for: .normal)
-		signInButton.backgroundColor = .black
+		signInButton.setTitle("Login", for: .normal)
+        signInButton.backgroundColor = .clear
+        signInButton.setTitleColor(.black, for: .normal)
+        
 		registerButton.setTitle("Register", for: .normal)
 		registerButton.backgroundColor = .black
 		
@@ -78,8 +88,28 @@ class LoginViewController: UIViewController {
 	}
 	
 	@objc func didTapRegister() {
-		present(RegisterViewController(), animated: true, completion: nil)
+        let controller = RegisterViewController()
+        controller.transitioningDelegate = self
+        controller.modalPresentationStyle = .custom
+        
+        present(controller, animated: true, completion: nil)
 	}
+    
+    // MARK: UIViewControllerTransitioningDelegate
+    
+    public func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        transition.transitionMode = .present
+        transition.startingPoint = registerButton.center
+        transition.bubbleColor = registerButton.backgroundColor!
+        return transition
+    }
+    
+    public func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        transition.transitionMode = .dismiss
+        transition.startingPoint = registerButton.center
+        transition.bubbleColor = registerButton.backgroundColor!
+        return transition
+    }
 	
 	func didRequestPasswordReset() {
 		let prompt = UIAlertController(title: "To Do App", message: "Email:", preferredStyle: .alert)
@@ -149,11 +179,24 @@ extension LoginViewController {
 			make.centerY.equalTo(passwordField.snp.bottom).offset(30)
 		}
 		registerButton.snp.makeConstraints { (make) -> Void in
-			make.width.equalTo(view.snp.width).multipliedBy(0.6)
-			make.height.equalTo(50)
+			make.width.equalTo(100)
+			make.height.equalTo(100)
 			make.centerX.equalTo(view.snp.centerX)
-			make.centerY.equalTo(signInButton.snp.bottom).offset(30)
+			make.top.equalTo(signInButton.snp.bottom).offset(30)
 		}
 		super.updateViewConstraints()
 	}
+}
+
+class LoginButton: UIButton {
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        
+        self.layer.cornerRadius = 10
+        
+        self.layer.borderColor = UIColor.black.cgColor
+        self.layer.borderWidth = 1
+        
+    }
 }

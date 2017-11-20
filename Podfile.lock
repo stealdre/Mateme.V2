@@ -76,6 +76,7 @@ PODS:
   - NVActivityIndicatorView (4.0.0):
     - NVActivityIndicatorView/Presenter (= 4.0.0)
   - NVActivityIndicatorView/Presenter (4.0.0)
+  - SkyFloatingLabelTextField (3.2.1)
   - SnapKit (4.0.0)
   - SwiftSpinner (1.4.1)
   - TTGEmojiRate (0.3.0)
@@ -92,6 +93,7 @@ DEPENDENCIES:
   - Firebase/Storage
   - Hero (= 1.0.0-alpha.4)
   - NVActivityIndicatorView
+  - SkyFloatingLabelTextField
   - SnapKit
   - SwiftSpinner
   - TTGEmojiRate
@@ -115,10 +117,11 @@ SPEC CHECKSUMS:
   leveldb-library: 10fb39c39e243db4af1828441162405bbcec1404
   nanopb: 5601e6bca2dbf1ed831b519092ec110f66982ca3
   NVActivityIndicatorView: 54c9b93b6f25a4f467512680c0c90c09a1095cf2
+  SkyFloatingLabelTextField: 71d28906024e7d7e4460099b342f3ca7036a2e24
   SnapKit: a42d492c16e80209130a3379f73596c3454b7694
   SwiftSpinner: bf7c13332ad008952a09358cadf24a186510ae31
   TTGEmojiRate: 9b295b22e42874acfd717a9ae606e259995b83d0
 
-PODFILE CHECKSUM: fc0e40f180d84ba3b7ac934a8f26482d3e507ad8
+PODFILE CHECKSUM: 9b6d4b1034936a588cfae02b3be98f700c01808b
 
 COCOAPODS: 1.2.0
