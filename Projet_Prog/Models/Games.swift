@@ -12,22 +12,18 @@ import FirebaseDatabase
 
 class Games {
     
+    var gameID: String = ""
     var name: String = ""
     var type: String = ""
     var image: UIImage = UIImage()
     var description: String = ""
-
-    var ref: DatabaseReference?
+    var imageURL: String = ""
     
-    init (snapshot: DataSnapshot) {
+    
+    init () {
+                
         
-        ref = snapshot.ref
         
-        let data = snapshot.value as! [String : Any]
-        
-        name = data["name"]! as! String
-        type = data["type"]! as! String
-        description = data["description"]! as! String
     }
     
     

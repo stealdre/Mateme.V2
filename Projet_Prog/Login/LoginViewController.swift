@@ -18,8 +18,13 @@ class LoginViewController: UIViewController {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
+        emailField.autocapitalizationType = .none
 		emailField.placeholder = "Email here"
+        
 		passwordField.placeholder = "Password here"
+        passwordField.autocapitalizationType = .none
+        passwordField.isSecureTextEntry = true
+        
 		signInButton.setTitle("Signe In", for: .normal)
 		signInButton.backgroundColor = .black
 		registerButton.setTitle("Register", for: .normal)
@@ -129,7 +134,7 @@ extension LoginViewController {
 			make.width.equalTo(view.snp.width).multipliedBy(0.6)
 			make.height.equalTo(50)
 			make.centerX.equalTo(view.snp.centerX)
-			make.centerY.equalTo(view.snp.centerY)
+			make.centerY.equalTo(view.snp.centerY).offset(-70)
 		}
 		passwordField.snp.makeConstraints { (make) -> Void in
 			make.width.equalTo(view.snp.width).multipliedBy(0.6)
