@@ -47,6 +47,10 @@
 		38BD6F531F9E66F50074D9A9 /* SpinnerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38BD6F521F9E66F50074D9A9 /* SpinnerView.swift */; };
 		38CFC6021F9FC6ED006597AC /* OwnedGamesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38CFC6011F9FC6ED006597AC /* OwnedGamesViewController.swift */; };
 		38CFC6061F9FC7B2006597AC /* OwnedGamesCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38CFC6051F9FC7B2006597AC /* OwnedGamesCollectionViewCell.swift */; };
+		38D500771FC337F600E6F371 /* CircularRevealAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38D500751FC337F500E6F371 /* CircularRevealAnimator.swift */; };
+		38D500781FC337F600E6F371 /* AnimationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38D500761FC337F500E6F371 /* AnimationDelegate.swift */; };
+		38D5007A1FC3381E00E6F371 /* UIView+CircularAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38D500791FC3381E00E6F371 /* UIView+CircularAnimation.swift */; };
+		38D5007C1FC3387B00E6F371 /* SettingsTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38D5007B1FC3387B00E6F371 /* SettingsTheme.swift */; };
 		38DBFEF01F93C5D100AFDB8D /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38DBFEEE1F93C5C200AFDB8D /* ProfileViewController.swift */; };
 		38F7AE2A1FA614B700E5D6B4 /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38F7AE291FA614B700E5D6B4 /* GameViewController.swift */; };
 		38F7AE2C1FA6699E00E5D6B4 /* PullToDismissVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38F7AE2B1FA6699E00E5D6B4 /* PullToDismissVC.swift */; };
@@ -124,6 +128,10 @@
 		38BD6F521F9E66F50074D9A9 /* SpinnerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpinnerView.swift; sourceTree = "<group>"; };
 		38CFC6011F9FC6ED006597AC /* OwnedGamesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OwnedGamesViewController.swift; sourceTree = "<group>"; };
 		38CFC6051F9FC7B2006597AC /* OwnedGamesCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OwnedGamesCollectionViewCell.swift; sourceTree = "<group>"; };
+		38D500751FC337F500E6F371 /* CircularRevealAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CircularRevealAnimator.swift; sourceTree = "<group>"; };
+		38D500761FC337F500E6F371 /* AnimationDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnimationDelegate.swift; sourceTree = "<group>"; };
+		38D500791FC3381E00E6F371 /* UIView+CircularAnimation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+CircularAnimation.swift"; sourceTree = "<group>"; };
+		38D5007B1FC3387B00E6F371 /* SettingsTheme.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsTheme.swift; sourceTree = "<group>"; };
 		38DBFEEE1F93C5C200AFDB8D /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		38F7AE291FA614B700E5D6B4 /* GameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewController.swift; sourceTree = "<group>"; };
 		38F7AE2B1FA6699E00E5D6B4 /* PullToDismissVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PullToDismissVC.swift; sourceTree = "<group>"; };
@@ -259,6 +267,10 @@
 				386086021FA3A42800C0DE1B /* UIImageColors.swift */,
 				38F7AE2B1FA6699E00E5D6B4 /* PullToDismissVC.swift */,
 				87C74E5A1FBB194800642685 /* Profile.swift */,
+				38D500761FC337F500E6F371 /* AnimationDelegate.swift */,
+				38D500751FC337F500E6F371 /* CircularRevealAnimator.swift */,
+				38D500791FC3381E00E6F371 /* UIView+CircularAnimation.swift */,
+				38D5007B1FC3387B00E6F371 /* SettingsTheme.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -676,8 +688,10 @@
 			files = (
 				386FCCB51F926FBB00E1EE4B /* AddGameViewController.swift in Sources */,
 				386086031FA3A42900C0DE1B /* UIImageColors.swift in Sources */,
+				38D5007C1FC3387B00E6F371 /* SettingsTheme.swift in Sources */,
 				38919B461F95032100F76343 /* ProfileTableViewCell.swift in Sources */,
 				382136A51F8FEF3200C93641 /* MenuViewController.swift in Sources */,
+				38D500771FC337F600E6F371 /* CircularRevealAnimator.swift in Sources */,
 				38CFC6061F9FC7B2006597AC /* OwnedGamesCollectionViewCell.swift in Sources */,
 				38DBFEF01F93C5D100AFDB8D /* ProfileViewController.swift in Sources */,
 				3823F7E41F9D138100651746 /* Gradient.swift in Sources */,
@@ -694,11 +708,13 @@
 				87C74E5B1FBB194800642685 /* Profile.swift in Sources */,
 				3821369F1F8FEA7200C93641 /* AddGameUITableView.swift in Sources */,
 				386FCCDB1F927ECA00E1EE4B /* Fonts.swift in Sources */,
+				38D500781FC337F600E6F371 /* AnimationDelegate.swift in Sources */,
 				386FCCE21F92807B00E1EE4B /* CustomViews.swift in Sources */,
 				3835A7181F96430200BF57D1 /* CustomSearchController.swift in Sources */,
 				382136A11F8FED4600C93641 /* AddGameTableViewCell.swift in Sources */,
 				3835A7161F96413000BF57D1 /* CustomSearchBar.swift in Sources */,
 				38F7AE2A1FA614B700E5D6B4 /* GameViewController.swift in Sources */,
+				38D5007A1FC3381E00E6F371 /* UIView+CircularAnimation.swift in Sources */,
 				3823F7E21F9CD83D00651746 /* PlayNowViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -850,6 +866,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = D8J97J3MM9;
 				INFOPLIST_FILE = Projet_Prog/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "Hemisphere.Projet-Prog";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -866,6 +883,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = D8J97J3MM9;
 				INFOPLIST_FILE = Projet_Prog/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "Hemisphere.Projet-Prog";
 				PRODUCT_NAME = "$(TARGET_NAME)";

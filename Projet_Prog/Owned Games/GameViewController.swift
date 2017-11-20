@@ -234,7 +234,7 @@ extension GameViewController {
         }
         gameNameLabel.snp.makeConstraints { (make) -> Void in
             make.width.equalTo(topContainerView.snp.width).multipliedBy(0.9)
-            make.height.equalTo(heightForView(text: "LEAGUE OF LEGENDS", font: UIFont(name: "Roboto-Black", size: 49)!, width: view.frame.width * 0.8))
+            make.height.equalTo(heightForView(text: gameNameLabel.text!, font: gameNameLabel.font, width: view.frame.width * 0.8))
             make.left.equalTo(topContainerView.snp.left).offset(20)
             make.bottom.equalTo(sessionNumberIcon.snp.top).offset(-20)
         }

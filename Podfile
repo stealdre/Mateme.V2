@@ -17,6 +17,8 @@ target 'Projet_Prog' do
   pod 'CHIPageControl'
   pod 'TTGEmojiRate'
   pod 'NVActivityIndicatorView'
+  pod 'EFCountingLabel'
+  pod 'BubbleTransition'
   
   target 'Projet_ProgTests' do
     inherit! :search_paths
