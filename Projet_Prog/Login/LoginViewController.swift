@@ -13,7 +13,7 @@ class LoginViewController: UIViewController {
 	var emailField = UITextField()
 	var passwordField = UITextField()
 	var signInButton = UIButton()
-	
+	var registerButton = UIButton()
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -27,14 +27,18 @@ class LoginViewController: UIViewController {
         
 		signInButton.setTitle("Signe In", for: .normal)
 		signInButton.backgroundColor = .black
-		
-		
+		registerButton.setTitle("Register", for: .normal)
+		registerButton.backgroundColor = .black
 		
 		signInButton.addTarget(self, action: #selector(didTapSignIn), for: .touchUpInside)
+		registerButton.addTarget(self, action: #selector(didTapRegister), for: .touchUpInside)
+		
 		
 		view.addSubview(emailField)
 		view.addSubview(passwordField)
 		view.addSubview(signInButton)
+		view.addSubview(registerButton)
+		
 		
 		view.setNeedsUpdateConstraints()
 	}
@@ -43,7 +47,7 @@ class LoginViewController: UIViewController {
 		super.viewDidAppear(animated)
 		
 		if let _ = Auth.auth().currentUser {
-			self.signIn()
+			//self.signIn()
 		}
 	}
 	
@@ -71,6 +75,10 @@ class LoginViewController: UIViewController {
 			
 			self.signIn()
 		})
+	}
+	
+	@objc func didTapRegister() {
+		present(RegisterViewController(), animated: true, completion: nil)
 	}
 	
 	func didRequestPasswordReset() {
@@ -139,6 +147,12 @@ extension LoginViewController {
 			make.height.equalTo(50)
 			make.centerX.equalTo(view.snp.centerX)
 			make.centerY.equalTo(passwordField.snp.bottom).offset(30)
+		}
+		registerButton.snp.makeConstraints { (make) -> Void in
+			make.width.equalTo(view.snp.width).multipliedBy(0.6)
+			make.height.equalTo(50)
+			make.centerX.equalTo(view.snp.centerX)
+			make.centerY.equalTo(signInButton.snp.bottom).offset(30)
 		}
 		super.updateViewConstraints()
 	}
