@@ -90,7 +90,7 @@ class ProfileViewController: UIViewController, UITableViewDataSource {
 			}
 			
 			self.profileName.text = self.profileDB.name //"UserName"
-			self.getGameImage(url: self.profileDB.profilPicPath) { image in
+			self.getStorageImage(url: self.profileDB.profilPicPath) { image in
 				self.profilePic.image = image
 			}
 		}
@@ -108,7 +108,7 @@ extension ProfileViewController {
 		})
 	}
 	
-	func getGameImage(url: String, completion: @escaping (_ image: UIImage) -> Void) {
+	func getStorageImage(url: String, completion: @escaping (_ image: UIImage) -> Void) {
 		let storage = Storage.storage()
 		let pathReference = storage.reference(withPath: url)
 		pathReference.getData(maxSize: 1 * 5000 * 5000) { data, error in
@@ -169,7 +169,7 @@ extension ProfileViewController: UITableViewDelegate {
 				
 				let url = "gamesImage/\(gameName).png"
 				print(url)
-				getGameImage(url: url) { image in
+				getStorageImage(url: url) { image in
 					cell?.gamePic.image = image
 				}
 			}

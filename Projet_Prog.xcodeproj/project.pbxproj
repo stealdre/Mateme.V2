@@ -59,6 +59,7 @@
 		8773B3391FB369D600075BDD /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8773B3381FB369D600075BDD /* LoginViewController.swift */; };
 		87C74E5B1FBB194800642685 /* Profile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87C74E5A1FBB194800642685 /* Profile.swift */; };
 		87C74E5D1FC32FD800642685 /* RegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87C74E5C1FC32FD800642685 /* RegisterViewController.swift */; };
+		87C74E5F1FC4124D00642685 /* PickImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87C74E5E1FC4124D00642685 /* PickImageViewController.swift */; };
 		9C7D438E48406714C97F76C8 /* Pods_Projet_Prog.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A55F2D17F496A7CF3B993C88 /* Pods_Projet_Prog.framework */; };
 		F586917A88627FB4285A2856 /* Pods_Projet_ProgUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AEECC8FC0A016A4DECA21A55 /* Pods_Projet_ProgUITests.framework */; };
 /* End PBXBuildFile section */
@@ -142,6 +143,7 @@
 		8773B3381FB369D600075BDD /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		87C74E5A1FBB194800642685 /* Profile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Profile.swift; sourceTree = "<group>"; };
 		87C74E5C1FC32FD800642685 /* RegisterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViewController.swift; sourceTree = "<group>"; };
+		87C74E5E1FC4124D00642685 /* PickImageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickImageViewController.swift; sourceTree = "<group>"; };
 		95FFAA67781F06414B87989B /* Pods-Projet_ProgUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Projet_ProgUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Projet_ProgUITests/Pods-Projet_ProgUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		9C24B88D9A5D34B5AA593A1C /* Pods_Projet_ProgTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Projet_ProgTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A55F2D17F496A7CF3B993C88 /* Pods_Projet_Prog.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Projet_Prog.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -379,6 +381,7 @@
 			children = (
 				8773B3381FB369D600075BDD /* LoginViewController.swift */,
 				87C74E5C1FC32FD800642685 /* RegisterViewController.swift */,
+				87C74E5E1FC4124D00642685 /* PickImageViewController.swift */,
 			);
 			path = Login;
 			sourceTree = "<group>";
@@ -690,6 +693,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				87C74E5D1FC32FD800642685 /* RegisterViewController.swift in Sources */,
+				87C74E5F1FC4124D00642685 /* PickImageViewController.swift in Sources */,
 				386FCCB51F926FBB00E1EE4B /* AddGameViewController.swift in Sources */,
 				386086031FA3A42900C0DE1B /* UIImageColors.swift in Sources */,
 				38D5007C1FC3387B00E6F371 /* SettingsTheme.swift in Sources */,

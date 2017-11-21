@@ -131,6 +131,7 @@ class RegisterViewController: UIViewController {
 
 			self.ref.child("users/\(user.uid)/name").setValue(pseudo.text)
 			self.ref.child("users/\(user.uid)/phoneNumber").setValue(phoneNumber.text)
+			self.ref.child("users/\(user.uid)/profilPicPath").setValue("usersProfilePic/default.jpg")
 			
 			self.present(MenuViewController(), animated: true, completion: nil)
 		}
