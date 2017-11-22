@@ -28,6 +28,8 @@ class RegisterViewController: UIViewController {
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
+		
+		self.hideKeyboard()
         
         view.backgroundColor = .black
 		
@@ -133,7 +135,7 @@ class RegisterViewController: UIViewController {
 			self.ref.child("users/\(user.uid)/phoneNumber").setValue(phoneNumber.text)
 			self.ref.child("users/\(user.uid)/profilPicPath").setValue("usersProfilePic/default.jpg")
 			
-			self.present(MenuViewController(), animated: true, completion: nil)
+			self.present(PickImageViewController(), animated: true, completion: nil)
 		}
 	}
 
@@ -200,4 +202,21 @@ class RegisterButton: UIButton {
         self.layer.borderColor = UIColor.white.cgColor
         self.layer.borderWidth = 1
     }
+}
+
+extension RegisterViewController
+{
+	func hideKeyboard()
+	{
+		let tap: UITapGestureRecognizer = UITapGestureRecognizer(
+			target: self,
+			action: #selector(RegisterViewController.dismissKeyboard))
+		
+		view.addGestureRecognizer(tap)
+	}
+	
+	@objc func dismissKeyboard()
+	{
+		view.endEditing(true)
+	}
 }

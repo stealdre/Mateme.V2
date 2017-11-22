@@ -81,7 +81,6 @@ class PickImageViewController: UIViewController, UIImagePickerControllerDelegate
 		}
 	}
 	
-	
 	func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
 		dismiss(animated: true, completion: nil)
 	}
@@ -93,6 +92,8 @@ class PickImageViewController: UIViewController, UIImagePickerControllerDelegate
 		imageView.image = chosenImage
 		
 		storeImage()//:::::::::::::::::::::::::::::::::::
+		
+		//facetime(phoneNumber: "0698284498")
 		
 		dismiss(animated: true, completion: nil)
 	}
@@ -121,6 +122,16 @@ class PickImageViewController: UIViewController, UIImagePickerControllerDelegate
 			})
 		}
 	}
+	
+	private func facetime(phoneNumber:String) {
+		let cleanNumber = phoneNumber.replacingOccurrences(of: " ", with: "").replacingOccurrences(of: "-", with: "")
+		if let facetimeURL:URL = URL(string: "facetime-audio://\(cleanNumber)") {
+			let application:UIApplication = UIApplication.shared
+			if (application.canOpenURL(facetimeURL)) {
+				application.open(facetimeURL,options: [:], completionHandler: nil)
+			}
+		}
+	}
 }
 
 extension PickImageViewController {
@@ -147,3 +158,14 @@ extension PickImageViewController {
 		super.updateViewConstraints()
 	}
 }
+
+/*
+private func facetime(phoneNumber:String) {
+if let facetimeURL:NSURL = NSURL(string: "facetime://\(phoneNumber)") {
+let application:UIApplication = UIApplication.sharedApplication()
+if (application.canOpenURL(facetimeURL)) {
+application.openURL(facetimeURL);
+}
+}
+}
+*/
