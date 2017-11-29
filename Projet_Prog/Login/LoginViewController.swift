@@ -57,7 +57,7 @@ class LoginViewController: UIViewController, UIViewControllerTransitioningDelega
 		super.viewDidAppear(animated)
 		
 		if let _ = Auth.auth().currentUser {
-			//self.signIn()
+			self.signIn()
 		}
 	}
 	
