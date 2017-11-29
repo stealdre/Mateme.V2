@@ -79,8 +79,8 @@ class RegisterViewController: UIViewController {
 		view.setNeedsUpdateConstraints()
 		
 		ref = Database.database().reference()
-		user = Auth.auth().currentUser
-	}
+
+    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -133,7 +133,7 @@ class RegisterViewController: UIViewController {
 
 			self.ref.child("users/\(user.uid)/name").setValue(pseudo.text)
 			self.ref.child("users/\(user.uid)/phoneNumber").setValue(phoneNumber.text)
-			self.ref.child("users/\(user.uid)/profilPicPath").setValue("usersProfilePic/default.jpg")
+			self.ref.child("users/\(user.uid)/profilePicPath").setValue("usersProfilePic/default.jpg")
 			
 			self.present(PickImageViewController(), animated: true, completion: nil)
 		}

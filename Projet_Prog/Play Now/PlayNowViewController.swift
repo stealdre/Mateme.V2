@@ -387,9 +387,6 @@ extension PlayNowViewController {
             self.showMateProfile()
             
         })
-        
-        
-        
     }
     
     func showMateProfile() {
@@ -425,52 +422,8 @@ extension PlayNowViewController {
                 self.mateSessionsValueLabel.countFrom(0, to: 18, withDuration: 3.0)
                 self.mateRateValueLabel.countFrom(0, to: 4.7, withDuration: 3.0)
             })
-            
         })
-        
     }
-    
-    
-    //    func configureResultView() {
-    //
-    //        resultView.isHidden = false
-    //
-    //        let rect = self.view.frame
-    //
-    //        // increases y value
-    //        self.yAnim.duration = self.animDuration
-    //        self.yAnim.fromValue = self.resultView.frame.origin.y
-    //        self.yAnim.toValue = self.resultView.frame.origin.y * 1.45
-    //        self.yAnim.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut) // timing function to make it look nice
-    //
-    //        // decreases the corner radius
-    //        self.cornerRadiusAnim.duration = self.animDuration
-    //        self.cornerRadiusAnim.fromValue = self.resultView.layer.cornerRadius
-    //        self.cornerRadiusAnim.toValue = 10
-    //        self.cornerRadiusAnim.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut) // timing function to make it look nice
-    //
-    //        // increases the width
-    //        self.widthAnim.duration = self.animDuration
-    //        self.widthAnim.fromValue = self.resultView.layer.frame.size.width
-    //        self.widthAnim.toValue = rect.size.width * 0.85
-    //        self.widthAnim.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut) // timing function to make it look nice
-    //
-    //        // increases the height
-    //        self.heightAnim.duration = self.animDuration
-    //        self.heightAnim.fromValue = self.resultView.layer.frame.size.height
-    //        self.heightAnim.toValue = rect.size.height * 0.7
-    //        self.heightAnim.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut) // timing function to make it look nice
-    //
-    //        // adds both animations to a group animation
-    //        self.groupAnim.animations = [self.yAnim, self.cornerRadiusAnim, self.widthAnim, self.heightAnim]
-    //        self.groupAnim.duration = self.animDuration
-    //        self.groupAnim.isRemovedOnCompletion = false
-    //        self.groupAnim.fillMode = kCAFillModeForwards
-    //
-    //        self.resultView.layer.add(self.groupAnim, forKey: "anims")
-    //    }
-    
-    
     
     // 1
     func findAMate() {
@@ -509,8 +462,13 @@ extension PlayNowViewController {
         checkExistingRooms() { (userFound, usersID) in // Check if some users are looking for a mate (rooms)
             if !userFound { // No room found
                 print("There is no player looking for a mate, creating a room...")
-                self.createRoom() // Create a room
-                completion(false, "")
+                self.createRoom() { (answer, id) in
+                    if !answer {
+                        completion(false, id)
+                    } else {
+                        completion(true, id)
+                    }
+                }
                 return
             } else { // Room found
                 print("There are \(usersID.count) rooms available:")
@@ -531,8 +489,15 @@ extension PlayNowViewController {
                 }
                 queue.notify(queue: .main) {
                     print("No free room found")
-                    completion(false, "")
-                    return
+                    self.createRoom() { (answer, id) in
+                        if answer {
+                            completion(true, id)
+                        } else {
+                            completion(false, "")
+                            return
+                        }
+                    }
+                    
                 }
             }
         }
@@ -688,7 +653,7 @@ extension PlayNowViewController {
         
     }
     
-    func createRoom() {
+    func createRoom(completion: @escaping (_ answer: Bool, _ userId: String) -> Void) {
         
         let newRef = ref.child("matchmaking").child("ALJdXQXEmvoRDf1").child("rooms").child(user.uid)
         newRef.setValue(0)
@@ -702,12 +667,16 @@ extension PlayNowViewController {
                 self.infoLabel.text = "Your mate has been found"
                 print("Linking users...")
                 print("Mate: \(mateId)")
+                completion(true, mateId)
+                return
             } else {
                 self.infoLabel.fadeTransition(0.4)
                 self.infoLabel.text = "No mate found"
                 self.timeOut(delay: 2) { time in
                     if time {
                         self.stopSearch()
+                        completion(false, "")
+                        return
                     }
                 }
             }

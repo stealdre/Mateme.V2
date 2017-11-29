@@ -112,7 +112,7 @@ class PickImageViewController: UIViewController, UIImagePickerControllerDelegate
 					print(error?.localizedDescription as Any)
 					return
 				}
-				self.ref.child("users/\(self.user.uid)/profilPicPath").setValue("usersProfilePic/\(self.user.uid).jpg")
+				self.ref.child("users").child(self.user.uid).child("profilePicPath").setValue("usersProfilePic/\(self.user.uid).jpg")
 			}
 			uploadTask.observe(.progress, handler: { (snapshot) in
 				guard let progress = snapshot.progress else {
