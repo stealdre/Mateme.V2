@@ -84,11 +84,10 @@ class ProfileViewController: UIViewController, UITableViewDataSource {
 			for i in 0..<array.count {
 				self.getValueFromID(type: "users", id: array[i].mateID) { userName in
 					self.profileDB.historiesArray[i].mateName = userName
-					self.historyTableView.reloadData()
-				}
-				self.getValueFromID(type: "games", id: array[i].gameID) { gameName in
+					self.getValueFromID(type: "games", id: array[i].gameID) { gameName in
 					self.profileDB.historiesArray[i].gameName = gameName
 					self.historyTableView.reloadData()
+					}
 				}
 			}
 			
