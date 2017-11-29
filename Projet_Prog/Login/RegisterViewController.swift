@@ -15,7 +15,6 @@ import SkyFloatingLabelTextField
 class RegisterViewController: UIViewController {
 
 	var ref: DatabaseReference!
-	var user: User!
 	
 	var pseudo = SkyFloatingLabelTextFieldWithIcon()
 	var phoneNumber = SkyFloatingLabelTextFieldWithIcon()
@@ -116,7 +115,7 @@ class RegisterViewController: UIViewController {
 					//let vc = self.storyboard?.instantiateViewController(withIdentifier: "Home")
 					//self.present(vc!, animated: true, completion: nil)
 					
-					registerUser()
+					registerUser(userID: (user?.uid)!)
 					
 				} else {
 					let alertController = UIAlertController(title: "Error", message: error?.localizedDescription, preferredStyle: .alert)
@@ -129,11 +128,10 @@ class RegisterViewController: UIViewController {
 			}
 		}
 		
-		func registerUser() {
-
-			self.ref.child("users/\(user.uid)/name").setValue(pseudo.text)
-			self.ref.child("users/\(user.uid)/phoneNumber").setValue(phoneNumber.text)
-			self.ref.child("users/\(user.uid)/profilePicPath").setValue("usersProfilePic/default.jpg")
+		func registerUser(userID: String) {
+			self.ref.child("users/\(userID)/name").setValue(pseudo.text)
+			self.ref.child("users/\(userID)/phoneNumber").setValue(phoneNumber.text)
+			self.ref.child("users/\(userID)/profilePicPath").setValue("usersProfilePic/default.jpg")
 			
 			self.present(PickImageViewController(), animated: true, completion: nil)
 		}

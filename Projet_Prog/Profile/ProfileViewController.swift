@@ -106,6 +106,16 @@ extension ProfileViewController {
     @objc func logout() {
         
         print("logout")
+		if Auth.auth().currentUser != nil {
+			do {
+				try Auth.auth().signOut()
+				self.present(LoginViewController(), animated: true, completion: nil)
+				
+				
+			} catch let error as NSError {
+				print(error.localizedDescription)
+			}
+		}
         
     }
 	
