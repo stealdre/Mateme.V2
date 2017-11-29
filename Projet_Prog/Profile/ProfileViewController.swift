@@ -23,6 +23,7 @@ class ProfileViewController: UIViewController, UITableViewDataSource {
 	let ProfilePicAlphaBorder = UIView()
 	let profilePicOrnament = UIImageView()
 	let lineView = UIView()
+    let logoutButton = UIButton()
 	
 	var historyTableView = ProfileTableView()
 	
@@ -38,13 +39,15 @@ class ProfileViewController: UIViewController, UITableViewDataSource {
 		user = Auth.auth().currentUser
 		ref = Database.database().reference()
 		
-		
 		view.backgroundColor = .clear
 		
 		VCtitleLabel.text = "Profile"
 		VCtitleLabel.textColor = .white
 		VCtitleLabel.font = UIFont(name: "Roboto-Bold", size: 19)
 		VCtitleLabel.textAlignment = .center
+        
+        logoutButton.setImage(UIImage(named: "logout_ic"), for: .normal)
+        logoutButton.addTarget(self, action: #selector(logout), for: .touchUpInside)
 		
 		profileName.textColor = .white
 		profileName.font = UIFont(name: "Roboto-Medium", size: 20)
@@ -53,7 +56,6 @@ class ProfileViewController: UIViewController, UITableViewDataSource {
 		historyTableView.dataSource = self
 		
 		profilePicOrnament.image = UIImage(named: "profilePicOrnament")
-		
 		
 		lineView.backgroundColor = .white
 		lineView.alpha = 0.1
@@ -65,6 +67,7 @@ class ProfileViewController: UIViewController, UITableViewDataSource {
 		historyTableView.rowHeight = 90
 		
 		view.addSubview(VCtitleLabel)
+        view.addSubview(logoutButton)
 		view.addSubview(historyTitle)
 		view.addSubview(profilePicOrnament)
 		view.addSubview(profilePic)
@@ -99,6 +102,12 @@ class ProfileViewController: UIViewController, UITableViewDataSource {
 
 
 extension ProfileViewController {
+    
+    @objc func logout() {
+        
+        print("logout")
+        
+    }
 	
 	func getProfileData(completion: @escaping (_ data: Profile) -> Void) {
 		
@@ -259,7 +268,12 @@ extension ProfileViewController {
 			make.centerX.equalTo(view.snp.centerX)
 			make.bottom.equalTo(view.snp.bottom).inset(10)
 		}
-		
+        logoutButton.snp.makeConstraints { (make) -> Void in
+            make.width.equalTo(31)
+            make.height.equalTo(32)
+            make.right.equalTo(view.snp.right).inset(20)
+            make.top.equalTo(view.snp.top).offset(35)
+        }
 		super.updateViewConstraints()
 	}
 }
