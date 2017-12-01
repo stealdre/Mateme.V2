@@ -7,8 +7,13 @@
 //
 
 import UIKit
+import FirebaseAuth
+import FirebaseDatabase
 
 class GameViewController: UIViewController {
+	
+	var user: User!
+	var ref: DatabaseReference!
     
     lazy var VerticalScrollView: UIScrollView = {
         let view = UIScrollView()
@@ -46,10 +51,19 @@ class GameViewController: UIViewController {
     let saveButton = UIButton()
     
     let closeButton = UIButton()
-    
+
+	let sliderLevel = UISlider()
+	var levelLabel = UILabel()
+	let sliderFrequency = UISlider()
+	var frequencyLabel = UILabel()
+	
+	
     override func viewDidLoad() {
         super.viewDidLoad()
 
+		user = Auth.auth().currentUser
+		ref = Database.database().reference()
+		
         definesPresentationContext = true
         
         isHeroEnabled = true
@@ -115,10 +129,35 @@ class GameViewController: UIViewController {
         saveButton.setImage(saveButtonImage, for: .normal)
         saveButton.tintColor = UIColor(red:0.29, green:0.56, blue:0.89, alpha:1.0)
         saveButton.alpha = 0
+		saveButton.addTarget(self, action: #selector(saveAction), for: .touchUpInside)
         
         closeButton.setImage(UIImage(named: "close_ic"), for: .normal)
         closeButton.addTarget(self, action: #selector(closeAction), for: .touchUpInside)
-        
+		
+		
+		
+		levelLabel.text = "Your experience in the game"
+		levelLabel.textColor = .black
+		//levelLabel.alpha = 0.6
+		levelLabel.font = UIFont(name: "Roboto-Regular", size: 15)
+		levelLabel.textAlignment = .left
+		
+		frequencyLabel.text = "Playing days in a week"
+		frequencyLabel.textColor = .black
+		//frequencyLabel.alpha = 0.6
+		frequencyLabel.font = UIFont(name: "Roboto-Regular", size: 15)
+		frequencyLabel.textAlignment = .left
+
+		
+		sliderLevel.minimumValue = 0
+		sliderLevel.maximumValue = 10
+		
+		sliderFrequency.minimumValue = 0
+		sliderFrequency.maximumValue = 7
+		
+		sliderLevel.addTarget(self, action: #selector(updateLevelLabelValue), for: .valueChanged)
+		sliderFrequency.addTarget(self, action: #selector(updateFrequencyLabelValue), for: .valueChanged)
+		
         view.addSubview(gameImage)
         view.addSubview(gameIcon)
         
@@ -135,6 +174,11 @@ class GameViewController: UIViewController {
         topContainerView.addSubview(lastSessionLabel)
         
         topContainerView.addSubview(moreButton)
+		
+		botContainerView.addSubview(levelLabel)
+		botContainerView.addSubview(frequencyLabel)
+		botContainerView.addSubview(sliderLevel)
+		botContainerView.addSubview(sliderFrequency)
         
         view.addSubview(playButton)
         view.addSubview(saveButton)
@@ -142,6 +186,15 @@ class GameViewController: UIViewController {
         
         view.setNeedsUpdateConstraints()
         setNeedsStatusBarAppearanceUpdate()
+		
+		sliderValueFromDB() { gameParams in //!!!!!!!!!!!!gameParams doit etre set à 0 dans la DB à l'ajout du jeu!!!!!!!!
+			self.sliderLevel.value = gameParams.level
+			self.sliderFrequency.value = gameParams.frequency
+			
+			self.updateLevelLabelValue()
+			self.updateFrequencyLabelValue()
+			
+		}
         
     }
     
@@ -177,11 +230,45 @@ class GameViewController: UIViewController {
         
         return label.frame.height
     }
-    
+	
+	@objc func saveAction() {
+		self.ref.child("users/\(user.uid)/gameParam/????GAMEID????/level").setValue(Int(sliderLevel.value))
+		self.ref.child("users/\(user.uid)/gameParam/????GAMEID????/frequency").setValue(Int(sliderFrequency.value))
+		
+		let alertController = UIAlertController(title: "Saved !", message: "Your settings have been saved !", preferredStyle: .alert)
+		let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+		alertController.addAction(defaultAction)
+		self.present(alertController, animated: true, completion: nil)
+	}
+	
+	func sliderValueFromDB(completion: @escaping (_ data: GameParams) -> Void) {
+		ref.child("users/\(user.uid)/gameParam/????GAMEID????/").observe(.value, with: { (snapshot) in
+			if let data = snapshot.value as? NSDictionary {
+				
+				let gameParams = GameParams()
+				
+				gameParams.level = data["level"] as! Float
+				gameParams.frequency = data["frequency"] as! Float
+				
+				completion(gameParams)
+			}
+		}) { (error) in
+			print(error.localizedDescription)
+		}
+	}
+	
     @objc func closeAction() {
         dismiss(animated: true, completion: nil)
     }
-    
+	
+	@objc func updateLevelLabelValue() {
+		let value = String(Int(sliderLevel.value))
+		levelLabel.text = "Your experience in the game : \(value)"
+	}
+	@objc func updateFrequencyLabelValue() {
+		let value = String(Int(sliderFrequency.value))
+		frequencyLabel.text = "Playing days in a week : \(value)"
+	}
 }
 
 // MARK: Scroll view Delegate
@@ -268,6 +355,30 @@ extension GameViewController {
             make.left.equalTo(lastSessionIcon.snp.right).offset(10)
             make.centerY.equalTo(lastSessionIcon.snp.centerY)
         }
+		levelLabel.snp.makeConstraints { (make) -> Void in
+			make.width.equalTo(botContainerView.snp.width).multipliedBy(0.8)
+			make.height.equalTo(30)
+			make.centerX.equalTo(botContainerView.snp.centerX)
+			make.centerY.equalTo(botContainerView.snp.centerY).offset(-90)
+		}
+		sliderLevel.snp.makeConstraints { (make) -> Void in
+			make.width.equalTo(botContainerView.snp.width).multipliedBy(0.8)
+			make.height.equalTo(30)
+			make.centerX.equalTo(botContainerView.snp.centerX)
+			make.centerY.equalTo(botContainerView.snp.centerY).offset(-30)
+		}
+		frequencyLabel.snp.makeConstraints { (make) -> Void in
+			make.width.equalTo(botContainerView.snp.width).multipliedBy(0.8)
+			make.height.equalTo(30)
+			make.centerX.equalTo(botContainerView.snp.centerX)
+			make.centerY.equalTo(botContainerView.snp.centerY).offset(30)
+		}
+		sliderFrequency.snp.makeConstraints { (make) -> Void in
+			make.width.equalTo(botContainerView.snp.width).multipliedBy(0.8)
+			make.height.equalTo(30)
+			make.centerX.equalTo(botContainerView.snp.centerX)
+			make.centerY.equalTo(botContainerView.snp.centerY).offset(90)
+		}
         moreButton.snp.makeConstraints { (make) -> Void in
             make.width.equalTo(40)
             make.height.equalTo(40)
