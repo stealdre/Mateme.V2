@@ -10,6 +10,7 @@ import UIKit
 import CircleMenu
 import SwiftSpinner
 import FirebaseDatabase
+import FirebaseStorage
 import FirebaseAuth
 import EFCountingLabel
 
@@ -350,46 +351,113 @@ class PlayNowViewController: UIViewController, CircleMenuDelegate {
 // MARK: Firebase
 extension PlayNowViewController {
     
-    
-    
-    func showNewMate(mateID: String) {
+    func getUserInfosFrom(id: String, game: String, completion: @escaping(
+        _ name: String,
+        _ profilePic: UIImage,
+        _ bio: String,
+        _ rate: Double,
+        _ frequency: Int,
+        _ level: Int,
+        _ sessionNumber: Int ) -> Void) {
         
-        if roomState.created {
-            removeRoom(ref: roomState.createdRef)
-        } else if roomState.joined {
-            quitRoom(ref: roomState.joinedRef)
-        }
+        let newRef = ref.child("users").child(id)
         
-        self.infoLabel.fadeTransition(0.4)
-        self.infoLabel.text = "Matename"
+        var name = ""
+        var profilePicture = UIImage()
+        var bio = ""
+        var rate = 0.0
+        var frequency = 0
+        var level = 0
+        var sessionNumber = 0
         
-        UIView.animate(withDuration: 0.5, delay: 0, options: [.beginFromCurrentState], animations: {() -> Void in
+        newRef.observeSingleEvent(of: .value, with: { (snapshot) in
             
-            self.spinnerLoadingView.alpha = 0
-            self.button.alpha = 0
-            self.tapToDismisslabel.alpha = 0
-            
-            self.buttonView.transform = CGAffineTransform(scaleX: 1, y: 1)
-            self.button.transform = CGAffineTransform(scaleX: 1, y: 1)
-            
-            self.infoLabel.frame.origin.y -= self.view.frame.height * 0.12
-            self.infoLabel.snp.remakeConstraints {(make) -> Void in
-                make.width.equalTo(self.view.snp.width).multipliedBy(0.9)
-                make.height.equalTo(30)
-                make.centerX.equalTo(self.view.snp.centerX)
-                make.centerY.equalTo(self.view.snp.centerY).offset(-150 - self.view.frame.height * 0.12)
+            if snapshot.exists() {
+                
+                if let data = snapshot.value as? [String : AnyObject] {
+                    
+                    if let value = data["rate"] as? Double,
+                        let pseudo = data["name"] as? String {
+                        
+                        
+                        rate = value
+                        name = pseudo
+                        if let imagePath = data["profilPicPath"] as? String {
+                            
+                            let storage = Storage.storage()
+                            let pathReference = storage.reference(withPath: imagePath)
+                            
+                            pathReference.getData(maxSize: 1 * 5000 * 5000) { imageData, error1 in
+                                if let error = error1 {
+                                    print(error)
+                                } else {
+                                    
+                                    profilePicture = UIImage(data: imageData!)!
+                                    
+                                    if let history = data["history"] as? [String : AnyObject] {
+                                        sessionNumber = history.count
+                                        newRef.child("gameParam").child(game).observeSingleEvent(of: .value, with: { (snapshot) in
+                                            if let parameters = snapshot.value as? [String : Int] {
+                                                frequency = Int(parameters["frequency"]!)
+                                                level = Int(parameters["level"]!)
+                                                
+                                                if let bioValue = data["bio"] as? String {
+                                                    bio = bioValue
+                                                } else {
+                                                    bio = ""
+                                                }
+                                                completion(name, profilePicture, bio, rate, frequency, level, sessionNumber)
+                                            }
+                                        })
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             }
-        }, completion: {(_ finished: Bool) -> Void in
-            
-            self.spinnerLoadingView.isHidden = true
-            self.tapToDismissView.isHidden = true
-            
-            self.showMateProfile()
-            
         })
     }
     
-    func showMateProfile() {
+    func showNewMate(mateID: String) {
+        
+        getUserInfosFrom(id: mateID, game: "ALJdXQXEmvoRDf1") { (name, profilePic, bio, rate, frequency, level, sessionNumber) in
+            
+            self.infoLabel.fadeTransition(0.4)
+            self.infoLabel.text = name
+            
+            self.mateBioLabel.text = bio
+            self.mateProfilePicture.image = profilePic
+            
+            UIView.animate(withDuration: 0.5, delay: 0, options: [.beginFromCurrentState], animations: {() -> Void in
+                
+                self.spinnerLoadingView.alpha = 0
+                self.button.alpha = 0
+                self.tapToDismisslabel.alpha = 0
+                
+                self.buttonView.transform = CGAffineTransform(scaleX: 1, y: 1)
+                self.button.transform = CGAffineTransform(scaleX: 1, y: 1)
+                
+                self.infoLabel.frame.origin.y -= self.view.frame.height * 0.12
+                self.infoLabel.snp.remakeConstraints {(make) -> Void in
+                    make.width.equalTo(self.view.snp.width).multipliedBy(0.9)
+                    make.height.equalTo(30)
+                    make.centerX.equalTo(self.view.snp.centerX)
+                    make.centerY.equalTo(self.view.snp.centerY).offset(-150 - self.view.frame.height * 0.12)
+                }
+            }, completion: {(_ finished: Bool) -> Void in
+                
+                self.spinnerLoadingView.isHidden = true
+                self.tapToDismissView.isHidden = true
+                
+                self.showMateProfile(rate: rate, frequency: frequency, level: level, sessions: sessionNumber)
+                
+            })
+            
+        }
+    }
+    
+    func showMateProfile(rate: Double, frequency: Int, level: Int, sessions: Int) {
         
         self.mateProfilePicture.isHidden = false
         
@@ -399,7 +467,7 @@ extension PlayNowViewController {
         }, completion: {(_ finished: Bool) -> Void in
             
             self.buttonView.isHidden = true
-
+            
             // increases y value
             self.yAnim.duration = self.animDuration
             self.yAnim.fromValue = self.mateProfilePicture.frame.origin.y
@@ -419,8 +487,8 @@ extension PlayNowViewController {
                 self.mateProfileView.isHidden = false
                 self.mateProfileView.alpha = 1
             }, completion: {(_ finished: Bool) -> Void in
-                self.mateSessionsValueLabel.countFrom(0, to: 18, withDuration: 3.0)
-                self.mateRateValueLabel.countFrom(0, to: 4.7, withDuration: 3.0)
+                self.mateSessionsValueLabel.countFrom(0, to: CGFloat(sessions), withDuration: 3.0)
+                self.mateRateValueLabel.countFrom(0, to: CGFloat(rate), withDuration: 3.0)
             })
         })
     }
@@ -438,11 +506,9 @@ extension PlayNowViewController {
                 
                 self.infoLabel.fadeTransition(0.4)
                 self.infoLabel.text = "A mate has been found !"
-                self.timeOut(delay: 2) { time in
-                    if time {
-                        self.showNewMate(mateID: mateID)
-                    }
-                }
+              
+                self.showNewMate(mateID: mateID)
+                
             } else {
                 print("No mate found")
                 
@@ -489,15 +555,17 @@ extension PlayNowViewController {
                 }
                 queue.notify(queue: .main) {
                     print("No free room found")
-                    self.createRoom() { (answer, id) in
-                        if answer {
-                            completion(true, id)
-                        } else {
-                            completion(false, "")
-                            return
+                    if !self.roomState.joined {
+                        self.createRoom() { (answer, id) in
+                            if answer {
+                                completion(true, id)
+                                return
+                            } else {
+                                completion(false, "")
+                                return
+                            }
                         }
                     }
-                    
                 }
             }
         }
@@ -760,7 +828,7 @@ extension PlayNowViewController {
         }
         
         makeMateProfileConstraints()
-
+        
         super.updateViewConstraints()
     }
     

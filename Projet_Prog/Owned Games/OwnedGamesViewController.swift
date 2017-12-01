@@ -123,7 +123,7 @@ extension OwnedGamesViewController {
         GamesArray.removeAll()
         filteredGamesArray.removeAll()
         
-        ref.child("users").child("ALJdXQXE2eg7kXbkk4ruGmvoRDf1").child("games").observe(.value, with: { (snapshot) in
+        ref.child("users").child("ALJdXQXE2eg7kXbkk4ruGmvoRDf1").child("games").observeSingleEvent(of: .value, with: { (snapshot) in
             
             for itemSnapShot in snapshot.children {
                 let item = itemSnapShot as! DataSnapshot
