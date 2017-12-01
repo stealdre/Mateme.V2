@@ -15,75 +15,92 @@ import SkyFloatingLabelTextField
 class RegisterViewController: UIViewController {
 
 	var ref: DatabaseReference!
+    
+    var containerView = UIView()
+    
+    var registerLabel = UILabel()
 	
-	var pseudo = SkyFloatingLabelTextFieldWithIcon()
-	var phoneNumber = SkyFloatingLabelTextFieldWithIcon()
-	var emailField = SkyFloatingLabelTextFieldWithIcon()
-	var passwordField = SkyFloatingLabelTextFieldWithIcon()
-	var confirmPasswordField = SkyFloatingLabelTextFieldWithIcon()
+	var pseudo = SkyFloatingLabelTextField()
+	var phoneNumber = SkyFloatingLabelTextField()
+	var emailField = SkyFloatingLabelTextField()
+	var passwordField = SkyFloatingLabelTextField()
+	var confirmPasswordField = SkyFloatingLabelTextField()
     
 	var registerButton = RegisterButton()
+    
+    var backButton = BackButton()
 	
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		
+        
+        view.backgroundColor = .white
+        
 		self.hideKeyboard()
         
-        view.backgroundColor = .black
-		
-		pseudo.placeholder = "Pseudo"
-        pseudo.selectedTitleColor = .white
+        registerLabel.font = UIFont(name: "Roboto-Regular", size: 32)
+        registerLabel.text = "Register"
+        registerLabel.textColor = .black
+        
+		pseudo.title = "Pseudo"
+        pseudo.selectedTitleColor = .black
         pseudo.placeholder = "Pseudo"
-        pseudo.selectedLineColor = .white
-        pseudo.lineColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.8)
+        pseudo.selectedLineColor = .black
+        pseudo.lineColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.8)
         
+        phoneNumber.title = "Phone Number"
+        phoneNumber.selectedTitleColor = .black
         phoneNumber.placeholder = "Phone Number"
-        phoneNumber.selectedTitleColor = .white
-        phoneNumber.placeholder = "Phone Number"
-        phoneNumber.selectedLineColor = .white
-        phoneNumber.lineColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.8)
+        phoneNumber.selectedLineColor = .black
+        phoneNumber.lineColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.8)
         
+        emailField.title = "Email"
+        emailField.selectedTitleColor = .black
         emailField.placeholder = "Email"
-        emailField.selectedTitleColor = .white
-        emailField.placeholder = "Email"
-        emailField.selectedLineColor = .white
-        emailField.lineColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.8)
+        emailField.selectedLineColor = .black
+        emailField.lineColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.8)
         
-		passwordField.placeholder = "Password"
-        passwordField.selectedTitleColor = .white
+		passwordField.title = "Password"
+        passwordField.selectedTitleColor = .black
         passwordField.placeholder = "Password"
-        passwordField.selectedLineColor = .white
-        passwordField.lineColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.8)
+        passwordField.selectedLineColor = .black
+        passwordField.lineColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.8)
         
         confirmPasswordField.title = "Confirm Password"
-        confirmPasswordField.selectedTitleColor = .white
+        confirmPasswordField.selectedTitleColor = .black
 		confirmPasswordField.placeholder = "Confirm Password"
-        confirmPasswordField.selectedLineColor = .white
-        confirmPasswordField.lineColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.8)
+        confirmPasswordField.selectedLineColor = .black
+        confirmPasswordField.lineColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.8)
         
 		registerButton.setTitle("Register", for: .normal)
+        registerButton.setTitleColor(.black, for: .normal)
 		registerButton.backgroundColor = .clear
-        registerButton.setTitleColor(.white, for: .normal)
-		
 		registerButton.addTarget(self, action: #selector(createAccountAction), for: .touchUpInside)
 		
-		view.addSubview(pseudo)
-		view.addSubview(phoneNumber)
-		view.addSubview(emailField)
-		view.addSubview(passwordField)
-		view.addSubview(confirmPasswordField)
-		view.addSubview(registerButton)
-		
+        backButton.backgroundColor = .black
+        backButton.addTarget(self, action: #selector(didTapBack), for: .touchUpInside)
+        backButton.setBackgroundImage(UIImage(named: "closeRegister_ic"), for: .normal)
+        
+        view.addSubview(containerView)
+        containerView.addSubview(registerLabel)
+		containerView.addSubview(pseudo)
+		containerView.addSubview(phoneNumber)
+		containerView.addSubview(emailField)
+		containerView.addSubview(passwordField)
+		containerView.addSubview(confirmPasswordField)
+		containerView.addSubview(registerButton)
+		containerView.addSubview(backButton)
+        
 		view.setNeedsUpdateConstraints()
 		
 		ref = Database.database().reference()
 
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    
+    @objc func didTapBack() {
+        
+        dismiss(animated: true, completion: nil)
     }
 	
 	@objc func createAccountAction() {
@@ -150,42 +167,60 @@ class roundButton: UIButton {
 extension RegisterViewController {
 	
 	override func updateViewConstraints() {
+        
+        containerView.snp.makeConstraints { (make) -> Void in
+            make.width.equalTo(view.snp.width)
+            make.height.equalTo(view.snp.height)
+            make.center.equalTo(view.snp.center)
+        }
+        registerLabel.snp.makeConstraints { (make) -> Void in
+            make.width.equalTo(containerView.snp.width).multipliedBy(0.6)
+            make.height.equalTo(50)
+            make.left.equalTo(containerView.snp.left).offset(35)
+            make.top.equalTo(containerView.snp.top).offset(50)
+        }
 		pseudo.snp.makeConstraints { (make) -> Void in
-			make.width.equalTo(view.snp.width).multipliedBy(0.6)
+			make.width.equalTo(containerView.snp.width).multipliedBy(0.8)
 			make.height.equalTo(50)
-			make.centerX.equalTo(view.snp.centerX)
-			make.centerY.equalTo(view.snp.centerY)
+			make.left.equalTo(containerView.snp.left).offset(35)
+			make.top.equalTo(registerLabel.snp.bottom).offset(10)
 		}
 		phoneNumber.snp.makeConstraints { (make) -> Void in
-			make.width.equalTo(view.snp.width).multipliedBy(0.6)
+			make.width.equalTo(containerView.snp.width).multipliedBy(0.8)
 			make.height.equalTo(50)
-			make.centerX.equalTo(view.snp.centerX)
-			make.centerY.equalTo(pseudo.snp.bottom).offset(20)
+			make.left.equalTo(containerView.snp.left).offset(35)
+			make.top.equalTo(pseudo.snp.bottom).offset(20)
 		}
 		emailField.snp.makeConstraints { (make) -> Void in
-			make.width.equalTo(view.snp.width).multipliedBy(0.6)
+			make.width.equalTo(containerView.snp.width).multipliedBy(0.8)
 			make.height.equalTo(50)
-			make.centerX.equalTo(view.snp.centerX)
-			make.centerY.equalTo(phoneNumber.snp.bottom).offset(20)
+			make.left.equalTo(containerView.snp.left).offset(35)
+			make.top.equalTo(phoneNumber.snp.bottom).offset(20)
 		}
 		passwordField.snp.makeConstraints { (make) -> Void in
-			make.width.equalTo(view.snp.width).multipliedBy(0.6)
+			make.width.equalTo(containerView.snp.width).multipliedBy(0.8)
 			make.height.equalTo(50)
-			make.centerX.equalTo(view.snp.centerX)
-			make.centerY.equalTo(emailField.snp.bottom).offset(20)
+			make.left.equalTo(containerView.snp.left).offset(35)
+			make.top.equalTo(emailField.snp.bottom).offset(20)
 		}
 		confirmPasswordField.snp.makeConstraints { (make) -> Void in
-			make.width.equalTo(view.snp.width).multipliedBy(0.6)
+			make.width.equalTo(containerView.snp.width).multipliedBy(0.8)
 			make.height.equalTo(50)
-			make.centerX.equalTo(view.snp.centerX)
-			make.centerY.equalTo(passwordField.snp.bottom).offset(20)
+			make.left.equalTo(containerView.snp.left).offset(35)
+			make.top.equalTo(passwordField.snp.bottom).offset(20)
 		}
-		registerButton.snp.makeConstraints { (make) -> Void in
-			make.width.equalTo(view.snp.width).multipliedBy(0.6)
-			make.height.equalTo(100)
-			make.centerX.equalTo(view.snp.centerX)
-			make.centerY.equalTo(confirmPasswordField.snp.bottom).offset(50)
-		}
+        registerButton.snp.makeConstraints { (make) -> Void in
+            make.width.equalTo(containerView.snp.width).multipliedBy(0.5)
+            make.height.equalTo(50)
+            make.centerX.equalTo(containerView.snp.centerX)
+            make.top.equalTo(confirmPasswordField.snp.bottom).offset(50)
+        }
+        backButton.snp.makeConstraints { (make) -> Void in
+            make.width.equalTo(70)
+            make.height.equalTo(70)
+            make.left.equalTo(containerView.snp.left).offset(35)
+            make.bottom.equalTo(containerView.snp.bottom).offset(-35)
+        }
 		super.updateViewConstraints()
 	}
 }
@@ -197,15 +232,23 @@ class RegisterButton: UIButton {
         
         self.layer.cornerRadius = 10
         
-        self.layer.borderColor = UIColor.white.cgColor
+        self.layer.borderColor = UIColor.black.cgColor
         self.layer.borderWidth = 1
     }
 }
 
-extension RegisterViewController
-{
-	func hideKeyboard()
-	{
+class BackButton: UIButton {
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        
+        self.layer.cornerRadius = self.frame.width / 2
+    }
+}
+
+extension RegisterViewController {
+    
+	func hideKeyboard() {
 		let tap: UITapGestureRecognizer = UITapGestureRecognizer(
 			target: self,
 			action: #selector(RegisterViewController.dismissKeyboard))
@@ -213,8 +256,7 @@ extension RegisterViewController
 		view.addGestureRecognizer(tap)
 	}
 	
-	@objc func dismissKeyboard()
-	{
+	@objc func dismissKeyboard() {
 		view.endEditing(true)
 	}
 }

@@ -14,51 +14,74 @@ class LoginViewController: UIViewController, UIViewControllerTransitioningDelega
     
     let transition = BubbleTransition()
 	
-	var emailField = SkyFloatingLabelTextFieldWithIcon()
-	var passwordField = SkyFloatingLabelTextFieldWithIcon()
+    var containerView = UIView()
+    
+    var logo = UIImageView()
+    
+    var loginLabel = UILabel()
+    
+	var emailField = SkyFloatingLabelTextField()
+	var passwordField = SkyFloatingLabelTextField()
 	var signInButton = LoginButton()
-	var registerButton = roundButton()
+	var registerButton = BackButton()
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
+        
+        if Auth.auth().currentUser != nil {
+            self.signIn()
+        }
+        
+        view.backgroundColor = .black
+        
+        containerView.backgroundColor = .clear
+        
+        self.hideKeyboard()
+        
+        logo.image = UIImage(named: "app logo")
+        
+        loginLabel.font = UIFont(name: "Roboto-Regular", size: 32)
+        loginLabel.text = "LOGIN"
+        loginLabel.textColor = .white
 		
         emailField.autocapitalizationType = .none
         emailField.title = "Email"
-        emailField.selectedTitleColor = .black
+        emailField.selectedTitleColor = .white
+        emailField.selectedLineColor = .white
 		emailField.placeholder = "Email"
+        emailField.textColor = .white
         
 		passwordField.placeholder = "Password"
         passwordField.title = "Password"
-        passwordField.selectedTitleColor = .black
+        passwordField.selectedTitleColor = .white
+        passwordField.selectedLineColor = .white
+        passwordField.textColor = .white
         passwordField.autocapitalizationType = .none
         passwordField.isSecureTextEntry = true
         
 		signInButton.setTitle("Login", for: .normal)
         signInButton.backgroundColor = .clear
-        signInButton.setTitleColor(.black, for: .normal)
+        signInButton.setTitleColor(.white, for: .normal)
         
-		registerButton.setTitle("Register", for: .normal)
-		registerButton.backgroundColor = .black
+        registerButton.setBackgroundImage(UIImage(named: "register_ic"), for: .normal)
+		registerButton.backgroundColor = .white
 		
 		signInButton.addTarget(self, action: #selector(didTapSignIn), for: .touchUpInside)
 		registerButton.addTarget(self, action: #selector(didTapRegister), for: .touchUpInside)
 		
 		
-		view.addSubview(emailField)
-		view.addSubview(passwordField)
-		view.addSubview(signInButton)
-		view.addSubview(registerButton)
+        view.addSubview(containerView)
+        containerView.addSubview(logo)
+        containerView.addSubview(loginLabel)
+		containerView.addSubview(emailField)
+		containerView.addSubview(passwordField)
+		containerView.addSubview(signInButton)
+		containerView.addSubview(registerButton)
 		
 		
 		view.setNeedsUpdateConstraints()
-	}
-	
-	override func viewDidAppear(_ animated: Bool) {
-		super.viewDidAppear(animated)
-		
-		if let _ = Auth.auth().currentUser {
-			self.signIn()
-		}
+        
+        transition.duration = 0.3
 	}
 	
 	@objc func didTapSignIn() {
@@ -88,11 +111,14 @@ class LoginViewController: UIViewController, UIViewControllerTransitioningDelega
 	}
 	
 	@objc func didTapRegister() {
+        
         let controller = RegisterViewController()
         controller.transitioningDelegate = self
         controller.modalPresentationStyle = .custom
         
-        present(controller, animated: true, completion: nil)
+        present(controller, animated: true, completion: { () -> Void in
+        })
+        
 	}
     
     // MARK: UIViewControllerTransitioningDelegate
@@ -160,32 +186,65 @@ class LoginViewController: UIViewController, UIViewControllerTransitioningDelega
 extension LoginViewController {
 	
 	override func updateViewConstraints() {
+        
+        containerView.snp.makeConstraints { (make) -> Void in
+            make.width.equalTo(view.snp.width)
+            make.height.equalTo(view.snp.height)
+            make.center.equalTo(view.snp.center)
+        }
+        logo.snp.makeConstraints { (make) -> Void in
+            make.width.equalTo(90)
+            make.height.equalTo(90)
+            make.centerX.equalTo(containerView.snp.centerX)
+            make.top.equalTo(containerView.snp.top).offset(60)
+        }
+        loginLabel.snp.makeConstraints { (make) -> Void in
+            make.width.equalTo(containerView.snp.width).multipliedBy(0.6)
+            make.height.equalTo(50)
+            make.left.equalTo(containerView.snp.left).offset(35)
+            make.top.equalTo(logo.snp.bottom).offset(40)
+        }
 		emailField.snp.makeConstraints { (make) -> Void in
-			make.width.equalTo(view.snp.width).multipliedBy(0.6)
+			make.width.equalTo(containerView.snp.width).multipliedBy(0.8)
 			make.height.equalTo(50)
-			make.centerX.equalTo(view.snp.centerX)
-			make.centerY.equalTo(view.snp.centerY).offset(-70)
+			make.left.equalTo(containerView.snp.left).offset(35)
+			make.top.equalTo(loginLabel.snp.bottom).offset(10)
 		}
 		passwordField.snp.makeConstraints { (make) -> Void in
-			make.width.equalTo(view.snp.width).multipliedBy(0.6)
+			make.width.equalTo(containerView.snp.width).multipliedBy(0.8)
 			make.height.equalTo(50)
-			make.centerX.equalTo(view.snp.centerX)
-			make.centerY.equalTo(emailField.snp.bottom).offset(20)
+			make.left.equalTo(containerView.snp.left).offset(35)
+			make.top.equalTo(emailField.snp.bottom).offset(20)
 		}
 		signInButton.snp.makeConstraints { (make) -> Void in
-			make.width.equalTo(view.snp.width).multipliedBy(0.6)
+			make.width.equalTo(containerView.snp.width).multipliedBy(0.5)
 			make.height.equalTo(50)
-			make.centerX.equalTo(view.snp.centerX)
-			make.centerY.equalTo(passwordField.snp.bottom).offset(30)
+			make.centerX.equalTo(containerView.snp.centerX)
+			make.top.equalTo(passwordField.snp.bottom).offset(50)
 		}
-		registerButton.snp.makeConstraints { (make) -> Void in
-			make.width.equalTo(100)
-			make.height.equalTo(100)
-			make.centerX.equalTo(view.snp.centerX)
-			make.top.equalTo(signInButton.snp.bottom).offset(30)
-		}
+        registerButton.snp.makeConstraints { (make) -> Void in
+            make.width.equalTo(70)
+            make.height.equalTo(70)
+            make.left.equalTo(containerView.snp.left).offset(35)
+            make.bottom.equalTo(containerView.snp.bottom).offset(-35)
+        }
 		super.updateViewConstraints()
 	}
+}
+
+extension LoginViewController {
+    
+    func hideKeyboard() {
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(
+            target: self,
+            action: #selector(LoginViewController.dismissKeyboard))
+        
+        view.addGestureRecognizer(tap)
+    }
+    
+    @objc func dismissKeyboard() {
+        view.endEditing(true)
+    }
 }
 
 class LoginButton: UIButton {
@@ -195,8 +254,8 @@ class LoginButton: UIButton {
         
         self.layer.cornerRadius = 10
         
-        self.layer.borderColor = UIColor.black.cgColor
-        self.layer.borderWidth = 1
+        self.layer.borderColor = UIColor.white.cgColor
+        self.layer.borderWidth = 2
         
     }
 }
