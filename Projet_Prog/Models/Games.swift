@@ -26,6 +26,11 @@ class Games {
         
     }
     
+    func uploadGames() {
+        
+        var games = ["id" : ["name" : "LOL", "imagePath" : "/.img"]]
+        
+    }
     
 }
 

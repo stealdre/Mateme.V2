@@ -62,6 +62,12 @@ class PlayNowViewController: UIViewController, CircleMenuDelegate {
     var mateFrequencyLabel = mateStatsLabel()
     var mateFrequencyValueLabel = mateStatsValueLabel()
     
+    var mateCall = UIButton()
+    var mateSkip = UIButton()
+    var mateChat = UIButton()
+    
+    var mateNumber = String()
+    
     struct state {
         var joined = false
         var created = false
@@ -163,6 +169,11 @@ class PlayNowViewController: UIViewController, CircleMenuDelegate {
         mateFrequencyLabel.text = "Frequency"
         mateFrequencyValueLabel.text = "Casual"
         
+        mateCall.setBackgroundImage(UIImage(named: "call_ic"), for: .normal)
+        mateCall.addTarget(self, action: #selector(facetime), for: .touchUpInside)
+        
+        mateSkip.setBackgroundImage(UIImage(named: "skipMate_ic"), for: .normal)
+        mateSkip.addTarget(self, action: #selector(skipMate), for: .touchUpInside)
         
         view.addSubview(gameImage)
         view.addSubview(infoLabel)
@@ -184,6 +195,8 @@ class PlayNowViewController: UIViewController, CircleMenuDelegate {
         mateProfileView.addSubview(mateSkillValueLabel)
         mateProfileView.addSubview(mateFrequencyLabel)
         mateProfileView.addSubview(mateFrequencyValueLabel)
+        mateProfileView.addSubview(mateCall)
+        mateProfileView.addSubview(mateSkip)
         
         view.setNeedsUpdateConstraints()
         
@@ -268,6 +281,7 @@ class PlayNowViewController: UIViewController, CircleMenuDelegate {
     func switchButtonState() {
         
         if !animatingButton { // start animating
+            
             if buttonView.transform.a == 0.7 {
                 UIView.animate(withDuration: 0.2, delay: 0, options: [.beginFromCurrentState], animations: {
                     self.buttonView.transform = CGAffineTransform.identity
@@ -377,11 +391,13 @@ extension PlayNowViewController {
                 if let data = snapshot.value as? [String : AnyObject] {
                     
                     if let value = data["rate"] as? Double,
-                        let pseudo = data["name"] as? String {
+                        let pseudo = data["name"] as? String,
+                        let phone = data["phoneNumber"] as? String {
                         
-                        
+                        self.mateNumber = phone
                         rate = value
                         name = pseudo
+                        
                         if let imagePath = data["profilPicPath"] as? String {
                             
                             let storage = Storage.storage()
@@ -468,6 +484,13 @@ extension PlayNowViewController {
             
             self.buttonView.isHidden = true
             
+//            self.mateProfilePicture.snp.remakeConstraints { (make) -> Void in
+//                make.width.equalTo(150)
+//                make.height.equalTo(150)
+//                make.centerX.equalTo(self.view.snp.centerX)
+//                make.top.equalTo(self.mateProfilePicture.frame.origin.y * 0.93)
+//            }
+            
             // increases y value
             self.yAnim.duration = self.animDuration
             self.yAnim.fromValue = self.mateProfilePicture.frame.origin.y
@@ -481,14 +504,18 @@ extension PlayNowViewController {
             self.groupAnim.isRemovedOnCompletion = false
             self.groupAnim.fillMode = kCAFillModeForwards
             
-            self.mateProfilePicture.layer.add(self.groupAnim, forKey: "anims")
+            //self.mateProfilePicture.layer.add(self.groupAnim, forKey: "anims")
+            
+            
             
             UIView.animate(withDuration: 0.5, delay: 0, options: [.beginFromCurrentState], animations: {() -> Void in
+                self.mateProfilePicture.frame.origin.y = self.mateProfilePicture.frame.origin.y * 0.7
                 self.mateProfileView.isHidden = false
                 self.mateProfileView.alpha = 1
+                self.mateBioLabel.alpha = 1
             }, completion: {(_ finished: Bool) -> Void in
-                self.mateSessionsValueLabel.countFrom(0, to: CGFloat(sessions), withDuration: 3.0)
-                self.mateRateValueLabel.countFrom(0, to: CGFloat(rate), withDuration: 3.0)
+                self.mateSessionsValueLabel.countFrom(0, to: CGFloat(sessions), withDuration: 2.0)
+                self.mateRateValueLabel.countFrom(0, to: CGFloat(rate), withDuration: 2.0)
             })
         })
     }
@@ -498,6 +525,8 @@ extension PlayNowViewController {
         
         roomState.created = false
         roomState.joined = false
+        roomState.createdRef = Database.database().reference().child("nothing")
+        roomState.joinedRef = Database.database().reference().child("nothing")
         
         mateResearch() { (mateFound, mateID) in
             
@@ -751,6 +780,15 @@ extension PlayNowViewController {
         }
     }
     
+    @objc func skipMate() {
+        
+        if roomState.joined {
+            quitRoom(ref: roomState.joinedRef)
+        } else if roomState.created {
+            removeRoom(ref: roomState.createdRef)
+        }
+    }
+    
     func removeRoom(ref: DatabaseReference) {
         ref.removeValue()
     }
@@ -775,6 +813,16 @@ extension PlayNowViewController {
         label.sizeToFit()
         
         return label.frame.height
+    }
+    
+    @objc func facetime() {
+        
+        if let facetimeURL:NSURL = NSURL(string: "facetime://\(self.mateNumber)") {
+            let application:UIApplication = UIApplication.shared
+            if (application.canOpenURL(facetimeURL as URL)) {
+                application.openURL(facetimeURL as URL)
+            }
+        }
     }
     
 }
@@ -823,8 +871,9 @@ extension PlayNowViewController {
         }
         mateProfilePicture.snp.makeConstraints {(make) -> Void in
             make.width.equalTo(150)
-            make.height.equalTo(buttonView.snp.width)
-            make.center.equalTo(view.snp.center)
+            make.height.equalTo(mateProfilePicture.snp.width)
+            make.centerY.equalTo(view.snp.centerY)
+            make.centerX.equalTo(view.snp.centerX)
         }
         
         makeMateProfileConstraints()
@@ -899,6 +948,18 @@ extension PlayNowViewController {
             make.height.equalTo(42)
             make.left.equalTo(mateFrequencyLabel.snp.left)
             make.top.equalTo(mateFrequencyLabel.snp.bottom).offset(2)
+        }
+        mateCall.snp.makeConstraints {(make) -> Void in
+            make.width.equalTo(50)
+            make.height.equalTo(50)
+            make.centerX.equalTo(mateProfileView.snp.centerX)
+            make.bottom.equalTo(mateProfileView.snp.bottom).offset(-25)
+        }
+        mateSkip.snp.makeConstraints {(make) -> Void in
+            make.width.equalTo(50)
+            make.height.equalTo(50)
+            make.right.equalTo(mateCall.snp.left).offset(-35)
+            make.bottom.equalTo(mateCall.snp.bottom)
         }
     }
 }

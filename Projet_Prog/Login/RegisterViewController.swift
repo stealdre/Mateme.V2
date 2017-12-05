@@ -146,9 +146,12 @@ class RegisterViewController: UIViewController {
 		}
 		
 		func registerUser(userID: String) {
-			self.ref.child("users/\(userID)/name").setValue(pseudo.text)
-			self.ref.child("users/\(userID)/phoneNumber").setValue(phoneNumber.text)
-			self.ref.child("users/\(userID)/profilePicPath").setValue("usersProfilePic/default.jpg")
+            let newRef = self.ref.child("users/\(userID)")
+			newRef.child("name").setValue(pseudo.text)
+			newRef.child("phoneNumber").setValue(phoneNumber.text)
+			newRef.child("profilePicPath").setValue("usersProfilePic/default.jpg")
+            newRef.child("rate").setValue(0.0)
+            newRef.child("bio").setValue("")
 			
 			self.present(PickImageViewController(), animated: true, completion: nil)
 		}
@@ -218,7 +221,7 @@ extension RegisterViewController {
         backButton.snp.makeConstraints { (make) -> Void in
             make.width.equalTo(70)
             make.height.equalTo(70)
-            make.left.equalTo(containerView.snp.left).offset(35)
+            make.centerX.equalTo(containerView.snp.centerX)
             make.bottom.equalTo(containerView.snp.bottom).offset(-35)
         }
 		super.updateViewConstraints()

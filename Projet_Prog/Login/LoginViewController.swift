@@ -24,7 +24,7 @@ class LoginViewController: UIViewController, UIViewControllerTransitioningDelega
 	var passwordField = SkyFloatingLabelTextField()
 	var signInButton = LoginButton()
 	var registerButton = BackButton()
-	
+    
 	override func viewDidLoad() {
 		super.viewDidLoad()
         
@@ -33,7 +33,6 @@ class LoginViewController: UIViewController, UIViewControllerTransitioningDelega
         }
         
         view.backgroundColor = .black
-        
         containerView.backgroundColor = .clear
         
         self.hideKeyboard()
@@ -225,7 +224,7 @@ extension LoginViewController {
         registerButton.snp.makeConstraints { (make) -> Void in
             make.width.equalTo(70)
             make.height.equalTo(70)
-            make.left.equalTo(containerView.snp.left).offset(35)
+            make.centerX.equalTo(containerView.snp.centerX)
             make.bottom.equalTo(containerView.snp.bottom).offset(-35)
         }
 		super.updateViewConstraints()

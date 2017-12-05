@@ -105,9 +105,7 @@ class PickImageViewController: UIViewController, UIImagePickerControllerDelegate
 			metadata.contentType = "image/jpeg"
 			
 			let uploadTask = imageRef.putData(uploadData, metadata: metadata) { (metadata, error) in
-				if let metadata = metadata {
-					//YEp
-					//print(metadata)
+				if let _ = metadata {
 				} else {
 					print(error?.localizedDescription as Any)
 					return
@@ -118,7 +116,7 @@ class PickImageViewController: UIViewController, UIImagePickerControllerDelegate
 				guard let progress = snapshot.progress else {
 					return
 				}
-				let percentage = (Double(progress.completedUnitCount) / Double(progress.totalUnitCount)) * 100
+				//let percentage = (Double(progress.completedUnitCount) / Double(progress.totalUnitCount)) * 100
 			})
 		}
 	}
@@ -158,14 +156,3 @@ extension PickImageViewController {
 		super.updateViewConstraints()
 	}
 }
-
-/*
-private func facetime(phoneNumber:String) {
-if let facetimeURL:NSURL = NSURL(string: "facetime://\(phoneNumber)") {
-let application:UIApplication = UIApplication.sharedApplication()
-if (application.canOpenURL(facetimeURL)) {
-application.openURL(facetimeURL);
-}
-}
-}
-*/
