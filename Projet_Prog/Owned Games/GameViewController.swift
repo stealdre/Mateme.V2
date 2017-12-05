@@ -297,10 +297,10 @@ class GameViewController: UIViewController {
 		else if (number == 2) {
 			return("Casual")
 		}
-		else if (number == 2) {
+		else if (number == 3) {
 			return("Middle")
 		}
-		else if (number == 2) {
+		else if (number == 4) {
 			return("Proven")
 		}
 		else {
