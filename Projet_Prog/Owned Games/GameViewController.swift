@@ -56,6 +56,8 @@ class GameViewController: UIViewController {
 	var levelLabel = UILabel()
 	let sliderFrequency = UISlider()
 	var frequencyLabel = UILabel()
+	var pseudoTextField = UITextField()
+	let pseudoLabel = UILabel()
 	
 	
     override func viewDidLoad() {
@@ -147,6 +149,12 @@ class GameViewController: UIViewController {
 		//frequencyLabel.alpha = 0.6
 		frequencyLabel.font = UIFont(name: "Roboto-Regular", size: 15)
 		frequencyLabel.textAlignment = .left
+		
+		pseudoLabel.text = "Your in-game pseudo"
+		pseudoLabel.textColor = .black
+		//pseudoLabel.alpha = 0.6
+		pseudoLabel.font = UIFont(name: "Roboto-Regular", size: 15)
+		pseudoLabel.textAlignment = .left
 
 		
 		sliderLevel.minimumValue = 0
@@ -154,6 +162,9 @@ class GameViewController: UIViewController {
 		
 		sliderFrequency.minimumValue = 0
 		sliderFrequency.maximumValue = 7
+		
+	//	pseudoTextField.placeholder = "Your pseudo here"
+		pseudoTextField.backgroundColor = .white
 		
 		sliderLevel.addTarget(self, action: #selector(updateLevelLabelValue), for: .valueChanged)
 		sliderFrequency.addTarget(self, action: #selector(updateFrequencyLabelValue), for: .valueChanged)
@@ -179,6 +190,8 @@ class GameViewController: UIViewController {
 		botContainerView.addSubview(frequencyLabel)
 		botContainerView.addSubview(sliderLevel)
 		botContainerView.addSubview(sliderFrequency)
+		botContainerView.addSubview(pseudoLabel)
+		botContainerView.addSubview(pseudoTextField)
         
         view.addSubview(playButton)
         view.addSubview(saveButton)
@@ -190,6 +203,12 @@ class GameViewController: UIViewController {
 		sliderValueFromDB() { gameParams in //!!!!!!!!!!!!gameParams doit etre set à 0 dans la DB à l'ajout du jeu!!!!!!!!
 			self.sliderLevel.value = gameParams.level
 			self.sliderFrequency.value = gameParams.frequency
+			if (gameParams.pseudo == "0") {
+				self.pseudoTextField.placeholder = "Your pseudo here"
+			}
+			else {
+				self.pseudoTextField.text = gameParams.pseudo
+			}
 			
 			self.updateLevelLabelValue()
 			self.updateFrequencyLabelValue()
@@ -234,6 +253,7 @@ class GameViewController: UIViewController {
 	@objc func saveAction() {
 		self.ref.child("users/\(user.uid)/gameParam/????GAMEID????/level").setValue(Int(sliderLevel.value))
 		self.ref.child("users/\(user.uid)/gameParam/????GAMEID????/frequency").setValue(Int(sliderFrequency.value))
+		self.ref.child("users/\(user.uid)/gameParam/????GAMEID????/pseudo").setValue(pseudoTextField.text)
 		
 		let alertController = UIAlertController(title: "Saved !", message: "Your settings have been saved !", preferredStyle: .alert)
 		let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
@@ -249,6 +269,7 @@ class GameViewController: UIViewController {
 				
 				gameParams.level = data["level"] as! Float
 				gameParams.frequency = data["frequency"] as! Float
+				gameParams.pseudo = data["pseudo"] as! String
 				
 				completion(gameParams)
 			}
@@ -268,6 +289,25 @@ class GameViewController: UIViewController {
 	@objc func updateFrequencyLabelValue() {
 		let value = String(Int(sliderFrequency.value))
 		frequencyLabel.text = "Playing days in a week : \(value)"
+		
+	func intToLevel(number: Int) -> String {
+		if (number == 1) {
+			return("Noob")
+		}
+		else if (number == 2) {
+			return("Casual")
+		}
+		else if (number == 2) {
+			return("Middle")
+		}
+		else if (number == 2) {
+			return("Proven")
+		}
+		else {
+			return("Expert")
+		}
+	}
+
 	}
 }
 
@@ -355,6 +395,18 @@ extension GameViewController {
             make.left.equalTo(lastSessionIcon.snp.right).offset(10)
             make.centerY.equalTo(lastSessionIcon.snp.centerY)
         }
+		pseudoLabel.snp.makeConstraints { (make) -> Void in
+			make.width.equalTo(botContainerView.snp.width).multipliedBy(0.8)
+			make.height.equalTo(30)
+			make.centerX.equalTo(botContainerView.snp.centerX)
+			make.centerY.equalTo(botContainerView.snp.centerY).offset(-210)
+		}
+		pseudoTextField.snp.makeConstraints { (make) -> Void in
+			make.width.equalTo(botContainerView.snp.width).multipliedBy(0.8)
+			make.height.equalTo(30)
+			make.centerX.equalTo(botContainerView.snp.centerX)
+			make.centerY.equalTo(botContainerView.snp.centerY).offset(-150)
+		}
 		levelLabel.snp.makeConstraints { (make) -> Void in
 			make.width.equalTo(botContainerView.snp.width).multipliedBy(0.8)
 			make.height.equalTo(30)

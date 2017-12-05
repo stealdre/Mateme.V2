@@ -14,6 +14,7 @@ class GameParams {
 	
 	var frequency: Float = 0.0
 	var level: Float = 0.0
+	var pseudo: String = ""
 	
 	init () {
 	}
