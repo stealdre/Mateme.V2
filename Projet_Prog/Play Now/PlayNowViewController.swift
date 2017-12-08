@@ -200,6 +200,22 @@ class PlayNowViewController: UIViewController, CircleMenuDelegate {
         
         view.setNeedsUpdateConstraints()
         
+        
+        /*
+        // upload games
+         
+        let games = ["Absolver", "Assassin Screed Untity", "Batllerite", "Borderlands 2", "Call of Duty WW2", "Counter Strike Source", "Dragon Ball Xenoverse 2", "Evolve", "Fallout 4", "Far Cry Primal", "Far Cry 4", "Far Cry 5", "FIFA 18", "Final Fantasy 15", "Fortnite", "GTA V", "H1z1", "Half life 2", "Halo 5", "Heroes of storm", "Hitman", "League of Legends", "Minecraft", "Watchdogs", "Trine 2", "Star Wars Batllefront 2", "Rocket League", "Rainbow six siege", "Portal 2", "Paragon", "Overwatch", "Overlord"]
+        
+        for game in games {
+            let uid = UUID().uuidString
+            ref.child("games").child(uid).child("name").setValue(game)
+            ref.child("games").child(uid).child("type").setValue(" ")
+            ref.child("games").child(uid).child("imagePath").setValue(" ")
+            ref.child("games").child(uid).child("description").setValue(" ")
+        }
+        
+        */
+        
     }
     
     override func viewDidAppear(_ animated: Bool) {
