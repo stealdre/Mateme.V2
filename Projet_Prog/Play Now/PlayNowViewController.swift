@@ -27,6 +27,8 @@ class PlayNowViewController: UIViewController, CircleMenuDelegate {
     let layerSize = CGFloat(100) // the width & height of the layer (when it's a square)
     
     
+    var recentGames = [String : UIImage]()
+    
     var user: User!
     let ref = Database.database().reference()
     private var databaseHandle: DatabaseHandle!
@@ -84,6 +86,35 @@ class PlayNowViewController: UIViewController, CircleMenuDelegate {
         
         user = Auth.auth().currentUser
         
+        getRecentGames() { games in
+            
+            var gamesNumber = 0
+            
+            self.recentGames = games
+            
+            self.button.isEnabled = true
+            
+            if games.count <= 6 {
+                gamesNumber = games.count
+            } else {
+                gamesNumber = 6
+            }
+            
+            self.button = CircleMenu(
+                frame: CGRect.zero,
+                normalIcon:"PlayNowButton_ic",
+                selectedIcon:"close_ic",
+                buttonsCount: gamesNumber,
+                duration: 1,
+                distance: 200)
+            
+            self.button.addTarget(self, action: #selector(self.playNowButtonTouched), for: .touchUpInside)
+            self.button.backgroundColor = .clear
+            self.button.delegate = self
+        }
+        
+        button.isEnabled = false
+        
         gameImage.isHidden = true
         gameImage.alpha = 0
         gameImage.image = UIImage(named: "35")
@@ -93,18 +124,6 @@ class PlayNowViewController: UIViewController, CircleMenuDelegate {
         infoLabel.textColor = .white
         infoLabel.textAlignment = .center
         infoLabel.font = UIFont(name: "Roboto-Bold", size: 23)
-        
-        button = CircleMenu(
-            frame: CGRect.zero,
-            normalIcon:"PlayNowButton_ic",
-            selectedIcon:"close_ic",
-            buttonsCount: 6,
-            duration: 1,
-            distance: 200)
-        
-        button.addTarget(self, action: #selector(playNowButtonTouched), for: .touchUpInside)
-        button.backgroundColor = .clear
-        button.delegate = self
         
         spinnerLoadingView.isHidden = true
         spinnerLoadingView.alpha = 0
@@ -202,19 +221,19 @@ class PlayNowViewController: UIViewController, CircleMenuDelegate {
         
         
         /*
-        // upload games
+         // upload games
          
-        let games = ["Absolver", "Assassin Screed Untity", "Batllerite", "Borderlands 2", "Call of Duty WW2", "Counter Strike Source", "Dragon Ball Xenoverse 2", "Evolve", "Fallout 4", "Far Cry Primal", "Far Cry 4", "Far Cry 5", "FIFA 18", "Final Fantasy 15", "Fortnite", "GTA V", "H1z1", "Half life 2", "Halo 5", "Heroes of storm", "Hitman", "League of Legends", "Minecraft", "Watchdogs", "Trine 2", "Star Wars Batllefront 2", "Rocket League", "Rainbow six siege", "Portal 2", "Paragon", "Overwatch", "Overlord"]
-        
-        for game in games {
-            let uid = UUID().uuidString
-            ref.child("games").child(uid).child("name").setValue(game)
-            ref.child("games").child(uid).child("type").setValue(" ")
-            ref.child("games").child(uid).child("imagePath").setValue(" ")
-            ref.child("games").child(uid).child("description").setValue(" ")
-        }
-        
-        */
+         let games = ["Absolver", "Assassin Screed Untity", "Batllerite", "Borderlands 2", "Call of Duty WW2", "Counter Strike Source", "Dragon Ball Xenoverse 2", "Evolve", "Fallout 4", "Far Cry Primal", "Far Cry 4", "Far Cry 5", "FIFA 18", "Final Fantasy 15", "Fortnite", "GTA V", "H1z1", "Half life 2", "Halo 5", "Heroes of storm", "Hitman", "League of Legends", "Minecraft", "Watchdogs", "Trine 2", "Star Wars Batllefront 2", "Rocket League", "Rainbow six siege", "Portal 2", "Paragon", "Overwatch", "Overlord"]
+         
+         for game in games {
+         let uid = UUID().uuidString
+         ref.child("games").child(uid).child("name").setValue(game)
+         ref.child("games").child(uid).child("type").setValue(" ")
+         ref.child("games").child(uid).child("imagePath").setValue(" ")
+         ref.child("games").child(uid).child("description").setValue(" ")
+         }
+         
+         */
         
     }
     
@@ -233,35 +252,95 @@ class PlayNowViewController: UIViewController, CircleMenuDelegate {
         stopSearch()
     }
     
+    func getRecentGames(completion: @escaping (_ games: [String : UIImage]) -> Void) {
+        
+        var recentGamesData = [String : UIImage]()
+        
+        ref.child("users").child(user.uid).child("games").observeSingleEvent(of: .value, with: { (snapshot) in
+            
+            if let games = snapshot.value as? [String : AnyObject] {
+                for game in games {
+                    self.getGameInfo(ID: game.key) { info in
+                        self.getGameImage(url: info.imageURL) { image in
+                            recentGamesData[game.key] = image
+                        }
+                    }
+                }
+                completion(recentGamesData)
+            }
+        })
+    }
+    
+    func getGameInfo(ID: String, completion: @escaping (_ game: Games) -> Void) {
+        
+        let ref = Database.database().reference()
+        
+        ref.child("games").child(ID).observeSingleEvent(of: .value, with: { (snapshot) in
+            
+            if let data = snapshot.value as? NSDictionary {
+                
+                let game = Games()
+                
+                game.name = data["name"]! as! String
+                game.imageURL = data["imagePath"]! as! String
+                
+                completion(game)
+            }
+        }) { (error) in
+            print(error.localizedDescription)
+        }
+    }
+    
+    func getGameImage(url: String, completion: @escaping (_ image: UIImage) -> Void) {
+        
+        let storage = Storage.storage()
+        
+        let pathReference = storage.reference(withPath: url)
+        
+        pathReference.getData(maxSize: 1 * 5000 * 5000) { data, error in
+            if let error = error {
+                print(error)
+            } else {
+                let image = UIImage(data: data!)
+                if image != nil {
+                    completion(image!)
+                }
+            }
+        }
+    }
+    
     func circleMenu(_ circleMenu: CircleMenu, willDisplay button: UIButton, atIndex: Int) {
         
         button.backgroundColor = UIColor(red:0.25, green:0.25, blue:0.25, alpha:1.0)
         
         button.contentMode = .scaleAspectFill
         button.clipsToBounds = true
-        let gameImage = UIImage(named: "\(arc4random_uniform(30))")
+        
+        let key = Array(recentGames.keys)[atIndex]
+        let gameImage = recentGames[key]
         
         button.setBackgroundImage(gameImage, for: .normal)
-        
     }
     
     @objc func playNowButtonTouched(sender: CircleMenu) {
         
         switchButtonState()
-        
     }
     
     func circleMenu(_ circleMenu: CircleMenu, buttonDidSelected button: UIButton, atIndex: Int) {
+        
         print("button did selected: \(atIndex)")
         
         animateLoading(buttonView, button, animate: true)
+        
+        let key = Array(recentGames.keys)[atIndex]
+        
+        findAMate(gameID: key) // Firebase mate search
     }
     
     func animateLoading(_ view: UIView, _ button: UIButton, animate: Bool) {
         
         if animate {
-            
-            findAMate() // Firebase state setup
             
             tapToDismissView.isHidden = false
             
@@ -500,12 +579,12 @@ extension PlayNowViewController {
             
             self.buttonView.isHidden = true
             
-//            self.mateProfilePicture.snp.remakeConstraints { (make) -> Void in
-//                make.width.equalTo(150)
-//                make.height.equalTo(150)
-//                make.centerX.equalTo(self.view.snp.centerX)
-//                make.top.equalTo(self.mateProfilePicture.frame.origin.y * 0.93)
-//            }
+            //            self.mateProfilePicture.snp.remakeConstraints { (make) -> Void in
+            //                make.width.equalTo(150)
+            //                make.height.equalTo(150)
+            //                make.centerX.equalTo(self.view.snp.centerX)
+            //                make.top.equalTo(self.mateProfilePicture.frame.origin.y * 0.93)
+            //            }
             
             // increases y value
             self.yAnim.duration = self.animDuration
@@ -537,21 +616,21 @@ extension PlayNowViewController {
     }
     
     // 1
-    func findAMate() {
+    func findAMate(gameID: String) {
         
         roomState.created = false
         roomState.joined = false
         roomState.createdRef = Database.database().reference().child("nothing")
         roomState.joinedRef = Database.database().reference().child("nothing")
         
-        mateResearch() { (mateFound, mateID) in
+        mateResearch(gameID: gameID) { (mateFound, mateID) in
             
             if mateFound {
                 print("Room joined with mate: \(mateID)")
                 
                 self.infoLabel.fadeTransition(0.4)
                 self.infoLabel.text = "A mate has been found !"
-              
+                
                 self.showNewMate(mateID: mateID)
                 
             } else {
@@ -568,12 +647,12 @@ extension PlayNowViewController {
         }
     }
     // 2
-    func mateResearch(completion: @escaping (_ mateFound: Bool, _ mateID: String) -> Void) {
+    func mateResearch(gameID: String, completion: @escaping (_ mateFound: Bool, _ mateID: String) -> Void) {
         
-        checkExistingRooms() { (userFound, usersID) in // Check if some users are looking for a mate (rooms)
+        checkExistingRooms(gameID: gameID) { (userFound, usersID) in // Check if some users are looking for a mate (rooms)
             if !userFound { // No room found
                 print("There is no player looking for a mate, creating a room...")
-                self.createRoom() { (answer, id) in
+                self.createRoom(gameID: gameID) { (answer, id) in
                     if !answer {
                         completion(false, id)
                     } else {
@@ -590,7 +669,7 @@ extension PlayNowViewController {
                     queue.enter()
                     print("Try joining room \(user)")
                     
-                    self.joinRoom(userID: user) { (roomJoined, mateID) in
+                    self.joinRoom(gameID: gameID, userID: user) { (roomJoined, mateID) in
                         if roomJoined {
                             completion(true, mateID)
                             return
@@ -601,7 +680,7 @@ extension PlayNowViewController {
                 queue.notify(queue: .main) {
                     print("No free room found")
                     if !self.roomState.joined {
-                        self.createRoom() { (answer, id) in
+                        self.createRoom(gameID: gameID) { (answer, id) in
                             if answer {
                                 completion(true, id)
                                 return
@@ -617,9 +696,9 @@ extension PlayNowViewController {
     }
     
     // 3
-    func checkExistingRooms(completion: @escaping (_ userFound: Bool, _ usersID: [String]) -> Void) {
+    func checkExistingRooms(gameID: String, completion: @escaping (_ userFound: Bool, _ usersID: [String]) -> Void) {
         
-        let refH = ref.child("matchmaking").child("ALJdXQXEmvoRDf1").child("rooms")
+        let refH = ref.child("matchmaking").child(gameID).child("rooms")
         
         refH.observeSingleEvent(of: .value, with: { (snapshot) in
             
@@ -644,9 +723,9 @@ extension PlayNowViewController {
     }
     
     // 4
-    func joinRoom(userID: String, completion: @escaping (_ roomJoined: Bool, _ mateID: String) -> Void) {
+    func joinRoom(gameID: String, userID: String, completion: @escaping (_ roomJoined: Bool, _ mateID: String) -> Void) {
         
-        checkIfRoomIsFree(userId: userID) { isFree in
+        checkIfRoomIsFree(gameID: gameID, userId: userID) { isFree in
             if isFree {
                 
                 //checkIfPlayersMatch() { isMatching in
@@ -678,7 +757,7 @@ extension PlayNowViewController {
     }
     
     //5
-    func checkIfRoomIsFree(userId: String, completion: @escaping (_ isFree: Bool) -> Void) {
+    func checkIfRoomIsFree(gameID: String, userId: String, completion: @escaping (_ isFree: Bool) -> Void) {
         
         let refH = ref.child("matchmaking").child("ALJdXQXEmvoRDf1").child("rooms").child(userId)
         
@@ -766,7 +845,7 @@ extension PlayNowViewController {
         
     }
     
-    func createRoom(completion: @escaping (_ answer: Bool, _ userId: String) -> Void) {
+    func createRoom(gameID: String, completion: @escaping (_ answer: Bool, _ userId: String) -> Void) {
         
         let newRef = ref.child("matchmaking").child("ALJdXQXEmvoRDf1").child("rooms").child(user.uid)
         newRef.setValue(0)
