@@ -21,6 +21,10 @@ class UserReviewViewController: UIViewController {
     let label = UILabel()
     let helpLabel = UILabel()
     
+    var mateID: String = ""
+    
+    let saveButton = UIButton()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -50,11 +54,18 @@ class UserReviewViewController: UIViewController {
         helpLabel.lineBreakMode = .byWordWrapping
         helpLabel.numberOfLines = 2
         
+        let saveButtonImage = UIImage(named: "gameSaveButton_ic")?.withRenderingMode(.alwaysTemplate)
+        saveButton.setImage(saveButtonImage, for: .normal)
+        saveButton.tintColor = UIColor(red:0.29, green:0.56, blue:0.89, alpha:1.0)
+        saveButton.alpha = 0
+        saveButton.addTarget(self, action: #selector(saveAction), for: .touchUpInside)
+        
         view.addSubview(gradientBG)
         view.addSubview(titleLabel)
         view.addSubview(rateView)
         view.addSubview(label)
         view.addSubview(helpLabel)
+        view.addSubview(saveButton)
     }
     
     override func viewDidLayoutSubviews() {
@@ -68,6 +79,10 @@ class UserReviewViewController: UIViewController {
         gradientBG.layer.addSublayer(gradientLayer)
         
         gradientColorsManager(gradientLayer: gradientLayer)
+    }
+    
+    @objc func saveAction() {
+        dismiss(animated: true, completion: nil)
     }
     
     func gradientColorsManager(gradientLayer: CAGradientLayer) {
@@ -131,6 +146,12 @@ extension UserReviewViewController {
             make.height.equalTo(40)
             make.centerX.equalTo(view.snp.centerX)
             make.top.equalTo(label.snp.bottom).offset(20)
+        }
+        saveButton.snp.makeConstraints { (make) -> Void in
+            make.width.equalTo(174)
+            make.height.equalTo(43)
+            make.centerX.equalTo(view.snp.centerX)
+            make.bottom.equalTo(view.snp.bottom).offset(-20)
         }
         
         super.updateViewConstraints()
