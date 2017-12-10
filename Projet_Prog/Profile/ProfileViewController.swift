@@ -268,14 +268,11 @@ extension ProfileViewController: UITableViewDelegate {
 			
 			cell?.mateName.text = profileDB.historiesArray[indexPath.row].mateName
 			cell?.gameName.text = profileDB.historiesArray[indexPath.row].gameName
-			
-			if let gameName = cell?.gameName.text {
 				
-				let url = "gamesImage/\(gameName).png"
-				print(url)
-				getStorageImage(url: url) { image in
-					cell?.gamePic.image = image
-				}
+			let url = "gamesImage/\(profileDB.historiesArray[indexPath.row].gameID).png"
+			print(url)
+			getStorageImage(url: url) { image in
+				cell?.gamePic.image = image
 			}
 
 			let date = Date()

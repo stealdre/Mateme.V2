@@ -36,7 +36,9 @@ class ProfileTableViewCell: UITableViewCell {
     
     override func prepareForReuse() {
         super.prepareForReuse()
-        
+		
+		stars.isUserInteractionEnabled = false
+		
         containerView.backgroundColor = .white
         
 		//gamePic.image = UIImage(named: "profilPic")
