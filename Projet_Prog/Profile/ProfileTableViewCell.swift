@@ -17,7 +17,7 @@ class ProfileTableViewCell: UITableViewCell {
     var gameName = UILabel()
     var sessionDate = UILabel()
     
-    var gamePic = RoundImageView()
+    var gamePic = RoundIconView()
     
     var stars = ratingStars()
     
@@ -131,4 +131,16 @@ class ratingStars: CosmosView {
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+}
+
+class RoundIconView: UIImageView {
+	
+	override func layoutSubviews() {
+		
+		self.layer.masksToBounds = true
+		self.layer.cornerRadius = self.frame.height/2
+		self.clipsToBounds = false
+		
+	}
+	
 }

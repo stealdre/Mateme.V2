@@ -269,13 +269,16 @@ extension ProfileViewController: UITableViewDelegate {
 			cell?.mateName.text = profileDB.historiesArray[indexPath.row].mateName
 			cell?.gameName.text = profileDB.historiesArray[indexPath.row].gameName
 				
-			let url = "gamesImage/\(profileDB.historiesArray[indexPath.row].gameID).png"
+			let url = "gamesIcon/\(profileDB.historiesArray[indexPath.row].gameID).png"
 			print(url)
 			getStorageImage(url: url) { image in
 				cell?.gamePic.image = image
 			}
-
-			let date = Date()
+			
+			let dateFormatter = DateFormatter()
+			dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss Z"
+			let stringDate = profileDB.historiesArray[indexPath.row].gameDate
+			let date = dateFormatter.date(from: stringDate)!
 			var dateString = ""
 			switch dayDifference(date: date) {
 			case 0:
