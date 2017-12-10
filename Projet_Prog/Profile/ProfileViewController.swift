@@ -11,14 +11,16 @@ import FirebaseAuth
 import FirebaseDatabase
 import FirebaseStorage
 
-class ProfileViewController: UIViewController, UITableViewDataSource {
+class ProfileViewController: UIViewController, UITableViewDataSource, UIImagePickerControllerDelegate,UIPopoverControllerDelegate, UINavigationControllerDelegate {
 	
 	var VCtitleLabel = UILabel()
 	
 	var profileName = ProfileName()
 	var historyTitle = HistoryCellTitle()
 	
-	let profilePic = RoundImageView()
+	var picker:UIImagePickerController?=UIImagePickerController()
+	
+	let profilePic = UIButton()
 	let ProfilePicWhiteBorder = UIView()
 	let ProfilePicAlphaBorder = UIView()
 	let profilePicOrnament = UIImageView()
@@ -30,6 +32,8 @@ class ProfileViewController: UIViewController, UITableViewDataSource {
 	var user: User!
 	var ref: DatabaseReference!
 	private var databaseHandle: DatabaseHandle!
+	var storage: Storage!
+	var storageRef: StorageReference!
 	
 	var profileDB: Profile!
 	
@@ -38,8 +42,13 @@ class ProfileViewController: UIViewController, UITableViewDataSource {
 		
 		user = Auth.auth().currentUser
 		ref = Database.database().reference()
+		storage = Storage.storage()
+		storageRef = storage.reference()
+		
+		picker?.delegate = self
 		
 		view.backgroundColor = .clear
+		profilePic.backgroundColor = .clear
 		
 		VCtitleLabel.text = "Profile"
 		VCtitleLabel.textColor = .white
@@ -77,6 +86,8 @@ class ProfileViewController: UIViewController, UITableViewDataSource {
 		
 		view.setNeedsUpdateConstraints()
 		
+		profilePic.addTarget(self, action: #selector(setProfilePic), for: .touchUpInside)
+		
 		getProfileData() { profileInfo in
 			self.profileDB = profileInfo
 			let array = self.profileDB.historiesArray
@@ -92,9 +103,14 @@ class ProfileViewController: UIViewController, UITableViewDataSource {
 			
 			self.profileName.text = self.profileDB.name //"UserName"
 			self.getStorageImage(url: self.profileDB.profilPicPath) { image in
-				self.profilePic.image = image
+				self.profilePic.setImage(image, for: .normal)
 			}
 		}
+	}
+	override func viewDidLayoutSubviews() {
+		profilePic.layer.masksToBounds = true
+		profilePic.layer.cornerRadius = profilePic.frame.height/2
+		profilePic.clipsToBounds = true
 	}
 }
 
@@ -145,6 +161,80 @@ extension ProfileViewController {
 			let name = snapshot.value as! String
 			completion(name)
 		})
+	}
+	
+	@objc func setProfilePic() {
+		let alertController = UIAlertController(title: nil, message: "Take or select a picture from your gallery.", preferredStyle: .actionSheet)
+		
+		let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { action in
+			// ...
+		}
+		alertController.addAction(cancelAction)
+		
+		let TakePicture = UIAlertAction(title: "Take picture", style: .default) { action in
+			if(UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.camera)){
+				self.picker!.allowsEditing = false
+				self.picker!.sourceType = UIImagePickerControllerSourceType.camera
+				self.picker!.cameraCaptureMode = .photo
+				self.present(self.picker!, animated: true, completion: nil)
+			}else{
+				let alert = UIAlertController(title: "Camera Not Found", message: "This device has no Camera", preferredStyle: .alert)
+				let ok = UIAlertAction(title: "OK", style:.default, handler: nil)
+				alert.addAction(ok)
+				self.present(alert, animated: true, completion: nil)
+			}
+		}
+		alertController.addAction(TakePicture)
+		
+		let SelectGallery = UIAlertAction(title: "Select from gallery", style: .default) { action in
+			self.picker!.allowsEditing = true
+			self.picker!.sourceType = UIImagePickerControllerSourceType.photoLibrary
+			self.present(self.picker!, animated: true, completion: nil)
+		}
+		alertController.addAction(SelectGallery)
+		
+		self.present(alertController, animated: true) {
+			// ...
+		}
+	}
+	func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+		dismiss(animated: true, completion: nil)
+	}
+	
+	func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+		//print(info)
+		print("ououiuou")
+		let chosenImage = info[UIImagePickerControllerOriginalImage] as! UIImage
+		//imageView.contentMode = .scaleAspectFit
+		self.profilePic.setImage(chosenImage, for: .normal)
+		
+		storeImage()//:::::::::::::::::::::::::::::::::::
+		
+		dismiss(animated: true, completion: nil)
+	}
+	
+	func storeImage() {
+		let imageRef = storageRef.child("usersProfilePic/\(user.uid).jpg")
+		if let uploadData = UIImageJPEGRepresentation(profilePic.currentImage!, 0.3) {
+			let metadata = StorageMetadata()
+			metadata.contentType = "image/jpeg"
+			
+			let uploadTask = imageRef.putData(uploadData, metadata: metadata) { (metadata, error) in
+				if let _ = metadata {
+				} else {
+					print("ERROr")
+					print(error?.localizedDescription as Any)
+					return
+				}
+				self.ref.child("users").child(self.user.uid).child("profilePicPath").setValue("usersProfilePic/\(self.user.uid).jpg")
+			}
+			uploadTask.observe(.progress, handler: { (snapshot) in
+				guard let progress = snapshot.progress else {
+					return
+				}
+				//let percentage = (Double(progress.completedUnitCount) / Double(progress.totalUnitCount)) * 100
+			})
+		}
 	}
 }
 
