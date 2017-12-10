@@ -56,8 +56,8 @@ class UserReviewViewController: UIViewController {
         
         let saveButtonImage = UIImage(named: "gameSaveButton_ic")?.withRenderingMode(.alwaysTemplate)
         saveButton.setImage(saveButtonImage, for: .normal)
-        saveButton.tintColor = UIColor(red:0.29, green:0.56, blue:0.89, alpha:1.0)
-        saveButton.alpha = 0
+        saveButton.tintColor = .white
+        saveButton.alpha = 1
         saveButton.addTarget(self, action: #selector(saveAction), for: .touchUpInside)
         
         view.addSubview(gradientBG)
@@ -66,6 +66,8 @@ class UserReviewViewController: UIViewController {
         view.addSubview(label)
         view.addSubview(helpLabel)
         view.addSubview(saveButton)
+        
+        view.setNeedsUpdateConstraints()
     }
     
     override func viewDidLayoutSubviews() {

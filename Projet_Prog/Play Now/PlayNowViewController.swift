@@ -199,6 +199,11 @@ class PlayNowViewController: UIViewController, CircleMenuDelegate {
         mateSkip.setBackgroundImage(UIImage(named: "skipMate_ic"), for: .normal)
         mateSkip.addTarget(self, action: #selector(skipMate), for: .touchUpInside)
         
+        
+        mateChat.setBackgroundImage(UIImage(named: "mateChat_ic"), for: .normal)
+        mateSkip.addTarget(self, action: #selector(chatMate), for: .touchUpInside)
+        
+        
         view.addSubview(gameImage)
         view.addSubview(infoLabel)
         view.addSubview(buttonView)
@@ -221,6 +226,7 @@ class PlayNowViewController: UIViewController, CircleMenuDelegate {
         mateProfileView.addSubview(mateFrequencyValueLabel)
         mateProfileView.addSubview(mateCall)
         mateProfileView.addSubview(mateSkip)
+        mateProfileView.addSubview(mateChat)
         
         view.setNeedsUpdateConstraints()
         
@@ -399,6 +405,14 @@ class PlayNowViewController: UIViewController, CircleMenuDelegate {
         }
     }
     
+    @objc func chatMate() {
+        let alertController = UIAlertController(title: "Coming soon !", message:
+            "Chatting with a mate is not available yet, stay tuned !", preferredStyle: UIAlertControllerStyle.alert)
+        alertController.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.default,handler: nil))
+        
+        self.present(alertController, animated: true, completion: nil)
+    }
+    
     func switchButtonState() {
         
         if !animatingButton { // start animating
@@ -533,13 +547,11 @@ extension PlayNowViewController {
                                     profilePicture = UIImage(data: imageData!)!
                                     
                                     if let history = data["history"] as? [String : AnyObject] {
-                                        print("OK")
                                         sessionNumber = history.count
                                         
                                         if let param = data["gameParam"] as? [String : AnyObject] {
                                             let parameters = param[game]
                                             
-                                            print("OK")
                                             frequency = Int(truncating: parameters!["frequency"]! as! NSNumber)
                                             level = Int(truncating: parameters!["level"]! as! NSNumber)
                                             matePseudo = parameters!["pseudo"] as! String
@@ -549,7 +561,7 @@ extension PlayNowViewController {
                                             } else {
                                                 bio = ""
                                             }
-                                            completion(name, profilePicture, bio, rate, frequency, level, sessionNumber)
+                                            completion(pseudo, profilePicture, bio, rate, frequency, level, sessionNumber)
                                         }
                                     }
                                 }
@@ -1086,12 +1098,18 @@ extension PlayNowViewController {
             make.width.equalTo(50)
             make.height.equalTo(50)
             make.centerX.equalTo(mateProfileView.snp.centerX)
-            make.bottom.equalTo(view.snp.bottom).offset(-20)
+            make.top.equalTo(mateFrequencyValueLabel.snp.bottom).offset(10)
         }
         mateSkip.snp.makeConstraints {(make) -> Void in
             make.width.equalTo(50)
             make.height.equalTo(50)
             make.right.equalTo(mateCall.snp.left).offset(-20)
+            make.bottom.equalTo(mateCall.snp.bottom)
+        }
+        mateChat.snp.makeConstraints {(make) -> Void in
+            make.width.equalTo(50)
+            make.height.equalTo(50)
+            make.left.equalTo(mateCall.snp.right).offset(20)
             make.bottom.equalTo(mateCall.snp.bottom)
         }
     }
