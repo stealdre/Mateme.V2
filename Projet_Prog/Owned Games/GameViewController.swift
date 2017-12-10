@@ -52,6 +52,8 @@ class GameViewController: UIViewController {
     let saveButton = UIButton()
     
     let closeButton = UIButton()
+    
+    var gameID: String = ""
 
 	let sliderLevel = UISlider()
 	var levelLabel = UILabel()
@@ -60,12 +62,14 @@ class GameViewController: UIViewController {
 	var pseudoTextField = SkyFloatingLabelTextField()
 	let pseudoLabel = UILabel()
 	
-	
     override func viewDidLoad() {
         super.viewDidLoad()
         
         view.backgroundColor = .black
 
+        topContainerView.backgroundColor = .clear
+        botContainerView.backgroundColor = .clear
+        
 		user = Auth.auth().currentUser
 		ref = Database.database().reference()
 		
@@ -77,10 +81,7 @@ class GameViewController: UIViewController {
         VerticalScrollView.contentOffset = CGPoint(x: 0, y: 0)
         VerticalScrollView.contentSize = CGSize(width: view.frame.size.width, height: view.frame.size.height * 2)
         
-        topContainerView.backgroundColor = .clear
-        botContainerView.backgroundColor = .clear
         
-        //gameImage.image = UIImage(named: "35")
         gameImage.contentMode = .scaleAspectFill
         gameImage.alpha = 0.1
         
@@ -209,7 +210,7 @@ class GameViewController: UIViewController {
 			self.sliderLevel.value = gameParams.level
 			self.sliderFrequency.value = gameParams.frequency
 			if (gameParams.pseudo == "0") {
-				self.pseudoTextField.placeholder = "Your pseudo here"
+				self.pseudoTextField.placeholder = "Pseudo"
 			}
 			else {
 				self.pseudoTextField.text = gameParams.pseudo
@@ -408,7 +409,7 @@ extension GameViewController {
 		}
 		pseudoTextField.snp.makeConstraints { (make) -> Void in
 			make.width.equalTo(botContainerView.snp.width).multipliedBy(0.8)
-			make.height.equalTo(30)
+			make.height.equalTo(50)
 			make.centerX.equalTo(botContainerView.snp.centerX)
 			make.centerY.equalTo(botContainerView.snp.centerY).offset(-150)
 		}

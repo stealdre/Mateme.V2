@@ -255,16 +255,17 @@ extension OwnedGamesViewController {
         
         let vc = GameViewController()
         if searchActive {
+            vc.gameID = filteredGamesArray[indexPath.row].gameID
             vc.gameImage.image = filteredGamesArray[indexPath.row].image
             vc.gameNameLabel.text = filteredGamesArray[indexPath.row].name.uppercased()
             vc.gameTypeLabel.text = filteredGamesArray[indexPath.row].type.uppercased()
         } else {
+            vc.gameID = GamesArray[indexPath.row].gameID
             vc.gameImage.image = GamesArray[indexPath.row].image
             vc.gameNameLabel.text = GamesArray[indexPath.row].name.uppercased()
             vc.gameTypeLabel.text = GamesArray[indexPath.row].type.uppercased()
         }
         vc.gameImage.alpha = 0.1
-        vc.view.backgroundColor = .white
         
         present(vc, animated: true, completion: nil)
     }
