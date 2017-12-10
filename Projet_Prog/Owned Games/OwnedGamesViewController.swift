@@ -124,19 +124,23 @@ extension OwnedGamesViewController {
                 let item = itemSnapShot as! DataSnapshot
                 self.getGameInfo(ID: item.ref.key) { game in
                     self.getGameImage(url: game.imageURL) { image in
-                        game.image = image
-                        self.GamesArray.append(game)
-                        
-                        self.indicatorView.stopAnimating()
-                        
-                        if self.GamesArray.isEmpty && !self.searchActive {
-                            self.noGamesImage.isHidden = false
-                            self.noGamesInfoLabel.isHidden = false
-                            self.noGamesHelpLabel.isHidden = false
-                        } else {
-                            self.collectionView.reloadData()
-                            self.noGamesInfoLabel.isHidden = true
-                            self.noGamesHelpLabel.isHidden = true
+                        self.getGameImage(url: game.iconURL) { icon in
+                            
+                            game.image = image
+                            game.icon = icon
+                            self.GamesArray.append(game)
+                            
+                            self.indicatorView.stopAnimating()
+                            
+                            if self.GamesArray.isEmpty && !self.searchActive {
+                                self.noGamesImage.isHidden = false
+                                self.noGamesInfoLabel.isHidden = false
+                                self.noGamesHelpLabel.isHidden = false
+                            } else {
+                                self.collectionView.reloadData()
+                                self.noGamesInfoLabel.isHidden = true
+                                self.noGamesHelpLabel.isHidden = true
+                            }
                         }
                     }
                 }
@@ -158,6 +162,7 @@ extension OwnedGamesViewController {
                 game.type = data["type"]! as! String
                 game.description = data["description"]! as! String
                 game.imageURL = data["imagePath"]! as! String
+                game.iconURL = data["iconPath"]! as! String
                 
                 completion(game)
             }
@@ -183,7 +188,7 @@ extension OwnedGamesViewController {
             }
         }
     }
-
+    
     
 }
 
@@ -258,11 +263,13 @@ extension OwnedGamesViewController {
         if searchActive {
             vc.gameID = filteredGamesArray[indexPath.row].gameID
             vc.gameImage.image = filteredGamesArray[indexPath.row].image
+            vc.gameIcon.image = filteredGamesArray[indexPath.row].icon
             vc.gameNameLabel.text = filteredGamesArray[indexPath.row].name.uppercased()
             vc.gameTypeLabel.text = filteredGamesArray[indexPath.row].type.uppercased()
         } else {
             vc.gameID = GamesArray[indexPath.row].gameID
             vc.gameImage.image = GamesArray[indexPath.row].image
+            vc.gameIcon.image = GamesArray[indexPath.row].icon
             vc.gameNameLabel.text = GamesArray[indexPath.row].name.uppercased()
             vc.gameTypeLabel.text = GamesArray[indexPath.row].type.uppercased()
         }
