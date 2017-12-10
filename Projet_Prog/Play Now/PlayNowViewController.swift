@@ -34,6 +34,8 @@ class PlayNowViewController: UIViewController, CircleMenuDelegate {
     private var databaseHandle: DatabaseHandle!
 
     var mateID = ""
+    var mateGameID = ""
+    var mateDate = Date()
     
     let buttonView = PlayNowButtonView()
     
@@ -201,8 +203,7 @@ class PlayNowViewController: UIViewController, CircleMenuDelegate {
         
         
         mateChat.setBackgroundImage(UIImage(named: "mateChat_ic"), for: .normal)
-        mateSkip.addTarget(self, action: #selector(chatMate), for: .touchUpInside)
-        
+        mateChat.addTarget(self, action: #selector(chatMate), for: .touchUpInside)
         
         view.addSubview(gameImage)
         view.addSubview(infoLabel)
@@ -288,7 +289,6 @@ class PlayNowViewController: UIViewController, CircleMenuDelegate {
                                 if count == 0 {
                                     queue.leave()
                                     completion(recentGamesData)
-                                    print(recentGamesData)
                                 }
                             }
                         }
@@ -406,11 +406,10 @@ class PlayNowViewController: UIViewController, CircleMenuDelegate {
     }
     
     @objc func chatMate() {
-        let alertController = UIAlertController(title: "Coming soon !", message:
-            "Chatting with a mate is not available yet, stay tuned !", preferredStyle: UIAlertControllerStyle.alert)
-        alertController.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.default,handler: nil))
-        
-        self.present(alertController, animated: true, completion: nil)
+        let alert = UIAlertController(title: "Coming soon !", message: "Chatting with a mate is not avalaible yet, stay tuned.", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Default action"), style: .`default`, handler: { _ in
+        }))
+        self.present(alert, animated: true, completion: nil)
     }
     
     func switchButtonState() {
@@ -575,7 +574,15 @@ extension PlayNowViewController {
     
     func showNewMate(mateID: String, game: String) {
         
+        
+        let date = Date()
+        
         self.mateID = mateID
+        self.mateGameID = game
+        self.mateDate = date
+        
+        ref.child("users").child(user.uid).child("history").child(String(describing: date)).child("gameID").setValue(game)
+        ref.child("users").child(user.uid).child("history").child(String(describing: date)).child("mateID").setValue(mateID)
         
         getUserInfosFrom(id: mateID, game: game) { (name, profilePic, bio, rate, frequency, level, sessionNumber) in
             
@@ -609,7 +616,6 @@ extension PlayNowViewController {
                 self.showMateProfile(rate: rate, frequency: frequency, level: level, sessions: sessionNumber)
                 
             })
-            
         }
     }
     
@@ -623,13 +629,6 @@ extension PlayNowViewController {
         }, completion: {(_ finished: Bool) -> Void in
             
             self.buttonView.isHidden = true
-            
-            //            self.mateProfilePicture.snp.remakeConstraints { (make) -> Void in
-            //                make.width.equalTo(150)
-            //                make.height.equalTo(150)
-            //                make.centerX.equalTo(self.view.snp.centerX)
-            //                make.top.equalTo(self.mateProfilePicture.frame.origin.y * 0.93)
-            //            }
             
             // increases y value
             self.yAnim.duration = self.animDuration
@@ -646,8 +645,6 @@ extension PlayNowViewController {
             
             //self.mateProfilePicture.layer.add(self.groupAnim, forKey: "anims")
             
-            
-            
             UIView.animate(withDuration: 0.5, delay: 0, options: [.beginFromCurrentState], animations: {() -> Void in
                 self.mateProfilePicture.frame.origin.y = self.mateProfilePicture.frame.origin.y * 0.7
                 self.mateProfileView.isHidden = false
@@ -656,6 +653,13 @@ extension PlayNowViewController {
             }, completion: {(_ finished: Bool) -> Void in
                 self.mateSessionsValueLabel.countFrom(0, to: CGFloat(sessions), withDuration: 2.0)
                 self.mateRateValueLabel.countFrom(0, to: CGFloat(rate), withDuration: 2.0)
+                
+                self.mateProfilePicture.snp.remakeConstraints { (make) -> Void in
+                    make.width.equalTo(150)
+                    make.height.equalTo(150)
+                    make.centerX.equalTo(self.view.snp.centerX)
+                    make.top.equalTo(self.mateProfilePicture.frame.origin.y * 0.93)
+                }
             })
         })
     }
@@ -925,6 +929,9 @@ extension PlayNowViewController {
         let vc = UserReviewViewController()
         
         vc.mateID = mateID
+        vc.gameID = mateGameID
+        vc.date = mateDate
+        
         show(vc, sender: AnyObject.self)
         
         if roomState.joined {
@@ -1030,7 +1037,7 @@ extension PlayNowViewController {
         
         mateProfileView.snp.makeConstraints {(make) -> Void in
             make.width.equalTo(view.snp.width).multipliedBy(0.85)
-            make.height.equalTo(view.snp.height).multipliedBy(0.7)
+            make.height.equalTo(view.snp.height).multipliedBy(0.9)
             make.centerX.equalTo(view.snp.centerX)
             make.top.equalTo(infoLabel.snp.bottom).offset(10)
         }
@@ -1098,7 +1105,7 @@ extension PlayNowViewController {
             make.width.equalTo(50)
             make.height.equalTo(50)
             make.centerX.equalTo(mateProfileView.snp.centerX)
-            make.top.equalTo(mateFrequencyValueLabel.snp.bottom).offset(10)
+            make.top.equalTo(mateFrequencyValueLabel.snp.bottom).offset(15)
         }
         mateSkip.snp.makeConstraints {(make) -> Void in
             make.width.equalTo(50)

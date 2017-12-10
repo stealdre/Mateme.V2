@@ -8,6 +8,8 @@
 
 import UIKit
 import TTGEmojiRate
+import FirebaseDatabase
+import FirebaseAuth
 
 class UserReviewViewController: UIViewController {
     
@@ -22,11 +24,18 @@ class UserReviewViewController: UIViewController {
     let helpLabel = UILabel()
     
     var mateID: String = ""
+    var gameID: String = ""
+    var date: Date!
     
     let saveButton = UIButton()
     
+    var user: User!
+    let ref = Database.database().reference()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+         user = Auth.auth().currentUser
         
         gradientColors = [0 : [UIColor(red:0.26, green:0.91, blue:0.75, alpha:1.0), UIColor(red:0.15, green:0.80, blue:                     0.24, alpha:1.0)],
                           1 : [UIColor(red:0.98, green:0.85, blue:0.38, alpha:1.0), UIColor(red:0.97, green:0.42, blue:0.11, alpha:1.0)],
@@ -84,6 +93,9 @@ class UserReviewViewController: UIViewController {
     }
     
     @objc func saveAction() {
+        
+        ref.child("users").child(user.uid).child("history").child(String(describing: date)).child("rate").setValue(Int(rateView.rateValue))
+        
         dismiss(animated: true, completion: nil)
     }
     

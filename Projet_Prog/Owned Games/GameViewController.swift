@@ -85,7 +85,7 @@ class GameViewController: UIViewController {
         gameImage.contentMode = .scaleAspectFill
         gameImage.alpha = 0.1
         
-        gameIcon.image = UIImage(named: "League_of_Legends_Icon")
+        gameIcon.clipsToBounds = false
         
         gameNameLabel.textColor = .white
         gameNameLabel.font = UIFont(name: "Roboto-Black", size: 49)
@@ -137,7 +137,9 @@ class GameViewController: UIViewController {
         saveButton.alpha = 0
 		saveButton.addTarget(self, action: #selector(saveAction), for: .touchUpInside)
         
-        closeButton.setImage(UIImage(named: "close_ic"), for: .normal)
+        let closeButtonImage = UIImage(named: "close_ic")?.withRenderingMode(.alwaysTemplate)
+        closeButton.setImage(closeButtonImage, for: .normal)
+        closeButton.tintColor = .white
         closeButton.addTarget(self, action: #selector(closeAction), for: .touchUpInside)
 		
 		
@@ -373,7 +375,7 @@ extension GameViewController {
         }
         gameIcon.snp.makeConstraints { (make) -> Void in
             make.width.equalTo(topContainerView.snp.width).multipliedBy(0.7)
-            make.height.equalTo(gameIcon.snp.height)
+            make.height.equalTo(gameIcon.snp.width)
             make.centerX.equalTo(topContainerView.snp.centerX)
             make.bottom.equalTo(gameTypeLabel.snp.top).offset(-20)
         }
@@ -456,10 +458,10 @@ extension GameViewController {
             make.bottom.equalTo(view.snp.bottom).offset(-20)
         }
         closeButton.snp.makeConstraints { (make) -> Void in
-            make.width.equalTo(40)
-            make.height.equalTo(40)
-            make.right.equalTo(view.snp.right).offset(-20)
-            make.top.equalTo(view.snp.top).offset(30)
+            make.width.equalTo(60)
+            make.height.equalTo(60)
+            make.right.equalTo(view.snp.right).offset(-10)
+            make.top.equalTo(view.snp.top).offset(20)
         }
         
         super.updateViewConstraints()
