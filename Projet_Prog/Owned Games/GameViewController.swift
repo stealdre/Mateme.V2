@@ -9,6 +9,7 @@
 import UIKit
 import FirebaseAuth
 import FirebaseDatabase
+import SkyFloatingLabelTextField
 
 class GameViewController: UIViewController {
 	
@@ -56,12 +57,14 @@ class GameViewController: UIViewController {
 	var levelLabel = UILabel()
 	let sliderFrequency = UISlider()
 	var frequencyLabel = UILabel()
-	var pseudoTextField = UITextField()
+	var pseudoTextField = SkyFloatingLabelTextField()
 	let pseudoLabel = UILabel()
 	
 	
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        view.backgroundColor = .black
 
 		user = Auth.auth().currentUser
 		ref = Database.database().reference()
@@ -83,7 +86,7 @@ class GameViewController: UIViewController {
         
         gameIcon.image = UIImage(named: "League_of_Legends_Icon")
         
-        gameNameLabel.textColor = .black
+        gameNameLabel.textColor = .white
         gameNameLabel.font = UIFont(name: "Roboto-Black", size: 49)
         gameNameLabel.textAlignment = .left
         gameNameLabel.numberOfLines = 3
@@ -91,29 +94,29 @@ class GameViewController: UIViewController {
         gameNameLabel.adjustsFontSizeToFitWidth = true
         gameNameLabel.minimumScaleFactor = 0.1
         
-        gameTypeLabel.textColor = .black
+        gameTypeLabel.textColor = .white
         gameTypeLabel.alpha = 0.4
         gameTypeLabel.textAlignment = .left
         gameTypeLabel.font = UIFont(name: "Roboto-Medium", size: 39)
         
         sessionNumberIcon.image = UIImage(named: "gamepad_ic")
         sessionNumberIcon.image = sessionNumberIcon.image!.withRenderingMode(.alwaysTemplate)
-        sessionNumberIcon.tintColor = .black
+        sessionNumberIcon.tintColor = .white
         sessionNumberIcon.alpha = 0.6
         
         sessionNumberLabel.text = "3"
-        sessionNumberLabel.textColor = .black
+        sessionNumberLabel.textColor = .white
         sessionNumberLabel.alpha = 0.6
         sessionNumberLabel.font = UIFont(name: "Roboto-Regular", size: 30)
         sessionNumberLabel.textAlignment = .left
         
         lastSessionIcon.image = UIImage(named: "clock_ic")
         lastSessionIcon.image = lastSessionIcon.image!.withRenderingMode(.alwaysTemplate)
-        lastSessionIcon.tintColor = .black
+        lastSessionIcon.tintColor = .white
         lastSessionIcon.alpha = 0.6
         
         lastSessionLabel.text = "Last: 07/11/2017"
-        lastSessionLabel.textColor = .black
+        lastSessionLabel.textColor = .white
         lastSessionLabel.alpha = 0.6
         lastSessionLabel.font = UIFont(name: "Roboto-Regular", size: 30)
         lastSessionLabel.textAlignment = .left
@@ -137,21 +140,20 @@ class GameViewController: UIViewController {
         closeButton.addTarget(self, action: #selector(closeAction), for: .touchUpInside)
 		
 		
-		
 		levelLabel.text = "Your experience in the game"
-		levelLabel.textColor = .black
+		levelLabel.textColor = .white
 		//levelLabel.alpha = 0.6
 		levelLabel.font = UIFont(name: "Roboto-Regular", size: 15)
 		levelLabel.textAlignment = .left
 		
 		frequencyLabel.text = "Playing days in a week"
-		frequencyLabel.textColor = .black
+		frequencyLabel.textColor = .white
 		//frequencyLabel.alpha = 0.6
 		frequencyLabel.font = UIFont(name: "Roboto-Regular", size: 15)
 		frequencyLabel.textAlignment = .left
 		
 		pseudoLabel.text = "Your in-game pseudo"
-		pseudoLabel.textColor = .black
+		pseudoLabel.textColor = .white
 		//pseudoLabel.alpha = 0.6
 		pseudoLabel.font = UIFont(name: "Roboto-Regular", size: 15)
 		pseudoLabel.textAlignment = .left
@@ -163,9 +165,12 @@ class GameViewController: UIViewController {
 		sliderFrequency.minimumValue = 0
 		sliderFrequency.maximumValue = 7
 		
-	//	pseudoTextField.placeholder = "Your pseudo here"
-		pseudoTextField.backgroundColor = .white
-		
+        pseudoTextField.title = "Pseudo"
+        pseudoTextField.selectedTitleColor = .white
+        pseudoTextField.selectedLineColor = .white
+        pseudoTextField.placeholder = "Pseudo"
+        pseudoTextField.textColor = .white
+        		
 		sliderLevel.addTarget(self, action: #selector(updateLevelLabelValue), for: .valueChanged)
 		sliderFrequency.addTarget(self, action: #selector(updateFrequencyLabelValue), for: .valueChanged)
 		

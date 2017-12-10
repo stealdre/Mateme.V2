@@ -35,7 +35,6 @@ class OwnedGamesViewController: UIViewController, UICollectionViewDataSource, UI
     
     var indicatorView: NVActivityIndicatorView!
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -89,7 +88,6 @@ class OwnedGamesViewController: UIViewController, UICollectionViewDataSource, UI
     
     func initCollectionView() {
         
-        
         let layout = UICollectionViewFlowLayout()
         
         layout.sectionInset = UIEdgeInsets(top: 5, left: 10, bottom: 10, right: 5)
@@ -103,7 +101,6 @@ class OwnedGamesViewController: UIViewController, UICollectionViewDataSource, UI
         collectionView.allowsMultipleSelection = false
         
         collectionView.register(OwnedGamesCollectionViewCell.self, forCellWithReuseIdentifier: "OGCell")
-        
     }
     
     deinit {
@@ -121,44 +118,31 @@ extension OwnedGamesViewController {
         GamesArray.removeAll()
         filteredGamesArray.removeAll()
         
-        ref.child("games").observeSingleEvent(of: .value, with: { (snapshot) in
+        ref.child("users").child("user1").child("games").observeSingleEvent(of: .value, with: { (snapshot) in
             
             for itemSnapShot in snapshot.children {
                 let item = itemSnapShot as! DataSnapshot
-                self.getGameID(snapshot: item) { id in
-                    if !id.isEmpty {
-                        self.getGameInfo(ID: id) { game in
-                            self.getGameImage(url: game.imageURL) { image in
-                                game.image = image
-                                self.GamesArray.append(game)
-                                
-                                self.indicatorView.stopAnimating()
-                                
-                                if self.GamesArray.isEmpty && !self.searchActive {
-                                    self.noGamesImage.isHidden = false
-                                    self.noGamesInfoLabel.isHidden = false
-                                    self.noGamesHelpLabel.isHidden = false
-                                } else {
-                                    self.collectionView.reloadData()
-                                    self.noGamesInfoLabel.isHidden = true
-                                    self.noGamesHelpLabel.isHidden = true
-                                }
-                            }
+                self.getGameInfo(ID: item.ref.key) { game in
+                    self.getGameImage(url: game.imageURL) { image in
+                        game.image = image
+                        self.GamesArray.append(game)
+                        
+                        self.indicatorView.stopAnimating()
+                        
+                        if self.GamesArray.isEmpty && !self.searchActive {
+                            self.noGamesImage.isHidden = false
+                            self.noGamesInfoLabel.isHidden = false
+                            self.noGamesHelpLabel.isHidden = false
+                        } else {
+                            self.collectionView.reloadData()
+                            self.noGamesInfoLabel.isHidden = true
+                            self.noGamesHelpLabel.isHidden = true
                         }
                     }
                 }
             }
         })
     }
-    
-    func getGameID(snapshot: DataSnapshot, completion: @escaping (_ id: String) -> Void) {
-        
-        if let value = snapshot.value {
-            let id = value as! String
-            completion(id)
-        }
-    }
-    
     
     func getGameInfo(ID: String, completion: @escaping (_ game: Games) -> Void) {
         
@@ -180,8 +164,6 @@ extension OwnedGamesViewController {
         }) { (error) in
             print(error.localizedDescription)
         }
-        
-        
     }
     
     func getGameImage(url: String, completion: @escaping (_ image: UIImage) -> Void) {
@@ -288,7 +270,7 @@ extension OwnedGamesViewController {
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-		view.endEditing(true);
+        view.endEditing(true);
     }
 }
 

@@ -77,7 +77,6 @@ class ProfileViewController: UIViewController, UITableViewDataSource {
 		
 		view.setNeedsUpdateConstraints()
 		
-		
 		getProfileData() { profileInfo in
 			self.profileDB = profileInfo
 			let array = self.profileDB.historiesArray
@@ -140,7 +139,8 @@ extension ProfileViewController {
 	}
 	
 	func getValueFromID(type: String, id: String, completion: @escaping (_ name: String) -> Void) {
-		
+		print(type)
+        print(id)
         ref.child(type).child(id).child("name").observeSingleEvent(of: .value, with: { (snapshot) in
 			let name = snapshot.value as! String
 			completion(name)

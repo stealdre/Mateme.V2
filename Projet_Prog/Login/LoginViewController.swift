@@ -165,6 +165,7 @@ class LoginViewController: UIViewController, UIViewControllerTransitioningDelega
 				}
 			})
 		}
+        
 		prompt.addTextField(configurationHandler: nil)
 		prompt.addAction(okAction)
 		present(prompt, animated: true, completion: nil)

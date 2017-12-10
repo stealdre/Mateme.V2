@@ -16,19 +16,15 @@ class Games {
     var name: String = ""
     var type: String = ""
     var image: UIImage = UIImage()
+    var icon: UIImage = UIImage()
     var description: String = ""
     var imageURL: String = ""
+    var iconURL: String = ""
     
     
     init () {
                 
         
-        
-    }
-    
-    func uploadGames() {
-        
-        var games = ["id" : ["name" : "LOL", "imagePath" : "/.img"]]
         
     }
     
