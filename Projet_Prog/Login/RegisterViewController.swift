@@ -153,7 +153,7 @@ class RegisterViewController: UIViewController {
             newRef.child("rate").setValue(0.0)
             newRef.child("bio").setValue("")
 			
-			self.present(PickImageViewController(), animated: true, completion: nil)
+			self.present(MenuViewController(), animated: true, completion: nil)
 		}
 	}
 
