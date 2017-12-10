@@ -65,6 +65,9 @@ class GameViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.hideKeyboard()
+
+        
         view.backgroundColor = .black
 
         topContainerView.backgroundColor = .clear
@@ -465,6 +468,20 @@ extension GameViewController {
         
         super.updateViewConstraints()
     }
-    
 }
 
+
+extension GameViewController {
+    
+    func hideKeyboard() {
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(
+            target: self,
+            action: #selector(GameViewController.dismissKeyboard))
+        
+        botContainerView.addGestureRecognizer(tap)
+    }
+    
+    @objc func dismissKeyboard() {
+        view.endEditing(true)
+    }
+}

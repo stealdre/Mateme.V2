@@ -65,12 +65,14 @@ class RegisterViewController: UIViewController {
         passwordField.placeholder = "Password"
         passwordField.selectedLineColor = .black
         passwordField.lineColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.8)
+        passwordField.isSecureTextEntry = true
         
         confirmPasswordField.title = "Confirm Password"
         confirmPasswordField.selectedTitleColor = .black
 		confirmPasswordField.placeholder = "Confirm Password"
         confirmPasswordField.selectedLineColor = .black
         confirmPasswordField.lineColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.8)
+        confirmPasswordField.isSecureTextEntry = true
         
 		registerButton.setTitle("Register", for: .normal)
         registerButton.setTitleColor(.black, for: .normal)
