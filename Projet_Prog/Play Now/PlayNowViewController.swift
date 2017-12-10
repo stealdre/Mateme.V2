@@ -969,7 +969,7 @@ extension PlayNowViewController {
     
     @objc func facetime() {
         
-        if let facetimeURL:NSURL = NSURL(string: "facetime://\(self.mateNumber)") {
+        if let facetimeURL:NSURL = NSURL(string: "facetime-audio://\(self.mateNumber)") {
             let application:UIApplication = UIApplication.shared
             if (application.canOpenURL(facetimeURL as URL)) {
                 application.openURL(facetimeURL as URL)
