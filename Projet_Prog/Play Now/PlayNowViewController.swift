@@ -32,6 +32,8 @@ class PlayNowViewController: UIViewController, CircleMenuDelegate {
     var user: User!
     let ref = Database.database().reference()
     private var databaseHandle: DatabaseHandle!
+
+    var mateID = ""
     
     let buttonView = PlayNowButtonView()
     
@@ -263,20 +265,29 @@ class PlayNowViewController: UIViewController, CircleMenuDelegate {
         
         var recentGamesData = [String : [UIImage]]()
         
-        ref.child("users").child(user.uid).child("games").observeSingleEvent(of: .value, with: { (snapshot) in
+        
+        ref.child("users").child("user1").child("games").observeSingleEvent(of: .value, with: { (snapshot) in
             
             if let games = snapshot.value as? [String : AnyObject] {
+                let queue = DispatchGroup()
+                var count = games.count
+                
                 for game in games {
+                    count -= 1
                     self.getGameInfo(ID: game.key) { info in
+                        queue.enter()
                         self.getGameImage(url: info.imageURL) { image in
                             self.getGameImage(url: info.iconURL) { icon in
-                                recentGamesData[game.key]![0] = image
-                                recentGamesData[game.key]![1] = icon
+                                recentGamesData[game.key] = [image, icon]
+                                if count == 0 {
+                                    queue.leave()
+                                    completion(recentGamesData)
+                                    print(recentGamesData)
+                                }
                             }
                         }
                     }
                 }
-                completion(recentGamesData)
             }
         })
     }
@@ -325,12 +336,12 @@ class PlayNowViewController: UIViewController, CircleMenuDelegate {
         button.backgroundColor = UIColor(red:0.25, green:0.25, blue:0.25, alpha:1.0)
         
         button.contentMode = .scaleAspectFill
-        button.clipsToBounds = true
+        button.clipsToBounds = false
         
         let key = Array(recentGames.keys)[atIndex]
         let gameImage = recentGames[key]![1]
         
-        button.setBackgroundImage(gameImage, for: .normal)
+        button.setImage(gameImage, for: .normal)
     }
     
     @objc func playNowButtonTouched(sender: CircleMenu) {
@@ -493,6 +504,7 @@ extension PlayNowViewController {
         var frequency = 0
         var level = 0
         var sessionNumber = 0
+        var matePseudo = ""
         
         newRef.observeSingleEvent(of: .value, with: { (snapshot) in
             
@@ -509,7 +521,7 @@ extension PlayNowViewController {
                         name = pseudo
                         
                         if let imagePath = data["profilPicPath"] as? String {
-                            
+
                             let storage = Storage.storage()
                             let pathReference = storage.reference(withPath: imagePath)
                             
@@ -517,24 +529,28 @@ extension PlayNowViewController {
                                 if let error = error1 {
                                     print(error)
                                 } else {
-                                    
+
                                     profilePicture = UIImage(data: imageData!)!
                                     
                                     if let history = data["history"] as? [String : AnyObject] {
+                                        print("OK")
                                         sessionNumber = history.count
-                                        newRef.child("gameParam").child(game).observeSingleEvent(of: .value, with: { (snapshot) in
-                                            if let parameters = snapshot.value as? [String : Int] {
-                                                frequency = Int(parameters["frequency"]!)
-                                                level = Int(parameters["level"]!)
-                                                
-                                                if let bioValue = data["bio"] as? String {
-                                                    bio = bioValue
-                                                } else {
-                                                    bio = ""
-                                                }
-                                                completion(name, profilePicture, bio, rate, frequency, level, sessionNumber)
+                                        
+                                        if let param = data["gameParam"] as? [String : AnyObject] {
+                                            let parameters = param[game]
+                                            
+                                            print("OK")
+                                            frequency = Int(truncating: parameters!["frequency"]! as! NSNumber)
+                                            level = Int(truncating: parameters!["level"]! as! NSNumber)
+                                            matePseudo = parameters!["pseudo"] as! String
+                                            
+                                            if let bioValue = data["bio"] as? String {
+                                                bio = bioValue
+                                            } else {
+                                                bio = ""
                                             }
-                                        })
+                                            completion(name, profilePicture, bio, rate, frequency, level, sessionNumber)
+                                        }
                                     }
                                 }
                             }
@@ -545,9 +561,11 @@ extension PlayNowViewController {
         })
     }
     
-    func showNewMate(mateID: String) {
+    func showNewMate(mateID: String, game: String) {
         
-        getUserInfosFrom(id: mateID, game: "ALJdXQXEmvoRDf1") { (name, profilePic, bio, rate, frequency, level, sessionNumber) in
+        self.mateID = mateID
+        
+        getUserInfosFrom(id: mateID, game: game) { (name, profilePic, bio, rate, frequency, level, sessionNumber) in
             
             self.infoLabel.fadeTransition(0.4)
             self.infoLabel.text = name
@@ -646,7 +664,7 @@ extension PlayNowViewController {
                 self.infoLabel.fadeTransition(0.4)
                 self.infoLabel.text = "A mate has been found !"
                 
-                self.showNewMate(mateID: mateID)
+                self.showNewMate(mateID: mateID, game: gameID)
                 
             } else {
                 print("No mate found")
@@ -747,7 +765,7 @@ extension PlayNowViewController {
                 
                 print("Found a free room, awaiting for the other player to accept...")
                 
-                let newRef = self.ref.child("matchmaking").child("ALJdXQXEmvoRDf1").child("rooms").child(userID)
+                let newRef = self.ref.child("matchmaking").child(gameID).child("rooms").child(userID)
                 newRef.setValue(1)
                 newRef.child(self.user.uid).setValue(0)
                 
@@ -774,7 +792,7 @@ extension PlayNowViewController {
     //5
     func checkIfRoomIsFree(gameID: String, userId: String, completion: @escaping (_ isFree: Bool) -> Void) {
         
-        let refH = ref.child("matchmaking").child("ALJdXQXEmvoRDf1").child("rooms").child(userId)
+        let refH = ref.child("matchmaking").child(gameID).child("rooms").child(userId)
         
         refH.observeSingleEvent(of: .value, with: { (snapshot) in
             
@@ -862,7 +880,7 @@ extension PlayNowViewController {
     
     func createRoom(gameID: String, completion: @escaping (_ answer: Bool, _ userId: String) -> Void) {
         
-        let newRef = ref.child("matchmaking").child("ALJdXQXEmvoRDf1").child("rooms").child(user.uid)
+        let newRef = ref.child("matchmaking").child(gameID).child("rooms").child(user.uid)
         newRef.setValue(0)
         
         roomState.created = true
@@ -891,6 +909,11 @@ extension PlayNowViewController {
     }
     
     @objc func skipMate() {
+        
+        let vc = UserReviewViewController()
+        
+        vc.mateID = mateID
+        show(vc, sender: AnyObject.self)
         
         if roomState.joined {
             quitRoom(ref: roomState.joinedRef)
@@ -1063,12 +1086,12 @@ extension PlayNowViewController {
             make.width.equalTo(50)
             make.height.equalTo(50)
             make.centerX.equalTo(mateProfileView.snp.centerX)
-            make.bottom.equalTo(mateProfileView.snp.bottom).offset(-25)
+            make.bottom.equalTo(view.snp.bottom).offset(-20)
         }
         mateSkip.snp.makeConstraints {(make) -> Void in
             make.width.equalTo(50)
             make.height.equalTo(50)
-            make.right.equalTo(mateCall.snp.left).offset(-35)
+            make.right.equalTo(mateCall.snp.left).offset(-20)
             make.bottom.equalTo(mateCall.snp.bottom)
         }
     }

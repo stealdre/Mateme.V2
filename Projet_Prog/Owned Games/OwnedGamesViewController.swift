@@ -183,6 +183,7 @@ extension OwnedGamesViewController {
             }
         }
     }
+
     
 }
 
@@ -271,7 +272,7 @@ extension OwnedGamesViewController {
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        view.endEditing(true);
+        view.endEditing(true)
     }
 }
 
