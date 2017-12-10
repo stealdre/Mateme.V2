@@ -967,7 +967,7 @@ extension PlayNowViewController {
         return label.frame.height
     }
     
-    @objc func facetime() {
+	/*@objc func facetime() {
         
         if let facetimeURL:NSURL = NSURL(string: "facetime-audio://\(self.mateNumber)") {
             let application:UIApplication = UIApplication.shared
@@ -975,7 +975,17 @@ extension PlayNowViewController {
                 application.openURL(facetimeURL as URL)
             }
         }
-    }
+    }*/
+	@objc func facetime() {
+		let phoneNumber = self.mateNumber
+		let cleanNumber = phoneNumber.replacingOccurrences(of: " ", with: "").replacingOccurrences(of: "-", with: "")
+		if let facetimeURL:URL = URL(string: "facetime-audio://\(cleanNumber)") {
+			let application:UIApplication = UIApplication.shared
+			if (application.canOpenURL(facetimeURL)) {
+				application.open(facetimeURL,options: [:], completionHandler: nil)
+			}
+		}
+	}
     
 }
 
