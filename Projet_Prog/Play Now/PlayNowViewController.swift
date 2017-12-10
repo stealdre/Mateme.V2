@@ -533,13 +533,11 @@ extension PlayNowViewController {
                                     profilePicture = UIImage(data: imageData!)!
                                     
                                     if let history = data["history"] as? [String : AnyObject] {
-                                        print("OK")
                                         sessionNumber = history.count
                                         
                                         if let param = data["gameParam"] as? [String : AnyObject] {
                                             let parameters = param[game]
                                             
-                                            print("OK")
                                             frequency = Int(truncating: parameters!["frequency"]! as! NSNumber)
                                             level = Int(truncating: parameters!["level"]! as! NSNumber)
                                             matePseudo = parameters!["pseudo"] as! String
@@ -549,7 +547,7 @@ extension PlayNowViewController {
                                             } else {
                                                 bio = ""
                                             }
-                                            completion(name, profilePicture, bio, rate, frequency, level, sessionNumber)
+                                            completion(pseudo, profilePicture, bio, rate, frequency, level, sessionNumber)
                                         }
                                     }
                                 }
@@ -1086,7 +1084,7 @@ extension PlayNowViewController {
             make.width.equalTo(50)
             make.height.equalTo(50)
             make.centerX.equalTo(mateProfileView.snp.centerX)
-            make.bottom.equalTo(view.snp.bottom).offset(-20)
+            make.bottom.equalTo(mateProfileView.snp.bottom).offset(20)
         }
         mateSkip.snp.makeConstraints {(make) -> Void in
             make.width.equalTo(50)
