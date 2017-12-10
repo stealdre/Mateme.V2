@@ -81,7 +81,6 @@ class GameViewController: UIViewController {
         VerticalScrollView.contentOffset = CGPoint(x: 0, y: 0)
         VerticalScrollView.contentSize = CGSize(width: view.frame.size.width, height: view.frame.size.height * 2)
         
-        
         gameImage.contentMode = .scaleAspectFill
         gameImage.alpha = 0.1
         
@@ -98,7 +97,7 @@ class GameViewController: UIViewController {
         gameTypeLabel.textColor = .white
         gameTypeLabel.alpha = 0.4
         gameTypeLabel.textAlignment = .left
-        gameTypeLabel.font = UIFont(name: "Roboto-Medium", size: 39)
+        gameTypeLabel.font = UIFont(name: "Roboto-Medium", size: 20)
         
         sessionNumberIcon.image = UIImage(named: "gamepad_ic")
         sessionNumberIcon.image = sessionNumberIcon.image!.withRenderingMode(.alwaysTemplate)
@@ -363,7 +362,7 @@ extension GameViewController {
         }
         gameTypeLabel.snp.makeConstraints { (make) -> Void in
             make.width.equalTo(topContainerView.snp.width).multipliedBy(0.8)
-            make.height.equalTo(32)
+            make.height.equalTo(22)
             make.left.equalTo(topContainerView.snp.left).offset(20)
             make.bottom.equalTo(gameNameLabel.snp.top)
         }
