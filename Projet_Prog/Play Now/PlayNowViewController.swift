@@ -578,6 +578,7 @@ extension PlayNowViewController {
         
         ref.child("users").child(user.uid).child("history").child(String(describing: date)).child("gameID").setValue(game)
         ref.child("users").child(user.uid).child("history").child(String(describing: date)).child("mateID").setValue(mateID)
+        ref.child("users").child(user.uid).child("history").child(String(describing: date)).child("rate").setValue(0)
         
         getUserInfosFrom(id: mateID, game: game) { (name, profilePic, bio, rate, frequency, level, sessionNumber) in
             
