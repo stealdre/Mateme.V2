@@ -35,6 +35,8 @@ class OwnedGamesViewController: UIViewController, UICollectionViewDataSource, UI
     
     var indicatorView: NVActivityIndicatorView!
     
+    var gameSuppID: String = ""
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -126,6 +128,7 @@ extension OwnedGamesViewController {
                     self.getGameImage(url: game.imageURL) { image in
                         self.getGameImage(url: game.iconURL) { icon in
                             
+                            game.gameID = item.ref.key
                             game.image = image
                             game.icon = icon
                             self.GamesArray.append(game)
@@ -241,6 +244,9 @@ extension OwnedGamesViewController {
                 cell.contentView.layer.cornerRadius = 10
                 cell.contentView.clipsToBounds = true
                 
+                cell.playButton.addTarget(self, action: #selector(self.gameSupp), for: .touchUpInside)
+                cell.playButton.tag = indexPath.row
+                
                 if self.searchActive {
                     cell.gameImage.image = self.filteredGamesArray[indexPath.row].image
                     cell.gameNameLabel.text = self.filteredGamesArray[indexPath.row].name
@@ -255,6 +261,27 @@ extension OwnedGamesViewController {
             })
         }
         cell.queue.addOperation(operation)
+    }
+    
+    @objc func gameSupp(sender: UIButton) {
+        
+        let index = sender.tag
+        
+        if searchActive {
+            let gameID = filteredGamesArray[index].gameID
+            ref.child("users").child(user.uid).child("games").child(gameID).removeValue()
+        } else {
+            let gameID = GamesArray[index].gameID
+            ref.child("users").child(user.uid).child("games").child(gameID).removeValue()
+        }
+        
+        filteredGamesArray.removeAll()
+        GamesArray.removeAll()
+        
+        collectionView.reloadData()
+        
+        startObservingDatabase()
+        
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {

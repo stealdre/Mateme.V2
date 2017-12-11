@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		380A19CD1FDEE799009017AF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 380A19CC1FDEE799009017AF /* LaunchScreen.storyboard */; };
 		3821369F1F8FEA7200C93641 /* AddGameUITableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3821369E1F8FEA7200C93641 /* AddGameUITableView.swift */; };
 		382136A11F8FED4600C93641 /* AddGameTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 382136A01F8FED4600C93641 /* AddGameTableViewCell.swift */; };
 		382136A51F8FEF3200C93641 /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 382136A41F8FEF3200C93641 /* MenuViewController.swift */; };
@@ -85,6 +86,7 @@
 /* Begin PBXFileReference section */
 		1373144107C980EE1253667B /* Pods-Projet_Prog.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Projet_Prog.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Projet_Prog/Pods-Projet_Prog.debug.xcconfig"; sourceTree = "<group>"; };
 		2F0300303EC0E93AB8A3369A /* Pods-Projet_ProgUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Projet_ProgUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-Projet_ProgUITests/Pods-Projet_ProgUITests.release.xcconfig"; sourceTree = "<group>"; };
+		380A19CC1FDEE799009017AF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		3821369E1F8FEA7200C93641 /* AddGameUITableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddGameUITableView.swift; sourceTree = "<group>"; };
 		382136A01F8FED4600C93641 /* AddGameTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddGameTableViewCell.swift; sourceTree = "<group>"; };
 		382136A41F8FEF3200C93641 /* MenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
@@ -332,6 +334,7 @@
 				386FCCB71F9274F400E1EE4B /* Ressources */,
 				388C6CD11F8E6FF100F5E24A /* Info.plist */,
 				3863C7C51FA0D2E5007AFDE5 /* GoogleService-Info.plist */,
+				380A19CC1FDEE799009017AF /* LaunchScreen.storyboard */,
 			);
 			path = Projet_Prog;
 			sourceTree = "<group>";
@@ -521,6 +524,7 @@
 				388C6CCD1F8E6FF100F5E24A /* Assets.xcassets in Resources */,
 				386FCCD21F92756100E1EE4B /* Roboto-Light.ttf in Resources */,
 				386FCCD81F92756100E1EE4B /* Roboto-ThinItalic.ttf in Resources */,
+				380A19CD1FDEE799009017AF /* LaunchScreen.storyboard in Resources */,
 				386FCCCF1F92756100E1EE4B /* Roboto-Condensed.ttf in Resources */,
 				386FCCD31F92756100E1EE4B /* Roboto-LightItalic.ttf in Resources */,
 				386FCCCE1F92756100E1EE4B /* Roboto-BoldItalic.ttf in Resources */,
@@ -880,7 +884,7 @@
 				INFOPLIST_FILE = Projet_Prog/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "Hemisphere.Projet-Prog";
+				PRODUCT_BUNDLE_IDENTIFIER = com.tastyapp.mateme;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -897,7 +901,7 @@
 				INFOPLIST_FILE = Projet_Prog/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "Hemisphere.Projet-Prog";
+				PRODUCT_BUNDLE_IDENTIFIER = com.tastyapp.mateme;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = 1;
