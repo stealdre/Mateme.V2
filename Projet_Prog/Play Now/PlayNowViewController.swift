@@ -273,7 +273,7 @@ class PlayNowViewController: UIViewController, CircleMenuDelegate {
         var recentGamesData = [String : [UIImage]]()
         
         
-        ref.child("users").child("user1").child("games").observeSingleEvent(of: .value, with: { (snapshot) in
+        ref.child("users").child(user.uid).child("games").observeSingleEvent(of: .value, with: { (snapshot) in
             
             if let games = snapshot.value as? [String : AnyObject] {
                 let queue = DispatchGroup()

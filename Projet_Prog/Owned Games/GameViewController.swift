@@ -55,6 +55,8 @@ class GameViewController: UIViewController {
     
     var gameID: String = ""
 
+	let settingsLabel = UILabel()
+	
 	let sliderLevel = UISlider()
 	var levelLabel = UILabel()
 	let sliderFrequency = UISlider()
@@ -144,30 +146,34 @@ class GameViewController: UIViewController {
         closeButton.tintColor = .white
         closeButton.addTarget(self, action: #selector(closeAction), for: .touchUpInside)
 		
+		settingsLabel.text = "Settings"
+		settingsLabel.textColor = .white
+		settingsLabel.textAlignment = .left
+		settingsLabel.font = UIFont(name: "Roboto-Medium", size: 45)
 		
-		levelLabel.text = "Your experience in the game"
+		levelLabel.text = "Skill"
 		levelLabel.textColor = .white
 		//levelLabel.alpha = 0.6
-		levelLabel.font = UIFont(name: "Roboto-Regular", size: 15)
+		levelLabel.font = UIFont(name: "Roboto-Regular", size: 25)
 		levelLabel.textAlignment = .left
 		
 		frequencyLabel.text = "Playing days in a week"
 		frequencyLabel.textColor = .white
 		//frequencyLabel.alpha = 0.6
-		frequencyLabel.font = UIFont(name: "Roboto-Regular", size: 15)
+		frequencyLabel.font = UIFont(name: "Roboto-Regular", size: 25)
 		frequencyLabel.textAlignment = .left
 		
-		pseudoLabel.text = "Your in-game pseudo"
+		pseudoLabel.text = "In-Game pseudo"
 		pseudoLabel.textColor = .white
 		//pseudoLabel.alpha = 0.6
-		pseudoLabel.font = UIFont(name: "Roboto-Regular", size: 15)
+		pseudoLabel.font = UIFont(name: "Roboto-Regular", size: 25)
 		pseudoLabel.textAlignment = .left
 
 		
-		sliderLevel.minimumValue = 0
-		sliderLevel.maximumValue = 10
+		sliderLevel.minimumValue = 1
+		sliderLevel.maximumValue = 5
 		
-		sliderFrequency.minimumValue = 0
+		sliderFrequency.minimumValue = 1
 		sliderFrequency.maximumValue = 7
 		
         pseudoTextField.title = "Pseudo"
@@ -196,6 +202,7 @@ class GameViewController: UIViewController {
         
         topContainerView.addSubview(moreButton)
 		
+		botContainerView.addSubview(settingsLabel)
 		botContainerView.addSubview(levelLabel)
 		botContainerView.addSubview(frequencyLabel)
 		botContainerView.addSubview(sliderLevel)
@@ -293,13 +300,17 @@ class GameViewController: UIViewController {
     }
 	
 	@objc func updateLevelLabelValue() {
-		let value = String(Int(sliderLevel.value))
-		levelLabel.text = "Your experience in the game : \(value)"
+		let value = intToLevel(number: Int(sliderLevel.value))
+		levelLabel.text = "Skill : \(value)"
+		
+		//let step: Float = 1
+		//let currentValue = round((sliderLevel.value - sliderLevel.minimumValue) / step)
+		//sliderLevel.value = currentValue
 	}
 	@objc func updateFrequencyLabelValue() {
 		let value = String(Int(sliderFrequency.value))
 		frequencyLabel.text = "Playing days in a week : \(value)"
-		
+	}
 	func intToLevel(number: Int) -> String {
 		if (number == 1) {
 			return("Noob")
@@ -316,8 +327,6 @@ class GameViewController: UIViewController {
 		else {
 			return("Expert")
 		}
-	}
-
 	}
 }
 
@@ -405,6 +414,12 @@ extension GameViewController {
             make.left.equalTo(lastSessionIcon.snp.right).offset(10)
             make.centerY.equalTo(lastSessionIcon.snp.centerY)
         }
+		settingsLabel.snp.makeConstraints { (make) -> Void in
+			make.width.equalTo(botContainerView.snp.width).multipliedBy(0.8)
+			make.height.equalTo(50)
+			make.centerX.equalTo(botContainerView.snp.centerX).offset(-10)
+			make.centerY.equalTo(botContainerView.snp.top).offset(50)
+		}
 		pseudoLabel.snp.makeConstraints { (make) -> Void in
 			make.width.equalTo(botContainerView.snp.width).multipliedBy(0.8)
 			make.height.equalTo(30)

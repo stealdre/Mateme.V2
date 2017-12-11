@@ -118,7 +118,7 @@ extension OwnedGamesViewController {
         GamesArray.removeAll()
         filteredGamesArray.removeAll()
         
-        ref.child("users").child("user1").child("games").observeSingleEvent(of: .value, with: { (snapshot) in
+        ref.child("users").child(user.uid).child("games").observeSingleEvent(of: .value, with: { (snapshot) in
             
             for itemSnapShot in snapshot.children {
                 let item = itemSnapShot as! DataSnapshot

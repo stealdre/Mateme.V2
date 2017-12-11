@@ -34,22 +34,27 @@ class Profile {
 		ref = snapshot.ref
 		
 		let data = snapshot.value as! [String: Any]
+
+		print(data)
 		
 		name = data["name"]! as! String
-		profilPicPath = data["profilPicPath"]! as! String
+		profilPicPath = data["profilePicPath"]! as! String
 		
-		let histories = data["history"] as! [String : [String: Any]]
-		
-		for history in histories {
-			var item = History()
-			let array = history.value
+		if let H = data["history"] {
 			
-			item.gameDate = history.key
-			item.gameID = array["gameID"] as! String
-			item.mateID = array["mateID"] as! String
-			item.rate = array["rate"] as! Float
-			
-			historiesArray.append(item)
+			let histories = data["history"] as! [String : [String: Any]]
+
+			for history in histories {
+				var item = History()
+				let array = history.value
+				
+				item.gameDate = history.key
+				item.gameID = array["gameID"] as! String
+				item.mateID = array["mateID"] as! String
+				item.rate = array["rate"] as! Float
+				
+				historiesArray.append(item)
+			}
 		}
 		//print(histories)
 	}
