@@ -273,9 +273,9 @@ class GameViewController: UIViewController {
     }
 	
 	@objc func saveAction() {
-		self.ref.child("users/\(user.uid)/gameParam/????GAMEID????/level").setValue(Int(sliderLevel.value))
-		self.ref.child("users/\(user.uid)/gameParam/????GAMEID????/frequency").setValue(Int(sliderFrequency.value))
-		self.ref.child("users/\(user.uid)/gameParam/????GAMEID????/pseudo").setValue(pseudoTextField.text)
+		self.ref.child("users/\(user.uid)/gameParam/\(gameID)/level").setValue(Int(sliderLevel.value))
+		self.ref.child("users/\(user.uid)/gameParam/\(gameID)/frequency").setValue(Int(sliderFrequency.value))
+		self.ref.child("users/\(user.uid)/gameParam/\(gameID)/pseudo").setValue(pseudoTextField.text)
 		
 		let alertController = UIAlertController(title: "Saved !", message: "Your settings have been saved !", preferredStyle: .alert)
 		let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
@@ -284,7 +284,7 @@ class GameViewController: UIViewController {
 	}
 	
 	func sliderValueFromDB(completion: @escaping (_ data: GameParams) -> Void) {
-		ref.child("users/\(user.uid)/gameParam/????GAMEID????/").observe(.value, with: { (snapshot) in
+		ref.child("users/\(user.uid)/gameParam/\(gameID)/").observe(.value, with: { (snapshot) in
 			if let data = snapshot.value as? NSDictionary {
 				
 				let gameParams = GameParams()

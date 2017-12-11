@@ -268,6 +268,7 @@ extension ProfileViewController: UITableViewDelegate {
 			
 			cell?.mateName.text = profileDB.historiesArray[indexPath.row].mateName
 			cell?.gameName.text = profileDB.historiesArray[indexPath.row].gameName
+			cell?.stars.rating = Double(profileDB.historiesArray[indexPath.row].rate)
 				
 			let url = "gamesIcon/\(profileDB.historiesArray[indexPath.row].gameID).png"
 			print(url)

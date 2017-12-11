@@ -115,7 +115,7 @@ class ratingStars: CosmosView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        self.rating = 3
+        self.rating = 0
         self.settings.fillMode = .full
         
         // Set the color of a filled star
