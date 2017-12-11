@@ -59,6 +59,7 @@ class RegisterViewController: UIViewController {
         emailField.placeholder = "Email"
         emailField.selectedLineColor = .black
         emailField.lineColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.8)
+		emailField.autocapitalizationType = .none
         
 		passwordField.title = "Password"
         passwordField.selectedTitleColor = .black
