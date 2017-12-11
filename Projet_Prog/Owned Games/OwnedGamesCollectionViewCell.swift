@@ -39,8 +39,8 @@ class OwnedGamesCollectionViewCell: UICollectionViewCell {
         gameImage.contentMode = .scaleAspectFill
         gameImage.layer.cornerRadius = 10
         
-        favoriteGameLabel.text = "FAVORITE GAME"
-        favoriteGameLabel.font = UIFont(name: "Roboto-Medium", size: 12)
+        favoriteGameLabel.text = "OWNED"
+        favoriteGameLabel.font = UIFont(name: "Roboto-Medium", size: 10)
         favoriteGameLabel.textColor = UIColor(red:0.07, green:0.47, blue:0.79, alpha:1.0)
         
         gameNameLabel.text = "League of Legends"
@@ -51,7 +51,7 @@ class OwnedGamesCollectionViewCell: UICollectionViewCell {
         gameTypeLabel.font = UIFont(name: "Roboto-Medium", size: 13)
         gameTypeLabel.textColor = .gray
         
-        playButton.setBackgroundImage(UIImage(named: "playButton_ic"), for: .normal)
+        playButton.setBackgroundImage(UIImage(named: "supp_ic"), for: .normal)
         playButton.addTarget(self, action: #selector(playButtonAction(sender:)), for: .touchUpInside)
         
         contentView.addSubview(gameImage)

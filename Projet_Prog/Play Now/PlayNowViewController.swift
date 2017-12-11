@@ -256,7 +256,10 @@ class PlayNowViewController: UIViewController, CircleMenuDelegate {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        animateButton(buttonView, self.button, animate: true)
+        self.buttonView.transform = CGAffineTransform(scaleX: 1, y: 1)
+        self.button.transform = CGAffineTransform(scaleX: 1, y: 1)
+        
+        animateButton(buttonView, button, animate: true)
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -510,7 +513,6 @@ extension PlayNowViewController {
         
         let newRef = ref.child("users").child(id)
         
-        var name = ""
         var profilePicture = UIImage()
         var bio = ""
         var rate = 0.0
@@ -531,7 +533,7 @@ extension PlayNowViewController {
                         
                         self.mateNumber = phone
                         rate = value
-                        name = pseudo
+                        matePseudo = pseudo
                         
                         if let imagePath = data["profilPicPath"] as? String {
 
@@ -560,7 +562,7 @@ extension PlayNowViewController {
                                             } else {
                                                 bio = ""
                                             }
-                                            completion(pseudo, profilePicture, bio, rate, frequency, level, sessionNumber)
+                                            completion(matePseudo, profilePicture, bio, rate, frequency, level, sessionNumber)
                                         }
                                     }
                                 }

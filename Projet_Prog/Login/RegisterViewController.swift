@@ -182,7 +182,7 @@ extension RegisterViewController {
             make.width.equalTo(containerView.snp.width).multipliedBy(0.6)
             make.height.equalTo(50)
             make.left.equalTo(containerView.snp.left).offset(35)
-            make.top.equalTo(containerView.snp.top).offset(50)
+            make.top.equalTo(containerView.snp.top).offset(30)
         }
 		pseudo.snp.makeConstraints { (make) -> Void in
 			make.width.equalTo(containerView.snp.width).multipliedBy(0.8)

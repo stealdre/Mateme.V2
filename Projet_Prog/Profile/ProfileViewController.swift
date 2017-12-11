@@ -229,7 +229,7 @@ extension ProfileViewController {
 				self.ref.child("users").child(self.user.uid).child("profilePicPath").setValue("usersProfilePic/\(self.user.uid).jpg")
 			}
 			uploadTask.observe(.progress, handler: { (snapshot) in
-				guard let progress = snapshot.progress else {
+				guard let _ = snapshot.progress else {
 					return
 				}
 				//let percentage = (Double(progress.completedUnitCount) / Double(progress.totalUnitCount)) * 100
