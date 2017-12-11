@@ -13,6 +13,7 @@ import FirebaseDatabase
 import FirebaseStorage
 import FirebaseAuth
 import EFCountingLabel
+import CHIPageControl
 
 
 class PlayNowViewController: UIViewController, CircleMenuDelegate {
@@ -32,7 +33,7 @@ class PlayNowViewController: UIViewController, CircleMenuDelegate {
     var user: User!
     let ref = Database.database().reference()
     private var databaseHandle: DatabaseHandle!
-
+    
     var mateID = ""
     var mateGameID = ""
     var mateDate = Date()
@@ -92,22 +93,9 @@ class PlayNowViewController: UIViewController, CircleMenuDelegate {
         
         user = Auth.auth().currentUser
         
-        getRecentGames() { games in
-            
-            var gamesNumber = 0
-            
-            self.recentGames = games
-            
-            self.button.isEnabled = true
-            
-            if games.count <= 6 {
-                gamesNumber = games.count
-            } else {
-                gamesNumber = 6
-            }
-            self.button.buttonsCount = gamesNumber
-            self.button.addTarget(self, action: #selector(self.playNowButtonTouched), for: .touchUpInside)
-        }
+        infoLabel.text = "Loading your games"
+        
+        loadGames()
         
         self.button = CircleMenu(
             frame: CGRect.zero,
@@ -115,7 +103,7 @@ class PlayNowViewController: UIViewController, CircleMenuDelegate {
             selectedIcon: "close_ic",
             buttonsCount: 0,
             duration: 1,
-            distance: 200)
+            distance: 170)
         
         self.button.delegate = self
         self.button.backgroundColor = .clear
@@ -201,7 +189,6 @@ class PlayNowViewController: UIViewController, CircleMenuDelegate {
         mateSkip.setBackgroundImage(UIImage(named: "skipMate_ic"), for: .normal)
         mateSkip.addTarget(self, action: #selector(skipMate), for: .touchUpInside)
         
-        
         mateChat.setBackgroundImage(UIImage(named: "mateChat_ic"), for: .normal)
         mateChat.addTarget(self, action: #selector(chatMate), for: .touchUpInside)
         
@@ -230,27 +217,6 @@ class PlayNowViewController: UIViewController, CircleMenuDelegate {
         mateProfileView.addSubview(mateChat)
         
         view.setNeedsUpdateConstraints()
-        
-         /*
-         let games = ["Absolver", "Assassin Screed Untity", "Batllerite", "Borderlands 2", "Call of Duty WW2", "Counter Strike Source", "Dragon Ball Xenoverse 2", "Evolve", "Fallout 4", "Far Cry Primal", "Far Cry 4", "Far Cry 5", "FIFA 18", "Final Fantasy 15", "Fortnite", "GTA V", "H1z1", "Half life 2", "Halo 5", "Heroes of storm", "Hitman", "League of Legends", "Minecraft", "Overlord", "Overwatch", "Paragon", "Portal 2", "Rainbow six siege", "Rocket League", "Star Wars Batllefront 2", "Trine 2", "Watchdogs"]
-        
-        let type = ["Action-RPG", "Infiltration", "MOBA", "Action-RPG", "FPS", "FPS", "Fight", "FPS", "Action-RPG", "Action-Adventure", "Action-adventure", "Action-Adventure", "Sport", "Action-RPG", "FPS", "Action-Adventure", "Survival", "FPS", "FPS", "MOBA", "Infiltration", "MOBA", "Creation", "Action", "MMO", "MOBA", "FPS", "FPS", "Action-Sport", "FPS", "Action", "Action-Adventure"]
-        
-        let imagePath = ["Dans ce jeu d'action en ligne, les Aspirants parcourent le monde et se croisent pour décider de collaborer contre l'environnement ou de combattre. Les attaques ainsi que les pouvoirs sont variéeset chaque participant peut trouver son style, jusqu'à devenir un Absolver.", "Assassin's Creed Unity est un jeu d'action / aventure sur PC. Cet épisode vous place dans la peau d'Arno Dorian, un jeune Assassin officiant à Paris en pleine Révolution française.", "Battlerite sur PC est un jeu de combat par équipe dans une arène. Découvrez l'association jeu de tir et jeu de combat. Défiez vos amis et d'autres joueurs dans une bataille qui mettra votre réactivité à l'épreuve, révélant ainsi le champion qui est en vous.", "Borderlands 2 sur PC est un mélange de jeu de tir à la première personne et de jeu de rôle. Le joueur doit s'aventurer dans les mondes inexplorés de Pandora et percer les secrets de l'univers de Borderlands.", "Pour cet opus, les développeurs ont opéré un retour aux sources de la saga en traitant la période historique de la Seconde Guerre mondiale.", "Le jeu permet au joueur de choisir son camp entre les terroristes et les contre-terroristes. Plusieurs objectifs différents en fonction du camp adopté et de la carte choisie doivent être menées à bien afin de remporter la partie.", "Un an après le premier Opus, Dragon Ball Xenoverse revient dans un nouveau jeu qui revendique l'univers le plus détaillé de tous les jeux Dragon Ball.", "Une équipe de quatre chasseurs répartis en quatre classes affrontent un monstre dans une grande zone. Le monstre peut évoluer en mangeant des créatures de la faune locale.", "Dans un monde dévasté par les bombes, vous incarnez un personnage solitaire sortant d'un abri anti-atomique qui doit se faire sa place dans la ville de Boston et de ses environs.", "Dans Far Cry Primal, vous incarnez Takkar, dernier survivant de son groupe de chasseurs, devant survivre seul dans un monde préhistorique. Pour cela, il va falloir former sa tribu, créer des alliances avec d'autres personnages...", "Le joueur incarne Ajay, il prend part à la rébellion pour le soulèvement de son pays face au dictateur Pagan Min. Le titre offre une aventure solo en monde ouvert que l'on peut aussi explorer en coopération à deux.", "Bienvenue à Hope County dans le Montana, terre de liberté et de bravoure qui abrite un culte fanatique prêchant la fin du monde : Eden’s Gate. Défiez son chef, Joseph Seed, et ses frères et soeur, et libérez les citoyens.", "Un fifa moderne : Le championnat chinois fait son apparition pour la première fois, sans oublier les traditionnelles améliorations apportées aux graphismes et au gameplay, ainsi que le retour de Pierre Ménès et Hervé Mathoux aux commentaires.", "Le joueur y suit les aventures de Noctis, un jeune homme taciturne et héritier du trône. Il voyagera avec ses compagnons dans un monde à la fois moderne et fantastique.", "Les joueurs se réunissent en équipe et doivent crafter armes et pièges pour ensuite construire une forteresse et la défendre contre les nombreux monstres qui viendront l'assaillir.", "L'histoire du jeu se déroulera à Los Santos,une ville inspirée de Los Angeles et l'on pourra visiblement incarner plusieurs personnages.", "Ici il faut survivre au milieu d'une infection de zombies causée par le virus H1Z1. Le joueur doit s'allier ou lutteravec les autres personnes présentes sur le serveur pour survivre au jour le jour.", "Vous incarnez le professeur Gordon Freeman, fraîchement arrivé dans une ville aux mains d'une mystérieuse organisation appelée Le Cartel. Le joueur va devoir s'échapper de la ville et traquer le chef de la propagande.", "Mettant en scène les aventures du Master Chief et d'un nouveau personnage, le jeu dispose d'une importante partie multijoueur et reprend les modes de jeu connus de la série.", "Deux équipes de cinq joueurs s'affrontent dans des parties qui durent sur un temps assez court, aux alentours de20 minutes. Le principe de base est simple : Vous sélectionnez votre héros mais vous ne pouvez pas choisir la carte sur laquelle vous allez jouer.", "Le joueur y incarne l'Agent 47 le célèbre tueur à gages. L'objectif est de remplir des contrats en éliminant des cibles aussi puissantes que célèbres dans des lieux exotiques à travers tout le globe.", "Il s'agit d'un jeu de stratégie présentant plusieurs héros (assassins, mages ou encore créatures du néant...) que vous devrez protéger pour décrocher la victoire dans un univers fantastique coloré.", "Jeu bac à sable indépendant et pixelisé dont le monde infini est généré aléatoirement, Minecraft permet au joueur de récolter divers matériaux, d'élever des animaux et de modifier le terrain selon ses choix, en solo ou en multi.", "Dans ce jeu d'action à la 3ème personne, incarnez un soldat des Enfers, l'Overlord,accompagné d'une armée de larbins démoniaques à qui vous allez assigner le maximum de tâches : combattre, piller et détruire à votre place !", "Dans des parties en 6 contre 6, le joueur incarne un héros parmi la paletteproposée. Chaque personnage a des caractéristiques et des capacités particulières et un rôle défini parmi Attaque, Défense, Tank et Soutien.", "Celui-ci vous immerge au cœur de l'action des combats explosifs. Il offre aux joueurs une bonne maîtrise de son champion et permet ainsi à chacun d'adopter la meilleure composition de personnages pour établir une stratégie.", "Shell, l’héroïne, doit une fois de plus essayer de s'échapper du complexe d'Aperture Science en utilisant le Portal Gun, sorte de pistolet permettant de créer des portails.", "Jeu d'action tactique appartenant à la fameuse série du même nom. Cet épisode est principalement axé sur le multijoueur et l'importance du jeu en équipe, avec des environnements facilement destructibles.", "Rocket League vous plonge dans des matchs d'arène où votre but sera de marquer des buts. Vous pourrez mettre au point différentestactiques, soit éviter les attaques des joueurs ennemis pour aller marquer, soit démolir la défense.", "Le titre vous permet de prendre part à des combats sur Terre ou dans les airs dans les lieux emblématiquesdes films. Rejoignez les rangs de l'Empire ou ceux de la Rébellion dans des parties multijoueur.", "Dans un royaume envahi par le chaos et la magie noire, 3 héros sont liés malgré eux par un puissant artefact, le Trine. Pontius le brave, Amadeus le magnifique et Zoya la furtive doivent utiliser leurs dons respectifs afin de traverser 13 niveaux bourrés de pièges et d'ennemis.", "Dans un univers moderne et ouvert où tout est connecté à un système de contrôle central appartenant à des sociétés privées, le joueur incarne un groupe de hackeurs et d'assassins capables d'interférer avec les systèmes électroniques."]
-         
-         for i in 0..<games.count {
-            
-            let uid = UUID().uuidString
-            
-            ref.child("games").child(uid).child("name").setValue(games[i])
-            ref.child("games").child(uid).child("type").setValue(type[i])
-            ref.child("games").child(uid).child("imagePath").setValue("gamesImage/\(uid).jpg")
-            ref.child("games").child(uid).child("description").setValue(imagePath[i])
-            ref.child("games").child(uid).child("iconPath").setValue("gamesIcon/\(uid).png")
-            
-         }
-        */
-        
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -260,6 +226,30 @@ class PlayNowViewController: UIViewController, CircleMenuDelegate {
         self.button.transform = CGAffineTransform(scaleX: 1, y: 1)
         
         animateButton(buttonView, button, animate: true)
+        
+    }
+    
+    func loadGames() {
+        
+        getRecentGames() { games in
+            
+            var gamesNumber = 0
+            
+            self.recentGames = games
+            
+            self.button.isEnabled = true
+            
+            if games.count <= 6 {
+                gamesNumber = games.count
+            } else {
+                gamesNumber = 6
+            }
+            
+            self.button.buttonsCount = gamesNumber
+            self.button.addTarget(self, action: #selector(self.playNowButtonTouched), for: .touchUpInside)
+            
+            self.infoLabel.text = "Touch to find a mate"
+        }
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -275,27 +265,30 @@ class PlayNowViewController: UIViewController, CircleMenuDelegate {
         
         var recentGamesData = [String : [UIImage]]()
         
-        
-        ref.child("users").child(user.uid).child("games").observeSingleEvent(of: .value, with: { (snapshot) in
+        let _ = ref.child("users").child(user.uid).child("games").observe(.value, with: { (snapshot) in
             
             if let games = snapshot.value as? [String : AnyObject] {
-                let queue = DispatchGroup()
-                var count = games.count
+                
+                if games.count == 0 {
+                    self.infoLabel.text = "At least one owned game is needed"
+                    completion([:])
+                }
+                
+                let myGroup = DispatchGroup()
                 
                 for game in games {
-                    count -= 1
+                    myGroup.enter()
                     self.getGameInfo(ID: game.key) { info in
-                        queue.enter()
                         self.getGameImage(url: info.imageURL) { image in
                             self.getGameImage(url: info.iconURL) { icon in
                                 recentGamesData[game.key] = [image, icon]
-                                if count == 0 {
-                                    queue.leave()
-                                    completion(recentGamesData)
-                                }
+                                myGroup.leave()
                             }
                         }
                     }
+                }
+                myGroup.notify(queue: .main) {
+                    completion(recentGamesData)
                 }
             }
         })
@@ -536,7 +529,7 @@ extension PlayNowViewController {
                         matePseudo = pseudo
                         
                         if let imagePath = data["profilPicPath"] as? String {
-
+                            
                             let storage = Storage.storage()
                             let pathReference = storage.reference(withPath: imagePath)
                             
@@ -544,7 +537,7 @@ extension PlayNowViewController {
                                 if let error = error1 {
                                     print(error)
                                 } else {
-
+                                    
                                     profilePicture = UIImage(data: imageData!)!
                                     
                                     if let history = data["history"] as? [String : AnyObject] {
@@ -585,6 +578,7 @@ extension PlayNowViewController {
         
         ref.child("users").child(user.uid).child("history").child(String(describing: date)).child("gameID").setValue(game)
         ref.child("users").child(user.uid).child("history").child(String(describing: date)).child("mateID").setValue(mateID)
+        ref.child("users").child(user.uid).child("history").child(String(describing: date)).child("rate").setValue(0)
         
         getUserInfosFrom(id: mateID, game: game) { (name, profilePic, bio, rate, frequency, level, sessionNumber) in
             
@@ -753,22 +747,26 @@ extension PlayNowViewController {
         
         refH.observeSingleEvent(of: .value, with: { (snapshot) in
             
-            if let users = snapshot.value as? NSDictionary {
-                
-                let arr = users as! [String : AnyObject]
-                
-                if arr.isEmpty {
-                    completion(false, [""]) // No user
-                    return
-                } else {
-                    var usersID = [String]()
-                    for user in users {
-                        let id = String(describing: user.key)
-                        usersID.append(id)
+            if snapshot.exists() {
+                if let users = snapshot.value as? NSDictionary {
+                    
+                    let arr = users as! [String : AnyObject]
+                    
+                    if arr.isEmpty {
+                        completion(false, [""]) // No user
+                        return
+                    } else {
+                        var usersID = [String]()
+                        for user in users {
+                            let id = String(describing: user.key)
+                            usersID.append(id)
+                        }
+                        completion(true, usersID) // One user or more
+                        return
                     }
-                    completion(true, usersID) // One user or more
-                    return
                 }
+            } else {
+                completion(false, [""])
             }
         })
     }
@@ -951,6 +949,16 @@ extension PlayNowViewController {
         ref.setValue(0)
     }
     
+    func addRecentGamesListener() {
+        
+        let refHandle = ref.child("users").child(user.uid).child("games").observe(DataEventType.value, with: { (snapshot) in
+            let postDict = snapshot.value as? [String : AnyObject] ?? [:]
+            
+            
+        })
+        
+    }
+    
     func timeOut(delay:Double, completion: @escaping (_ timeOut: Bool) -> Void) {
         let when = DispatchTime.now() + delay // Int(delay) secondes time out
         DispatchQueue.main.asyncAfter(deadline: when) {
@@ -969,25 +977,25 @@ extension PlayNowViewController {
         return label.frame.height
     }
     
-	/*@objc func facetime() {
-        
-        if let facetimeURL:NSURL = NSURL(string: "facetime-audio://\(self.mateNumber)") {
+    /*@objc func facetime() {
+     
+     if let facetimeURL:NSURL = NSURL(string: "facetime-audio://\(self.mateNumber)") {
+     let application:UIApplication = UIApplication.shared
+     if (application.canOpenURL(facetimeURL as URL)) {
+     application.openURL(facetimeURL as URL)
+     }
+     }
+     }*/
+    @objc func facetime() {
+        let phoneNumber = self.mateNumber
+        let cleanNumber = phoneNumber.replacingOccurrences(of: " ", with: "").replacingOccurrences(of: "-", with: "")
+        if let facetimeURL:URL = URL(string: "facetime-audio://\(cleanNumber)") {
             let application:UIApplication = UIApplication.shared
-            if (application.canOpenURL(facetimeURL as URL)) {
-                application.openURL(facetimeURL as URL)
+            if (application.canOpenURL(facetimeURL)) {
+                application.open(facetimeURL,options: [:], completionHandler: nil)
             }
         }
-    }*/
-	@objc func facetime() {
-		let phoneNumber = self.mateNumber
-		let cleanNumber = phoneNumber.replacingOccurrences(of: " ", with: "").replacingOccurrences(of: "-", with: "")
-		if let facetimeURL:URL = URL(string: "facetime-audio://\(cleanNumber)") {
-			let application:UIApplication = UIApplication.shared
-			if (application.canOpenURL(facetimeURL)) {
-				application.open(facetimeURL,options: [:], completionHandler: nil)
-			}
-		}
-	}
+    }
     
 }
 
@@ -1156,3 +1164,23 @@ class mateStatsValueLabel: UILabel {
     }
     
 }
+
+/*
+ let games = ["Absolver", "Assassin Screed Untity", "Batllerite", "Borderlands 2", "Call of Duty WW2", "Counter Strike Source", "Dragon Ball Xenoverse 2", "Evolve", "Fallout 4", "Far Cry Primal", "Far Cry 4", "Far Cry 5", "FIFA 18", "Final Fantasy 15", "Fortnite", "GTA V", "H1z1", "Half life 2", "Halo 5", "Heroes of storm", "Hitman", "League of Legends", "Minecraft", "Overlord", "Overwatch", "Paragon", "Portal 2", "Rainbow six siege", "Rocket League", "Star Wars Batllefront 2", "Trine 2", "Watchdogs"]
+ 
+ let type = ["Action-RPG", "Infiltration", "MOBA", "Action-RPG", "FPS", "FPS", "Fight", "FPS", "Action-RPG", "Action-Adventure", "Action-adventure", "Action-Adventure", "Sport", "Action-RPG", "FPS", "Action-Adventure", "Survival", "FPS", "FPS", "MOBA", "Infiltration", "MOBA", "Creation", "Action", "MMO", "MOBA", "FPS", "FPS", "Action-Sport", "FPS", "Action", "Action-Adventure"]
+ 
+ let imagePath = ["Dans ce jeu d'action en ligne, les Aspirants parcourent le monde et se croisent pour décider de collaborer contre l'environnement ou de combattre. Les attaques ainsi que les pouvoirs sont variéeset chaque participant peut trouver son style, jusqu'à devenir un Absolver.", "Assassin's Creed Unity est un jeu d'action / aventure sur PC. Cet épisode vous place dans la peau d'Arno Dorian, un jeune Assassin officiant à Paris en pleine Révolution française.", "Battlerite sur PC est un jeu de combat par équipe dans une arène. Découvrez l'association jeu de tir et jeu de combat. Défiez vos amis et d'autres joueurs dans une bataille qui mettra votre réactivité à l'épreuve, révélant ainsi le champion qui est en vous.", "Borderlands 2 sur PC est un mélange de jeu de tir à la première personne et de jeu de rôle. Le joueur doit s'aventurer dans les mondes inexplorés de Pandora et percer les secrets de l'univers de Borderlands.", "Pour cet opus, les développeurs ont opéré un retour aux sources de la saga en traitant la période historique de la Seconde Guerre mondiale.", "Le jeu permet au joueur de choisir son camp entre les terroristes et les contre-terroristes. Plusieurs objectifs différents en fonction du camp adopté et de la carte choisie doivent être menées à bien afin de remporter la partie.", "Un an après le premier Opus, Dragon Ball Xenoverse revient dans un nouveau jeu qui revendique l'univers le plus détaillé de tous les jeux Dragon Ball.", "Une équipe de quatre chasseurs répartis en quatre classes affrontent un monstre dans une grande zone. Le monstre peut évoluer en mangeant des créatures de la faune locale.", "Dans un monde dévasté par les bombes, vous incarnez un personnage solitaire sortant d'un abri anti-atomique qui doit se faire sa place dans la ville de Boston et de ses environs.", "Dans Far Cry Primal, vous incarnez Takkar, dernier survivant de son groupe de chasseurs, devant survivre seul dans un monde préhistorique. Pour cela, il va falloir former sa tribu, créer des alliances avec d'autres personnages...", "Le joueur incarne Ajay, il prend part à la rébellion pour le soulèvement de son pays face au dictateur Pagan Min. Le titre offre une aventure solo en monde ouvert que l'on peut aussi explorer en coopération à deux.", "Bienvenue à Hope County dans le Montana, terre de liberté et de bravoure qui abrite un culte fanatique prêchant la fin du monde : Eden’s Gate. Défiez son chef, Joseph Seed, et ses frères et soeur, et libérez les citoyens.", "Un fifa moderne : Le championnat chinois fait son apparition pour la première fois, sans oublier les traditionnelles améliorations apportées aux graphismes et au gameplay, ainsi que le retour de Pierre Ménès et Hervé Mathoux aux commentaires.", "Le joueur y suit les aventures de Noctis, un jeune homme taciturne et héritier du trône. Il voyagera avec ses compagnons dans un monde à la fois moderne et fantastique.", "Les joueurs se réunissent en équipe et doivent crafter armes et pièges pour ensuite construire une forteresse et la défendre contre les nombreux monstres qui viendront l'assaillir.", "L'histoire du jeu se déroulera à Los Santos,une ville inspirée de Los Angeles et l'on pourra visiblement incarner plusieurs personnages.", "Ici il faut survivre au milieu d'une infection de zombies causée par le virus H1Z1. Le joueur doit s'allier ou lutteravec les autres personnes présentes sur le serveur pour survivre au jour le jour.", "Vous incarnez le professeur Gordon Freeman, fraîchement arrivé dans une ville aux mains d'une mystérieuse organisation appelée Le Cartel. Le joueur va devoir s'échapper de la ville et traquer le chef de la propagande.", "Mettant en scène les aventures du Master Chief et d'un nouveau personnage, le jeu dispose d'une importante partie multijoueur et reprend les modes de jeu connus de la série.", "Deux équipes de cinq joueurs s'affrontent dans des parties qui durent sur un temps assez court, aux alentours de20 minutes. Le principe de base est simple : Vous sélectionnez votre héros mais vous ne pouvez pas choisir la carte sur laquelle vous allez jouer.", "Le joueur y incarne l'Agent 47 le célèbre tueur à gages. L'objectif est de remplir des contrats en éliminant des cibles aussi puissantes que célèbres dans des lieux exotiques à travers tout le globe.", "Il s'agit d'un jeu de stratégie présentant plusieurs héros (assassins, mages ou encore créatures du néant...) que vous devrez protéger pour décrocher la victoire dans un univers fantastique coloré.", "Jeu bac à sable indépendant et pixelisé dont le monde infini est généré aléatoirement, Minecraft permet au joueur de récolter divers matériaux, d'élever des animaux et de modifier le terrain selon ses choix, en solo ou en multi.", "Dans ce jeu d'action à la 3ème personne, incarnez un soldat des Enfers, l'Overlord,accompagné d'une armée de larbins démoniaques à qui vous allez assigner le maximum de tâches : combattre, piller et détruire à votre place !", "Dans des parties en 6 contre 6, le joueur incarne un héros parmi la paletteproposée. Chaque personnage a des caractéristiques et des capacités particulières et un rôle défini parmi Attaque, Défense, Tank et Soutien.", "Celui-ci vous immerge au cœur de l'action des combats explosifs. Il offre aux joueurs une bonne maîtrise de son champion et permet ainsi à chacun d'adopter la meilleure composition de personnages pour établir une stratégie.", "Shell, l’héroïne, doit une fois de plus essayer de s'échapper du complexe d'Aperture Science en utilisant le Portal Gun, sorte de pistolet permettant de créer des portails.", "Jeu d'action tactique appartenant à la fameuse série du même nom. Cet épisode est principalement axé sur le multijoueur et l'importance du jeu en équipe, avec des environnements facilement destructibles.", "Rocket League vous plonge dans des matchs d'arène où votre but sera de marquer des buts. Vous pourrez mettre au point différentestactiques, soit éviter les attaques des joueurs ennemis pour aller marquer, soit démolir la défense.", "Le titre vous permet de prendre part à des combats sur Terre ou dans les airs dans les lieux emblématiquesdes films. Rejoignez les rangs de l'Empire ou ceux de la Rébellion dans des parties multijoueur.", "Dans un royaume envahi par le chaos et la magie noire, 3 héros sont liés malgré eux par un puissant artefact, le Trine. Pontius le brave, Amadeus le magnifique et Zoya la furtive doivent utiliser leurs dons respectifs afin de traverser 13 niveaux bourrés de pièges et d'ennemis.", "Dans un univers moderne et ouvert où tout est connecté à un système de contrôle central appartenant à des sociétés privées, le joueur incarne un groupe de hackeurs et d'assassins capables d'interférer avec les systèmes électroniques."]
+ 
+ for i in 0..<games.count {
+ 
+ let uid = UUID().uuidString
+ 
+ ref.child("games").child(uid).child("name").setValue(games[i])
+ ref.child("games").child(uid).child("type").setValue(type[i])
+ ref.child("games").child(uid).child("imagePath").setValue("gamesImage/\(uid).jpg")
+ ref.child("games").child(uid).child("description").setValue(imagePath[i])
+ ref.child("games").child(uid).child("iconPath").setValue("gamesIcon/\(uid).png")
+ 
+ }
+ */

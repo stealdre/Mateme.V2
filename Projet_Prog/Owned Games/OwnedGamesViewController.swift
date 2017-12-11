@@ -105,9 +105,6 @@ class OwnedGamesViewController: UIViewController, UICollectionViewDataSource, UI
         collectionView.register(OwnedGamesCollectionViewCell.self, forCellWithReuseIdentifier: "OGCell")
     }
     
-    deinit {
-        ref.child("games").removeObserver(withHandle: databaseHandle)
-    }
 }
 
 // MARK: Data
@@ -115,40 +112,65 @@ extension OwnedGamesViewController {
     
     func startObservingDatabase () {
         
+        self.noGamesInfoLabel.isHidden = true
+        self.noGamesHelpLabel.isHidden = true
+        self.noGamesImage.isHidden = true
+        
         indicatorView.startAnimating()
         
         GamesArray.removeAll()
         filteredGamesArray.removeAll()
         
         ref.child("users").child(user.uid).child("games").observeSingleEvent(of: .value, with: { (snapshot) in
-            
-            for itemSnapShot in snapshot.children {
-                let item = itemSnapShot as! DataSnapshot
-                self.getGameInfo(ID: item.ref.key) { game in
-                    self.getGameImage(url: game.imageURL) { image in
-                        self.getGameImage(url: game.iconURL) { icon in
-                            
-                            game.gameID = item.ref.key
-                            game.image = image
-                            game.icon = icon
-                            self.GamesArray.append(game)
-                            
-                            self.indicatorView.stopAnimating()
-                            
-                            if self.GamesArray.isEmpty && !self.searchActive {
-                                self.noGamesImage.isHidden = false
-                                self.noGamesInfoLabel.isHidden = false
-                                self.noGamesHelpLabel.isHidden = false
-                            } else {
-                                self.collectionView.reloadData()
-                                self.noGamesInfoLabel.isHidden = true
-                                self.noGamesHelpLabel.isHidden = true
+            if snapshot.exists() {
+                for itemSnapShot in snapshot.children {
+                    let item = itemSnapShot as! DataSnapshot
+                    self.getGameInfo(ID: item.ref.key) { game in
+                        self.getGameImage(url: game.imageURL) { image in
+                            self.getGameImage(url: game.iconURL) { icon in
+                                
+                                game.gameID = item.ref.key
+                                game.image = image
+                                game.icon = icon
+                                self.GamesArray.append(game)
+                                
+                                let vc = PlayNowViewController()
+                                
+                                vc.recentGames.removeAll()
+                                vc.recentGames[item.ref.key] = [image, icon]
+                                
+                                self.indicatorView.stopAnimating()
+                                
+                                if self.GamesArray.isEmpty && !self.searchActive {
+                                    self.noGamesImage.isHidden = false
+                                    self.noGamesInfoLabel.isHidden = false
+                                    self.noGamesHelpLabel.isHidden = false
+                                } else {
+                                    self.collectionView.reloadData()
+                                    self.noGamesInfoLabel.isHidden = true
+                                    self.noGamesHelpLabel.isHidden = true
+                                    self.noGamesImage.isHidden = true
+                                }
                             }
                         }
                     }
                 }
+            } else {
+                self.indicatorView.stopAnimating()
+                
+                if self.GamesArray.isEmpty && !self.searchActive {
+                    self.noGamesImage.isHidden = false
+                    self.noGamesInfoLabel.isHidden = false
+                    self.noGamesHelpLabel.isHidden = false
+                } else {
+                    self.collectionView.reloadData()
+                    self.noGamesInfoLabel.isHidden = true
+                    self.noGamesHelpLabel.isHidden = true
+                    self.noGamesImage.isHidden = true
+                }
             }
         })
+        
     }
     
     func getGameInfo(ID: String, completion: @escaping (_ game: Games) -> Void) {
@@ -244,15 +266,17 @@ extension OwnedGamesViewController {
                 cell.contentView.layer.cornerRadius = 10
                 cell.contentView.clipsToBounds = true
                 
-                cell.playButton.addTarget(self, action: #selector(self.gameSupp), for: .touchUpInside)
+                cell.playButton.addTarget(self, action: #selector(self.gameSuppAdd), for: .touchUpInside)
                 cell.playButton.tag = indexPath.row
                 
                 if self.searchActive {
+                    cell.playButton.setBackgroundImage(UIImage(named: "add_ic"), for: .normal)
                     cell.gameImage.image = self.filteredGamesArray[indexPath.row].image
                     cell.gameNameLabel.text = self.filteredGamesArray[indexPath.row].name
                     cell.gameTypeLabel.text = self.filteredGamesArray[indexPath.row].type
                     cell.gameImage.image = self.filteredGamesArray[indexPath.row].image
                 } else {
+                    cell.playButton.setBackgroundImage(UIImage(named: "supp_ic"), for: .normal)
                     cell.gameImage.image = self.GamesArray[indexPath.row].image
                     cell.gameNameLabel.text = self.GamesArray[indexPath.row].name
                     cell.gameTypeLabel.text = self.GamesArray[indexPath.row].type
@@ -263,25 +287,35 @@ extension OwnedGamesViewController {
         cell.queue.addOperation(operation)
     }
     
-    @objc func gameSupp(sender: UIButton) {
+    @objc func gameSuppAdd(sender: UIButton) {
         
         let index = sender.tag
         
         if searchActive {
             let gameID = filteredGamesArray[index].gameID
-            ref.child("users").child(user.uid).child("games").child(gameID).removeValue()
-        } else {
+            ref.child("users").child(user.uid).child("games").child(gameID).setValue(0)
+            ref.child("users").child(user.uid).child("gameParam").child(gameID).child("frequency").setValue(0)
+            ref.child("users").child(user.uid).child("gameParam").child(gameID).child("level").setValue(0)
+            ref.child("users").child(user.uid).child("gameParam").child(gameID).child("pseudo").setValue("Benenutz")
+            
+            sender.setBackgroundImage(UIImage(named: "added_ic"), for: .normal)
+            
+            self.noGamesInfoLabel.isHidden = true
+            self.noGamesHelpLabel.isHidden = true
+            self.noGamesImage.isHidden = true
+            
+        } else if !searchActive {
+            
             let gameID = GamesArray[index].gameID
             ref.child("users").child(user.uid).child("games").child(gameID).removeValue()
+            
+            
+            GamesArray.removeAll()
+            
+            collectionView.reloadData()
+            
+            startObservingDatabase()
         }
-        
-        filteredGamesArray.removeAll()
-        GamesArray.removeAll()
-        
-        collectionView.reloadData()
-        
-        startObservingDatabase()
-        
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
@@ -360,17 +394,87 @@ extension OwnedGamesViewController: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         
         filteredGamesArray.removeAll(keepingCapacity: false)
-        
-        filteredGamesArray = GamesArray.filter { $0.name.range(of: searchText, options: [.caseInsensitive]) != nil
-            || $0.type.range(of: searchText, options: [.caseInsensitive]) != nil }
+        //
+        //        filteredGamesArray = GamesArray.filter { $0.name.range(of: searchText, options: [.caseInsensitive]) != nil
+        //            || $0.type.range(of: searchText, options: [.caseInsensitive]) != nil }
         
         if searchText.isEmpty {
             searchActive = false
+            startObservingDatabase()
         } else {
             searchActive = true
+            
+            findAllGames(text: searchText) { games in
+                self.collectionView.reloadData()
+                
+                if self.GamesArray.isEmpty && !self.searchActive {
+                    self.noGamesImage.isHidden = false
+                    self.noGamesInfoLabel.isHidden = false
+                    self.noGamesHelpLabel.isHidden = false
+                } else {
+                    self.noGamesInfoLabel.isHidden = true
+                    self.noGamesHelpLabel.isHidden = true
+                    self.noGamesImage.isHidden = true
+                }
+            }
+            
         }
+        
         collectionView.reloadData()
     }
+    
+    func findAllGames(text: String, completion: @escaping (_ end: Bool) -> Void) {
+        
+        self.indicatorView.startAnimating()
+        
+        self.noGamesInfoLabel.isHidden = true
+        self.noGamesHelpLabel.isHidden = true
+        self.noGamesImage.isHidden = true
+        
+        ref.child("games").queryOrdered(byChild: "name").queryStarting(atValue: text).queryEnding(atValue: text + "\u{f8ff}").observeSingleEvent(of: .value, with: { (snapshot) in
+            
+            if snapshot.exists() {
+                var count = snapshot.childrenCount
+                
+                for itemSnapShot in snapshot.children {
+                    
+                    let item = itemSnapShot as! DataSnapshot
+                    self.getGameInfo(ID: item.ref.key) { game in
+                        self.getGameImage(url: game.imageURL) { image in
+                            self.getGameImage(url: game.iconURL) { icon in
+                                
+                                game.gameID = item.ref.key
+                                game.image = image
+                                game.icon = icon
+                                self.filteredGamesArray.append(game)
+                                count = count - 1
+                                if count == 0 {
+                                    self.indicatorView.stopAnimating()
+                                    completion(true)
+                                }
+                                
+                            }
+                        }
+                    }
+                }
+            } else {
+                completion(false)
+                self.indicatorView.stopAnimating()
+                
+                if self.GamesArray.isEmpty && !self.searchActive {
+                    self.noGamesImage.isHidden = false
+                    self.noGamesInfoLabel.isHidden = false
+                    self.noGamesHelpLabel.isHidden = false
+                } else {
+                    self.noGamesInfoLabel.isHidden = true
+                    self.noGamesHelpLabel.isHidden = true
+                    self.noGamesImage.isHidden = true
+                }
+            }
+            
+        })
+    }
+    
 }
 
 // MARK: Search Bar
