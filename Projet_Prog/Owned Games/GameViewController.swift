@@ -56,6 +56,7 @@ class GameViewController: UIViewController {
     var gameID: String = ""
 
 	let settingsLabel = UILabel()
+	let lineView = UIView()
 	
 	let sliderLevel = UISlider()
 	var levelLabel = UILabel()
@@ -151,6 +152,9 @@ class GameViewController: UIViewController {
 		settingsLabel.textAlignment = .left
 		settingsLabel.font = UIFont(name: "Roboto-Medium", size: 45)
 		
+		lineView.backgroundColor = .white
+		//lineView.alpha = 0.1
+		
 		levelLabel.text = "Skill"
 		levelLabel.textColor = .white
 		//levelLabel.alpha = 0.6
@@ -203,6 +207,7 @@ class GameViewController: UIViewController {
         topContainerView.addSubview(moreButton)
 		
 		botContainerView.addSubview(settingsLabel)
+		botContainerView.addSubview(lineView)
 		botContainerView.addSubview(levelLabel)
 		botContainerView.addSubview(frequencyLabel)
 		botContainerView.addSubview(sliderLevel)
@@ -420,41 +425,47 @@ extension GameViewController {
 			make.centerX.equalTo(botContainerView.snp.centerX).offset(-10)
 			make.centerY.equalTo(botContainerView.snp.top).offset(50)
 		}
+		lineView.snp.makeConstraints { (make) -> Void in
+			make.width.equalTo(botContainerView.snp.width).multipliedBy(0.2)
+			make.height.equalTo(10)
+			make.centerX.equalTo(botContainerView.snp.left).offset(70)
+			make.centerY.equalTo(settingsLabel.snp.bottom).offset(10)
+		}
 		pseudoLabel.snp.makeConstraints { (make) -> Void in
 			make.width.equalTo(botContainerView.snp.width).multipliedBy(0.8)
 			make.height.equalTo(30)
 			make.centerX.equalTo(botContainerView.snp.centerX)
-			make.centerY.equalTo(botContainerView.snp.centerY).offset(-210)
+			make.centerY.equalTo(lineView.snp.bottom).offset(90)
 		}
 		pseudoTextField.snp.makeConstraints { (make) -> Void in
 			make.width.equalTo(botContainerView.snp.width).multipliedBy(0.8)
 			make.height.equalTo(50)
 			make.centerX.equalTo(botContainerView.snp.centerX)
-			make.centerY.equalTo(botContainerView.snp.centerY).offset(-150)
+			make.centerY.equalTo(pseudoLabel.snp.bottom).offset(50)
 		}
 		levelLabel.snp.makeConstraints { (make) -> Void in
 			make.width.equalTo(botContainerView.snp.width).multipliedBy(0.8)
 			make.height.equalTo(30)
 			make.centerX.equalTo(botContainerView.snp.centerX)
-			make.centerY.equalTo(botContainerView.snp.centerY).offset(-90)
+			make.centerY.equalTo(pseudoTextField.snp.bottom).offset(50)
 		}
 		sliderLevel.snp.makeConstraints { (make) -> Void in
 			make.width.equalTo(botContainerView.snp.width).multipliedBy(0.8)
 			make.height.equalTo(30)
 			make.centerX.equalTo(botContainerView.snp.centerX)
-			make.centerY.equalTo(botContainerView.snp.centerY).offset(-30)
+			make.centerY.equalTo(levelLabel.snp.bottom).offset(50)
 		}
 		frequencyLabel.snp.makeConstraints { (make) -> Void in
 			make.width.equalTo(botContainerView.snp.width).multipliedBy(0.8)
 			make.height.equalTo(30)
 			make.centerX.equalTo(botContainerView.snp.centerX)
-			make.centerY.equalTo(botContainerView.snp.centerY).offset(30)
+			make.centerY.equalTo(sliderLevel.snp.bottom).offset(50)
 		}
 		sliderFrequency.snp.makeConstraints { (make) -> Void in
 			make.width.equalTo(botContainerView.snp.width).multipliedBy(0.8)
 			make.height.equalTo(30)
 			make.centerX.equalTo(botContainerView.snp.centerX)
-			make.centerY.equalTo(botContainerView.snp.centerY).offset(90)
+			make.centerY.equalTo(frequencyLabel.snp.bottom).offset(50)
 		}
         moreButton.snp.makeConstraints { (make) -> Void in
             make.width.equalTo(40)

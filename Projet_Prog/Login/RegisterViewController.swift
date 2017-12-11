@@ -15,7 +15,7 @@ import SkyFloatingLabelTextField
 class RegisterViewController: UIViewController {
 
 	var ref: DatabaseReference!
-    
+	
     var containerView = UIView()
     
     var registerLabel = UILabel()
