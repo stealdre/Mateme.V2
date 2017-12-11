@@ -294,9 +294,9 @@ extension OwnedGamesViewController {
         if searchActive {
             let gameID = filteredGamesArray[index].gameID
             ref.child("users").child(user.uid).child("games").child(gameID).setValue(0)
-            ref.child("users").child(user.uid).child("gameParam").child(gameID).child("frequency").setValue(0)
-            ref.child("users").child(user.uid).child("gameParam").child(gameID).child("level").setValue(0)
-            ref.child("users").child(user.uid).child("gameParam").child(gameID).child("pseudo").setValue("Benenutz")
+            ref.child("users").child(user.uid).child("gameParam").child(gameID).child("frequency").setValue(1)
+            ref.child("users").child(user.uid).child("gameParam").child(gameID).child("level").setValue(1)
+            ref.child("users").child(user.uid).child("gameParam").child(gameID).child("pseudo").setValue("Unknown")
             
             sender.setBackgroundImage(UIImage(named: "added_ic"), for: .normal)
             

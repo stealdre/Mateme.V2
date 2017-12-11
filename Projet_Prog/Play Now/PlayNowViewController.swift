@@ -569,7 +569,6 @@ extension PlayNowViewController {
     
     func showNewMate(mateID: String, game: String) {
         
-        
         let date = Date()
         
         self.mateID = mateID
