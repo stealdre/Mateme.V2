@@ -51,8 +51,7 @@ class OwnedGamesCollectionViewCell: UICollectionViewCell {
         gameTypeLabel.font = UIFont(name: "Roboto-Medium", size: 13)
         gameTypeLabel.textColor = .gray
         
-        playButton.setBackgroundImage(UIImage(named: "supp_ic"), for: .normal)
-        playButton.addTarget(self, action: #selector(playButtonAction(sender:)), for: .touchUpInside)
+        
         
         contentView.addSubview(gameImage)
         contentView.addSubview(gameNameLabel)
