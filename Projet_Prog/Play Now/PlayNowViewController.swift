@@ -246,7 +246,6 @@ class PlayNowViewController: UIViewController, CircleMenuDelegate {
             self.button.buttonsCount = gamesNumber
             self.button.addTarget(self, action: #selector(self.playNowButtonTouched), for: .touchUpInside)
             
-            self.infoLabel.text = "Touch to find a mate"
         }
     }
     
@@ -265,29 +264,38 @@ class PlayNowViewController: UIViewController, CircleMenuDelegate {
         
         let _ = ref.child("users").child(user.uid).child("games").observe(.value, with: { (snapshot) in
             
-            if let games = snapshot.value as? [String : AnyObject] {
-                
-                if games.count == 0 {
-                    self.infoLabel.text = "At least one owned game is needed"
-                    completion([:])
-                }
-                
-                let myGroup = DispatchGroup()
-                
-                for game in games {
-                    myGroup.enter()
-                    self.getGameInfo(ID: game.key) { info in
-                        self.getGameImage(url: info.imageURL) { image in
-                            self.getGameImage(url: info.iconURL) { icon in
-                                recentGamesData[game.key] = [image, icon]
-                                myGroup.leave()
+            if snapshot.exists() {
+                if let games = snapshot.value as? [String : AnyObject] {
+                    
+                    if games.count == 0 {
+                        self.infoLabel.text = "At least one owned game is needed"
+                        completion([:])
+                        self.button.isEnabled = false
+                    }
+                    
+                    let myGroup = DispatchGroup()
+                    
+                    for game in games {
+                        myGroup.enter()
+                        self.getGameInfo(ID: game.key) { info in
+                            self.getGameImage(url: info.imageURL) { image in
+                                self.getGameImage(url: info.iconURL) { icon in
+                                    recentGamesData[game.key] = [image, icon]
+                                    myGroup.leave()
+                                }
                             }
                         }
                     }
+                    myGroup.notify(queue: .main) {
+                        self.infoLabel.text = "Touch to find a mate"
+                        completion(recentGamesData)
+                    }
                 }
-                myGroup.notify(queue: .main) {
-                    completion(recentGamesData)
-                }
+            } else {
+                print("No owned games")
+                self.infoLabel.text = "No owned game"
+                completion([:])
+                self.button.isEnabled = false
             }
         })
     }

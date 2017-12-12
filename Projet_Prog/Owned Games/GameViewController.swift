@@ -374,8 +374,8 @@ extension GameViewController: UIScrollViewDelegate {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let scrollY = scrollView.contentOffset.y
         if scrollY < view.frame.height * 0.5 { // addressBook
-            let alpha = (1  - (scrollY / (self.view.frame.height * 0.5)))
-            self.playButton.alpha = alpha
+            let _ = (1  - (scrollY / (self.view.frame.height * 0.5)))
+            self.playButton.alpha = 0
         } else {
             let alpha =  (scrollY / (self.view.frame.height * 0.5)) - 1
             self.saveButton.alpha = alpha
