@@ -65,16 +65,23 @@ class GameViewController: UIViewController {
 	var pseudoTextField = SkyFloatingLabelTextField()
 	let pseudoLabel = UILabel()
 	
+    var ownedGame = false
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         self.hideKeyboard()
-
         
         view.backgroundColor = .black
 
         topContainerView.backgroundColor = .clear
         botContainerView.backgroundColor = .clear
+        
+        if !ownedGame {
+            VerticalScrollView.isScrollEnabled = false
+        } else {
+            VerticalScrollView.isScrollEnabled = true
+        }
         
 		user = Auth.auth().currentUser
 		ref = Database.database().reference()
@@ -273,14 +280,22 @@ class GameViewController: UIViewController {
     }
 	
 	@objc func saveAction() {
+        
+        if pseudoTextField.text != "" {
 		self.ref.child("users/\(user.uid)/gameParam/\(gameID)/level").setValue(Int(sliderLevel.value))
 		self.ref.child("users/\(user.uid)/gameParam/\(gameID)/frequency").setValue(Int(sliderFrequency.value))
 		self.ref.child("users/\(user.uid)/gameParam/\(gameID)/pseudo").setValue(pseudoTextField.text)
 		
-		let alertController = UIAlertController(title: "Saved !", message: "Your settings have been saved !", preferredStyle: .alert)
-		let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
-		alertController.addAction(defaultAction)
-		self.present(alertController, animated: true, completion: nil)
+            let alertController = UIAlertController(title: "Saved !", message: "Your settings have been saved !", preferredStyle: .alert)
+            let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+            alertController.addAction(defaultAction)
+            self.present(alertController, animated: true, completion: nil)
+        } else {
+            let alertController = UIAlertController(title: "Username required !", message: "Your need to enter your in-game username", preferredStyle: .alert)
+            let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+            alertController.addAction(defaultAction)
+            self.present(alertController, animated: true, completion: nil)
+        }
 	}
 	
 	func sliderValueFromDB(completion: @escaping (_ data: GameParams) -> Void) {
@@ -348,7 +363,7 @@ class GameViewController: UIViewController {
             return("Daily")
         }
         else {
-            return("Geek")
+            return("Any time")
         }
     }
 }

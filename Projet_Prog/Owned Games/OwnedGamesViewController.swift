@@ -322,12 +322,14 @@ extension OwnedGamesViewController {
         
         let vc = GameViewController()
         if searchActive {
+            vc.ownedGame = false
             vc.gameID = filteredGamesArray[indexPath.row].gameID
             vc.gameImage.image = filteredGamesArray[indexPath.row].image
             vc.gameIcon.image = filteredGamesArray[indexPath.row].icon
             vc.gameNameLabel.text = filteredGamesArray[indexPath.row].name.uppercased()
             vc.gameTypeLabel.text = filteredGamesArray[indexPath.row].type.uppercased()
         } else {
+            vc.ownedGame = true
             vc.gameID = GamesArray[indexPath.row].gameID
             vc.gameImage.image = GamesArray[indexPath.row].image
             vc.gameIcon.image = GamesArray[indexPath.row].icon
