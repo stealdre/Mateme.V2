@@ -313,15 +313,15 @@ class GameViewController: UIViewController {
 		//sliderLevel.value = currentValue
 	}
 	@objc func updateFrequencyLabelValue() {
-		let value = String(Int(sliderFrequency.value))
-		frequencyLabel.text = "Playing days in a week : \(value)"
+        let value = intToFrequence(number: Int(sliderFrequency.value))
+		frequencyLabel.text = "Frequence : \(value)"
 	}
 	func intToLevel(number: Int) -> String {
 		if (number == 1) {
 			return("Noob")
 		}
 		else if (number == 2) {
-			return("Casual")
+			return("Novice")
 		}
 		else if (number == 3) {
 			return("Middle")
@@ -333,6 +333,24 @@ class GameViewController: UIViewController {
 			return("Expert")
 		}
 	}
+    
+    func intToFrequence(number: Int) -> String {
+        if (number == 1) {
+            return("Casual")
+        }
+        else if (number == 2) {
+            return("Monthly")
+        }
+        else if (number == 3) {
+            return("Weekly")
+        }
+        else if (number == 4) {
+            return("Daily")
+        }
+        else {
+            return("Geek")
+        }
+    }
 }
 
 // MARK: Scroll view Delegate
