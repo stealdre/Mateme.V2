@@ -308,6 +308,7 @@ extension OwnedGamesViewController {
             
             let gameID = GamesArray[index].gameID
             ref.child("users").child(user.uid).child("games").child(gameID).removeValue()
+            ref.child("users").child(user.uid).child("gameParam").child(gameID).removeValue()
             
             
             GamesArray.removeAll()

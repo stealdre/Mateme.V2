@@ -268,7 +268,7 @@ class PlayNowViewController: UIViewController, CircleMenuDelegate {
                 if let games = snapshot.value as? [String : AnyObject] {
                     
                     if games.count == 0 {
-                        self.infoLabel.text = "At least one owned game is needed"
+                        self.infoLabel.text = "No owned game"
                         completion([:])
                         self.button.isEnabled = false
                     }
