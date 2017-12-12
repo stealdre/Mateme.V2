@@ -155,8 +155,6 @@ extension ProfileViewController {
 	}
 	
 	func getValueFromID(type: String, id: String, completion: @escaping (_ name: String) -> Void) {
-		print(type)
-        print(id)
         ref.child(type).child(id).child("name").observeSingleEvent(of: .value, with: { (snapshot) in
 			let name = snapshot.value as! String
 			completion(name)
@@ -355,7 +353,7 @@ extension ProfileViewController {
 		historyTitle.snp.makeConstraints { (make) -> Void in
 			make.width.equalTo(view.snp.width).multipliedBy(0.9)
 			make.height.equalTo(view.snp.height).multipliedBy(0.05)
-			make.leftMargin.equalTo(15)
+			make.leftMargin.equalTo(25)
 			make.centerY.equalTo(view.snp.centerY)
 		}
 		historyTableView.snp.makeConstraints { (make) -> Void in

@@ -573,6 +573,64 @@ extension PlayNowViewController {
         })
     }
     
+    
+    func hideNewMate() {
+        
+        self.infoLabel.fadeTransition(0.4)
+        self.infoLabel.text = "Touch to find a mate"
+        
+        self.mateBioLabel.text = ""
+        self.mateProfilePicture.image = UIImage(named: "default_avatar")
+        
+        UIView.animate(withDuration: 0.5, delay: 0, options: [.beginFromCurrentState], animations: {() -> Void in
+            
+            self.button.alpha = 1
+            
+            self.buttonView.transform = CGAffineTransform(scaleX: 1, y: 1)
+            self.button.transform = CGAffineTransform(scaleX: 1, y: 1)
+            
+            self.infoLabel.frame.origin.y += self.view.frame.height * 0.12
+            self.infoLabel.snp.remakeConstraints {(make) -> Void in
+                make.width.equalTo(self.view.snp.width).multipliedBy(0.9)
+                make.height.equalTo(30)
+                make.centerX.equalTo(self.view.snp.centerX)
+                make.centerY.equalTo(self.view.snp.centerY).offset(-(-150 - self.view.frame.height * 0.12))
+            }
+        }, completion: {(_ finished: Bool) -> Void in
+            
+            self.mateProfilePicture.isHidden = true
+            
+            UIView.animate(withDuration: 0.5, delay: 0, options: [.beginFromCurrentState], animations: {() -> Void in
+                self.mateProfilePicture.alpha = 0
+                
+            }, completion: {(_ finished: Bool) -> Void in
+                
+                self.buttonView.isHidden = false
+                
+                UIView.animate(withDuration: 0.5, delay: 0, options: [.beginFromCurrentState], animations: {() -> Void in
+                    self.mateProfilePicture.frame.origin.y = self.button.frame.origin.y
+                    self.mateProfileView.alpha = 0
+                    self.mateBioLabel.alpha = 0
+                }, completion: {(_ finished: Bool) -> Void in
+                    
+                    self.mateProfileView.isHidden = true
+
+                    self.mateSessionsValueLabel.countFrom(0, to: 0, withDuration: 0.0)
+                    self.mateRateValueLabel.countFrom(0, to: 0, withDuration: 0.0)
+                    
+                    self.mateProfilePicture.snp.remakeConstraints { (make) -> Void in
+                        make.width.equalTo(150)
+                        make.height.equalTo(150)
+                        make.centerX.equalTo(self.view.snp.centerX)
+                        make.top.equalTo(self.button.frame.origin.y)
+                    }
+                })
+            })
+        })
+        
+    }
+    
+    
     func showNewMate(mateID: String, game: String) {
         
         let date = Date()
@@ -659,7 +717,7 @@ extension PlayNowViewController {
                     make.width.equalTo(150)
                     make.height.equalTo(150)
                     make.centerX.equalTo(self.view.snp.centerX)
-                    make.top.equalTo(self.mateProfilePicture.frame.origin.y * 0.93)
+                    make.top.equalTo(self.mateProfilePicture.frame.origin.y * 0.7)
                 }
             })
         })
@@ -939,11 +997,14 @@ extension PlayNowViewController {
         
         show(vc, sender: AnyObject.self)
         
+        
         if roomState.joined {
             quitRoom(ref: roomState.joinedRef)
         } else if roomState.created {
             removeRoom(ref: roomState.createdRef)
         }
+        
+        hideNewMate()
     }
     
     func removeRoom(ref: DatabaseReference) {
