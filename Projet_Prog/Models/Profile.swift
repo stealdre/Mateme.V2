@@ -34,8 +34,6 @@ class Profile {
 		ref = snapshot.ref
 		
 		let data = snapshot.value as! [String: Any]
-
-		print(data)
 		
 		name = data["name"]! as! String
 		profilPicPath = data["profilePicPath"]! as! String
