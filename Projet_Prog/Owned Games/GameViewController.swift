@@ -79,8 +79,10 @@ class GameViewController: UIViewController {
         
         if !ownedGame {
             VerticalScrollView.isScrollEnabled = false
+            moreButton.isHidden = true
         } else {
             VerticalScrollView.isScrollEnabled = true
+            moreButton.isHidden = false
         }
         
 		user = Auth.auth().currentUser
@@ -142,6 +144,7 @@ class GameViewController: UIViewController {
         let playButtonImage = UIImage(named: "gamePlayButton_ic")?.withRenderingMode(.alwaysTemplate)
         playButton.setImage(playButtonImage, for: .normal)
         playButton.tintColor = UIColor(red:0.29, green:0.56, blue:0.89, alpha:1.0)
+        playButton.isHidden = true
         
         let saveButtonImage = UIImage(named: "gameSaveButton_ic")?.withRenderingMode(.alwaysTemplate)
         saveButton.setImage(saveButtonImage, for: .normal)

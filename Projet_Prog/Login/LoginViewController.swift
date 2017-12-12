@@ -193,8 +193,8 @@ extension LoginViewController {
             make.center.equalTo(view.snp.center)
         }
         logo.snp.makeConstraints { (make) -> Void in
-            make.width.equalTo(90)
-            make.height.equalTo(90)
+            make.width.equalTo(100)
+            make.height.equalTo(65)
             make.centerX.equalTo(containerView.snp.centerX)
             make.top.equalTo(containerView.snp.top).offset(60)
         }

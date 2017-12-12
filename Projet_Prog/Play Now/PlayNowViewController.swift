@@ -98,7 +98,7 @@ class PlayNowViewController: UIViewController, CircleMenuDelegate {
         
         self.button = CircleMenu(
             frame: CGRect.zero,
-            normalIcon: "PlayNowButton_ic",
+            normalIcon: "playButton",
             selectedIcon: "close_ic",
             buttonsCount: 0,
             duration: 1,
