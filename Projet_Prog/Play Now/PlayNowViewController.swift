@@ -27,7 +27,6 @@ class PlayNowViewController: UIViewController, CircleMenuDelegate {
     let animDuration = TimeInterval(0.5) // the duration of one 'segment' of the animation
     let layerSize = CGFloat(100) // the width & height of the layer (when it's a square)
     
-    
     var recentGames = [String : [UIImage]]()
     
     var user: User!
@@ -946,16 +945,6 @@ extension PlayNowViewController {
     
     func quitRoom(ref: DatabaseReference) {
         ref.setValue(0)
-    }
-    
-    func addRecentGamesListener() {
-        
-        let refHandle = ref.child("users").child(user.uid).child("games").observe(DataEventType.value, with: { (snapshot) in
-            let postDict = snapshot.value as? [String : AnyObject] ?? [:]
-            
-            
-        })
-        
     }
     
     func timeOut(delay:Double, completion: @escaping (_ timeOut: Bool) -> Void) {
