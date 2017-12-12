@@ -235,7 +235,6 @@ class PlayNowViewController: UIViewController, CircleMenuDelegate {
             var gamesNumber = 0
             
             self.recentGames = games
-            
             self.button.isEnabled = true
             
             if games.count <= 6 {
