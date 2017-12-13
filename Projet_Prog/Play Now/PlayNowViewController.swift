@@ -1239,7 +1239,7 @@ extension PlayNowViewController {
             make.width.equalTo(50)
             make.height.equalTo(50)
             make.centerX.equalTo(mateProfileView.snp.centerX)
-            make.top.equalTo(mateFrequencyValueLabel.snp.bottom).offset(20)
+            make.top.equalTo(mateFrequencyValueLabel.snp.bottom).offset(30)
         }
         mateSkip.snp.makeConstraints {(make) -> Void in
             make.width.equalTo(50)
