@@ -535,7 +535,7 @@ extension PlayNowViewController {
                         rate = value
                         matePseudo = pseudo
                         
-                        if let imagePath = data["profilPicPath"] as? String {
+                        if let imagePath = data["profilePicPath"] as? String {
                             
                             let storage = Storage.storage()
                             let pathReference = storage.reference(withPath: imagePath)
