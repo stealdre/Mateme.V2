@@ -478,6 +478,20 @@ class PlayNowViewController: UIViewController, CircleMenuDelegate {
     
     @objc func stopSearch() {
         
+        if roomState.created {
+            roomState.createdRef.observeSingleEvent(of: .value, with: { (snapshot) in
+                if snapshot.exists() {
+                    self.removeRoom(ref: self.roomState.createdRef)
+                }
+            })
+        } else if roomState.joined {
+           roomState.joinedRef.observeSingleEvent(of: .value, with: { (snapshot) in
+                if snapshot.exists() {
+                    self.quitRoom(ref: self.roomState.joinedRef)
+                }
+            })
+        }
+        
         self.infoLabel.fadeTransition(0.4)
         self.infoLabel.text = "Touch to find a mate"
         
