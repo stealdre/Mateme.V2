@@ -262,6 +262,8 @@ class PlayNowViewController: UIViewController, CircleMenuDelegate {
         
         var recentGamesData = [String : [UIImage]]()
         
+        self.infoLabel.text = "We are loading your games"
+        
         let _ = ref.child("users").child(user.uid).child("games").observe(.value, with: { (snapshot) in
             
             if snapshot.exists() {
@@ -576,58 +578,43 @@ extension PlayNowViewController {
     
     func hideNewMate() {
         
-        self.infoLabel.fadeTransition(0.4)
         self.infoLabel.text = "Touch to find a mate"
         
         self.mateBioLabel.text = ""
         self.mateProfilePicture.image = UIImage(named: "default_avatar")
         
-        UIView.animate(withDuration: 0.5, delay: 0, options: [.beginFromCurrentState], animations: {() -> Void in
-            
-            self.button.alpha = 1
-            
-            self.buttonView.transform = CGAffineTransform(scaleX: 1, y: 1)
-            self.button.transform = CGAffineTransform(scaleX: 1, y: 1)
-            
-            self.infoLabel.frame.origin.y += self.view.frame.height * 0.12
-            self.infoLabel.snp.remakeConstraints {(make) -> Void in
-                make.width.equalTo(self.view.snp.width).multipliedBy(0.9)
-                make.height.equalTo(30)
-                make.centerX.equalTo(self.view.snp.centerX)
-                make.centerY.equalTo(self.view.snp.centerY).offset(-(-150 - self.view.frame.height * 0.12))
-            }
-        }, completion: {(_ finished: Bool) -> Void in
-            
-            self.mateProfilePicture.isHidden = true
-            
-            UIView.animate(withDuration: 0.5, delay: 0, options: [.beginFromCurrentState], animations: {() -> Void in
-                self.mateProfilePicture.alpha = 0
-                
-            }, completion: {(_ finished: Bool) -> Void in
-                
-                self.buttonView.isHidden = false
-                
-                UIView.animate(withDuration: 0.5, delay: 0, options: [.beginFromCurrentState], animations: {() -> Void in
-                    self.mateProfilePicture.frame.origin.y = self.button.frame.origin.y
-                    self.mateProfileView.alpha = 0
-                    self.mateBioLabel.alpha = 0
-                }, completion: {(_ finished: Bool) -> Void in
-                    
-                    self.mateProfileView.isHidden = true
+        self.button.alpha = 1
+        self.buttonView.isHidden = false
 
-                    self.mateSessionsValueLabel.countFrom(0, to: 0, withDuration: 0.0)
-                    self.mateRateValueLabel.countFrom(0, to: 0, withDuration: 0.0)
-                    
-                    self.mateProfilePicture.snp.remakeConstraints { (make) -> Void in
-                        make.width.equalTo(150)
-                        make.height.equalTo(150)
-                        make.centerX.equalTo(self.view.snp.centerX)
-                        make.top.equalTo(self.button.frame.origin.y)
-                    }
-                })
-            })
-        })
+        self.buttonView.transform = CGAffineTransform(scaleX: 1, y: 1)
+        self.button.transform = CGAffineTransform(scaleX: 1, y: 1)
         
+        self.infoLabel.frame.origin.y += self.view.frame.height * 0.12
+        self.infoLabel.snp.remakeConstraints {(make) -> Void in
+            make.width.equalTo(self.view.snp.width).multipliedBy(0.9)
+            make.height.equalTo(30)
+            make.centerX.equalTo(self.view.snp.centerX)
+            make.centerY.equalTo(view.snp.centerY).offset(-150)
+        }
+        
+        self.mateProfilePicture.isHidden = true
+        self.mateProfilePicture.alpha = 0
+        
+        self.mateProfilePicture.frame.origin.y = self.button.frame.origin.y
+        self.mateBioLabel.alpha = 0
+        
+        self.mateProfileView.alpha = 0
+        self.mateProfileView.isHidden = true
+        
+        self.mateSessionsValueLabel.countFrom(0, to: 0, withDuration: 0.0)
+        self.mateRateValueLabel.countFrom(0, to: 0, withDuration: 0.0)
+        
+        self.mateProfilePicture.snp.remakeConstraints { (make) -> Void in
+            make.width.equalTo(150)
+            make.height.equalTo(150)
+            make.centerX.equalTo(self.view.snp.centerX)
+            make.top.equalTo(self.button.frame.origin.y)
+        }
     }
     
     
@@ -689,21 +676,6 @@ extension PlayNowViewController {
             
             self.buttonView.isHidden = true
             
-            // increases y value
-            self.yAnim.duration = self.animDuration
-            self.yAnim.fromValue = self.mateProfilePicture.frame.origin.y
-            self.yAnim.toValue = self.mateProfilePicture.frame.origin.y * 0.93
-            self.yAnim.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut) // timing function to make it look nice
-            
-            
-            // adds both animations to a group animation
-            self.groupAnim.animations = [self.yAnim]
-            self.groupAnim.duration = self.animDuration
-            self.groupAnim.isRemovedOnCompletion = false
-            self.groupAnim.fillMode = kCAFillModeForwards
-            
-            //self.mateProfilePicture.layer.add(self.groupAnim, forKey: "anims")
-            
             UIView.animate(withDuration: 0.5, delay: 0, options: [.beginFromCurrentState], animations: {() -> Void in
                 self.mateProfilePicture.frame.origin.y = self.mateProfilePicture.frame.origin.y * 0.7
                 self.mateProfileView.isHidden = false
@@ -717,7 +689,7 @@ extension PlayNowViewController {
                     make.width.equalTo(150)
                     make.height.equalTo(150)
                     make.centerX.equalTo(self.view.snp.centerX)
-                    make.top.equalTo(self.mateProfilePicture.frame.origin.y * 0.7)
+                    make.top.equalTo(self.mateProfilePicture.frame.origin.y)
                 }
             })
         })
@@ -990,13 +962,11 @@ extension PlayNowViewController {
     @objc func skipMate() {
         
         let vc = UserReviewViewController()
-        
         vc.mateID = mateID
         vc.gameID = mateGameID
         vc.date = mateDate
         
         show(vc, sender: AnyObject.self)
-        
         
         if roomState.joined {
             quitRoom(ref: roomState.joinedRef)
@@ -1004,7 +974,13 @@ extension PlayNowViewController {
             removeRoom(ref: roomState.createdRef)
         }
         
-        hideNewMate()
+        self.timeOut(delay: 1) { time in
+            if time {
+                self.hideNewMate()
+            }
+        }
+        
+        
     }
     
     func removeRoom(ref: DatabaseReference) {
@@ -1050,6 +1026,42 @@ extension PlayNowViewController {
             if (application.canOpenURL(facetimeURL)) {
                 application.open(facetimeURL,options: [:], completionHandler: nil)
             }
+        }
+    }
+    
+    func intToLevel(number: Int) -> String {
+        if (number == 1) {
+            return("Noob")
+        }
+        else if (number == 2) {
+            return("Novice")
+        }
+        else if (number == 3) {
+            return("Middle")
+        }
+        else if (number == 4) {
+            return("Proven")
+        }
+        else {
+            return("Expert")
+        }
+    }
+    
+    func intToFrequence(number: Int) -> String {
+        if (number == 1) {
+            return("Casual")
+        }
+        else if (number == 2) {
+            return("Monthly")
+        }
+        else if (number == 3) {
+            return("Weekly")
+        }
+        else if (number == 4) {
+            return("Daily")
+        }
+        else {
+            return("Any time")
         }
     }
     
@@ -1181,7 +1193,7 @@ extension PlayNowViewController {
             make.width.equalTo(50)
             make.height.equalTo(50)
             make.centerX.equalTo(mateProfileView.snp.centerX)
-            make.top.equalTo(mateFrequencyValueLabel.snp.bottom).offset(15)
+            make.top.equalTo(mateFrequencyValueLabel.snp.bottom).offset(20)
         }
         mateSkip.snp.makeConstraints {(make) -> Void in
             make.width.equalTo(50)

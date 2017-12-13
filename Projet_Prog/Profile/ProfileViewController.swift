@@ -131,7 +131,7 @@ extension ProfileViewController {
 	
 	func getProfileData(completion: @escaping (_ data: Profile) -> Void) {
 		
-        let _ = ref.child("users").child(user.uid).observe(.value, with: { (snapshot) in
+        ref.child("users").child(user.uid).observeSingleEvent(of: .value, with: { (snapshot) in
 			let data = Profile(snapshot: snapshot)
 			completion(data)
 		})

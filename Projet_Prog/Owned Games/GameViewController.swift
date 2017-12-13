@@ -334,6 +334,7 @@ class GameViewController: UIViewController {
         let value = intToFrequence(number: Int(sliderFrequency.value))
 		frequencyLabel.text = "Frequence : \(value)"
 	}
+    
 	func intToLevel(number: Int) -> String {
 		if (number == 1) {
 			return("Noob")

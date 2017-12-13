@@ -94,7 +94,9 @@ class UserReviewViewController: UIViewController {
     
     @objc func saveAction() {
         
-        ref.child("users").child(user.uid).child("history").child(String(describing: date)).child("rate").setValue(Int(rateView.rateValue))
+        if let date = date {
+            ref.child("users").child(user.uid).child("history").child(String(describing: date)).child("rate").setValue(Int(rateView.rateValue))
+        }
         
         dismiss(animated: true, completion: nil)
     }
