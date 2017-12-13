@@ -668,7 +668,6 @@ extension PlayNowViewController {
                 self.tapToDismissView.isHidden = true
                 
                 self.showMateProfile(rate: rate, frequency: frequency, level: level, sessions: sessionNumber)
-                
             })
         }
     }
@@ -683,7 +682,7 @@ extension PlayNowViewController {
         }, completion: {(_ finished: Bool) -> Void in
             
             self.buttonView.isHidden = true
-            
+            let y = self.mateProfilePicture.frame.origin.y
             UIView.animate(withDuration: 0.5, delay: 0, options: [.beginFromCurrentState], animations: {() -> Void in
                 self.mateProfilePicture.frame.origin.y = self.mateProfilePicture.frame.origin.y * 0.7
                 self.mateProfileView.isHidden = false
@@ -697,7 +696,7 @@ extension PlayNowViewController {
                     make.width.equalTo(150)
                     make.height.equalTo(150)
                     make.centerX.equalTo(self.view.snp.centerX)
-                    make.top.equalTo(self.mateProfilePicture.frame.origin.y)
+                    make.top.equalTo(y * 0.7)
                 }
             })
         })
@@ -743,8 +742,10 @@ extension PlayNowViewController {
                 self.createRoom(gameID: gameID) { (answer, id) in
                     if !answer {
                         completion(false, id)
+                        return
                     } else {
                         completion(true, id)
+                        return
                     }
                 }
                 return
@@ -810,6 +811,7 @@ extension PlayNowViewController {
                 }
             } else {
                 completion(false, [""])
+                return
             }
         })
     }
@@ -977,9 +979,17 @@ extension PlayNowViewController {
         show(vc, sender: AnyObject.self)
         
         if roomState.joined {
-            quitRoom(ref: roomState.joinedRef)
-            ref.child("matchmaking").child(mateGameID).child("rooms").child(mateID).removeValue()
+            
+            ref.child("matchmaking").child(mateGameID).child("rooms").child(mateID).observeSingleEvent(of: .value, with: { (snapshot) in
+                
+                if snapshot.exists() {
+                    
+                    self.quitRoom(ref: self.roomState.joinedRef)
+                }
+            })
+          
         } else if roomState.created {
+            print("zadzad")
             removeRoom(ref: roomState.createdRef)
         }
         
@@ -1193,7 +1203,7 @@ extension PlayNowViewController {
             make.top.equalTo(mateSkillLabel.snp.top)
         }
         mateFrequencyValueLabel.snp.makeConstraints {(make) -> Void in
-            make.width.equalTo(mateProfileView.snp.width).multipliedBy(0.4)
+            make.width.equalTo(mateProfileView.snp.width).multipliedBy(0.5)
             make.height.equalTo(42)
             make.left.equalTo(mateFrequencyLabel.snp.left)
             make.top.equalTo(mateFrequencyLabel.snp.bottom).offset(2)

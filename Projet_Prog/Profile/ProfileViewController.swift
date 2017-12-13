@@ -13,6 +13,9 @@ import FirebaseStorage
 
 class ProfileViewController: UIViewController, UITableViewDataSource, UIImagePickerControllerDelegate,UIPopoverControllerDelegate, UINavigationControllerDelegate {
 	
+    var refreshControl: UIRefreshControl!
+
+    
 	var VCtitleLabel = UILabel()
 	
 	var profileName = ProfileName()
