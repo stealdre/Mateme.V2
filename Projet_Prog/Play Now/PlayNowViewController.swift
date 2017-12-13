@@ -102,7 +102,7 @@ class PlayNowViewController: UIViewController, CircleMenuDelegate {
             selectedIcon: "close_ic",
             buttonsCount: 0,
             duration: 1,
-            distance: 170)
+            distance: 180)
         
         self.button.delegate = self
         self.button.backgroundColor = .clear
@@ -262,11 +262,12 @@ class PlayNowViewController: UIViewController, CircleMenuDelegate {
         
         var recentGamesData = [String : [UIImage]]()
         
-        self.infoLabel.text = "We are loading your games"
-        
         let _ = ref.child("users").child(user.uid).child("games").observe(.value, with: { (snapshot) in
             
             if snapshot.exists() {
+                
+                self.infoLabel.text = "We are loading your games"
+
                 if let games = snapshot.value as? [String : AnyObject] {
                     
                     if games.count == 0 {
@@ -289,6 +290,7 @@ class PlayNowViewController: UIViewController, CircleMenuDelegate {
                         }
                     }
                     myGroup.notify(queue: .main) {
+                        print("Recent games loaded")
                         self.infoLabel.text = "Touch to find a mate"
                         completion(recentGamesData)
                     }
