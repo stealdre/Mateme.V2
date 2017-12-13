@@ -201,7 +201,6 @@ extension ProfileViewController {
 	
 	func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
 		//print(info)
-		print("ououiuou")
 		let chosenImage = info[UIImagePickerControllerOriginalImage] as! UIImage
 		//imageView.contentMode = .scaleAspectFit
 		self.profilePic.setImage(chosenImage, for: .normal)
@@ -220,7 +219,7 @@ extension ProfileViewController {
 			let uploadTask = imageRef.putData(uploadData, metadata: metadata) { (metadata, error) in
 				if let _ = metadata {
 				} else {
-					print("ERROr")
+					print("ERROR")
 					print(error?.localizedDescription as Any)
 					return
 				}
@@ -269,7 +268,6 @@ extension ProfileViewController: UITableViewDelegate {
 			cell?.stars.rating = Double(profileDB.historiesArray[indexPath.row].rate)
 				
 			let url = "gamesIcon/\(profileDB.historiesArray[indexPath.row].gameID).png"
-			print(url)
 			getStorageImage(url: url) { image in
 				cell?.gamePic.image = image
 			}
