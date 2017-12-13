@@ -449,7 +449,9 @@ extension OwnedGamesViewController: UISearchBarDelegate {
                                 game.gameID = item.ref.key
                                 game.image = image
                                 game.icon = icon
+                                
                                 self.filteredGamesArray.append(game)
+                                
                                 count = count - 1
                                 if count == 0 {
                                     self.indicatorView.stopAnimating()

@@ -265,9 +265,6 @@ class PlayNowViewController: UIViewController, CircleMenuDelegate {
         let _ = ref.child("users").child(user.uid).child("games").observe(.value, with: { (snapshot) in
             
             if snapshot.exists() {
-                
-                self.infoLabel.text = "We are loading your games"
-
                 if let games = snapshot.value as? [String : AnyObject] {
                     
                     if games.count == 0 {
@@ -552,21 +549,22 @@ extension PlayNowViewController {
                                     
                                     if let history = data["history"] as? [String : AnyObject] {
                                         sessionNumber = history.count
+                                    } else {
+                                        sessionNumber = 0
+                                    }
+                                    if let param = data["gameParam"] as? [String : AnyObject] {
+                                        let parameters = param[game]
                                         
-                                        if let param = data["gameParam"] as? [String : AnyObject] {
-                                            let parameters = param[game]
-                                            
-                                            frequency = Int(truncating: parameters!["frequency"]! as! NSNumber)
-                                            level = Int(truncating: parameters!["level"]! as! NSNumber)
-                                            matePseudo = parameters!["pseudo"] as! String
-                                            
-                                            if let bioValue = data["bio"] as? String {
-                                                bio = bioValue
-                                            } else {
-                                                bio = ""
-                                            }
-                                            completion(matePseudo, profilePicture, bio, rate, frequency, level, sessionNumber)
+                                        frequency = Int(truncating: parameters!["frequency"]! as! NSNumber)
+                                        level = Int(truncating: parameters!["level"]! as! NSNumber)
+                                        matePseudo = parameters!["pseudo"] as! String
+                                        
+                                        if let bioValue = data["bio"] as? String {
+                                            bio = bioValue
+                                        } else {
+                                            bio = ""
                                         }
+                                        completion(matePseudo, profilePicture, bio, rate, frequency, level, sessionNumber)
                                     }
                                 }
                             }
@@ -972,6 +970,7 @@ extension PlayNowViewController {
         
         if roomState.joined {
             quitRoom(ref: roomState.joinedRef)
+            ref.child("matchmaking").child(mateGameID).child("rooms").child(mateID).removeValue()
         } else if roomState.created {
             removeRoom(ref: roomState.createdRef)
         }
