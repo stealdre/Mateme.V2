@@ -478,12 +478,6 @@ class PlayNowViewController: UIViewController, CircleMenuDelegate {
     
     @objc func stopSearch() {
         
-        if roomState.created {
-            removeRoom(ref: roomState.createdRef)
-        } else if roomState.joined {
-            quitRoom(ref: roomState.joinedRef)
-        }
-        
         self.infoLabel.fadeTransition(0.4)
         self.infoLabel.text = "Touch to find a mate"
         
@@ -1006,7 +1000,7 @@ extension PlayNowViewController {
     }
     
     func quitRoom(ref: DatabaseReference) {
-        ref.setValue(0)
+        ref.setValue(1)
     }
     
     func timeOut(delay:Double, completion: @escaping (_ timeOut: Bool) -> Void) {
