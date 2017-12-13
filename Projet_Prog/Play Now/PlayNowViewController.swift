@@ -726,12 +726,15 @@ extension PlayNowViewController {
         mateResearch(gameID: gameID) { (mateFound, mateID) in
             
             if mateFound {
-                print("Room joined with mate: \(mateID)")
                 
-                self.infoLabel.fadeTransition(0.4)
-                self.infoLabel.text = "A mate has been found !"
                 
-                self.showNewMate(mateID: mateID, game: gameID)
+                    print("Room joined with mate: \(mateID)")
+                
+                    self.infoLabel.fadeTransition(0.4)
+                    self.infoLabel.text = "A mate has been found !"
+                
+                    self.showNewMate(mateID: mateID, game: gameID)
+                
                 
             } else {
                 print("No mate found")
@@ -840,7 +843,6 @@ extension PlayNowViewController {
                 print("Found a free room, awaiting for the other player to accept...")
                 
                 let newRef = self.ref.child("matchmaking").child(gameID).child("rooms").child(userID)
-                newRef.setValue(1)
                 newRef.child(self.user.uid).setValue(0)
                 
                 self.roomState.joined = true
@@ -895,10 +897,12 @@ extension PlayNowViewController {
                 if value == 0 { // No response
                     
                 } else { // Response
-                    ret = false
                     ref.removeObserver(withHandle: handle)
-                    completion(true)
-                    return
+                    if ret {
+                        completion(true)
+                        ret = false
+                        return
+                    }
                 }
             }
         })
