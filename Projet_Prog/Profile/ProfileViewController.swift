@@ -90,17 +90,23 @@ class ProfileViewController: UIViewController, UITableViewDataSource, UIImagePic
 		
 		getProfileData() { profileInfo in
 			self.profileDB = profileInfo
-			let array = self.profileDB.historiesArray
+			var array = self.profileDB.historiesArray
 			for i in 0..<array.count {
 				self.getValueFromID(type: "users", id: array[i].mateID) { userName in
 					self.profileDB.historiesArray[i].mateName = userName
+                    
 					self.getValueFromID(type: "games", id: array[i].gameID) { gameName in
-					self.profileDB.historiesArray[i].gameName = gameName
-					self.historyTableView.reloadData()
+                        self.profileDB.historiesArray[i].gameName = gameName
+                        
+                        let url = "gamesIcon/\(array[i].gameID).png"
+                        self.getStorageImage(url: url) { image in
+                            print(image)
+                            self.profileDB.historiesArray[i].icon = image
+                            self.historyTableView.reloadData()
+                        }
 					}
 				}
 			}
-			
 			self.profileName.text = self.profileDB.name //"UserName"
 			self.getStorageImage(url: self.profileDB.profilPicPath) { image in
 				self.profilePic.setImage(image, for: .normal)
@@ -266,12 +272,9 @@ extension ProfileViewController: UITableViewDelegate {
 			cell?.mateName.text = profileDB.historiesArray[indexPath.row].mateName
 			cell?.gameName.text = profileDB.historiesArray[indexPath.row].gameName
 			cell?.stars.rating = Double(profileDB.historiesArray[indexPath.row].rate)
-				
-			let url = "gamesIcon/\(profileDB.historiesArray[indexPath.row].gameID).png"
-			getStorageImage(url: url) { image in
-				cell?.gamePic.image = image
-			}
-			
+							
+            cell?.gamePic.image = profileDB.historiesArray[indexPath.row].icon
+						
 			let dateFormatter = DateFormatter()
 			dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss Z"
 			let stringDate = profileDB.historiesArray[indexPath.row].gameDate

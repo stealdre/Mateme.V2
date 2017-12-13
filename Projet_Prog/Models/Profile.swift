@@ -16,7 +16,7 @@ class Profile {
 	var profilPicPath: String = ""
 	
 	struct History {
-		
+		var icon = UIImage()
 		var gameDate: String = ""
 		var gameID: String = ""
 		var gameName: String = ""

@@ -114,7 +114,6 @@ class PlayNowViewController: UIViewController, CircleMenuDelegate {
         gameImage.image = UIImage(named: "35")
         gameImage.contentMode = .scaleAspectFill
         
-        infoLabel.text = "Touch to find a mate"
         infoLabel.textColor = .white
         infoLabel.textAlignment = .center
         infoLabel.font = UIFont(name: "Roboto-Bold", size: 23)
@@ -265,6 +264,9 @@ class PlayNowViewController: UIViewController, CircleMenuDelegate {
         let _ = ref.child("users").child(user.uid).child("games").observe(.value, with: { (snapshot) in
             
             if snapshot.exists() {
+                
+                self.infoLabel.text = "Loading your games"
+
                 if let games = snapshot.value as? [String : AnyObject] {
                     
                     if games.count == 0 {
@@ -288,12 +290,14 @@ class PlayNowViewController: UIViewController, CircleMenuDelegate {
                     }
                     myGroup.notify(queue: .main) {
                         print("Recent games loaded")
+                        self.infoLabel.fadeTransition(0.4)
                         self.infoLabel.text = "Touch to find a mate"
                         completion(recentGamesData)
                     }
                 }
             } else {
                 print("No owned games")
+                self.infoLabel.fadeTransition(0.4)
                 self.infoLabel.text = "No owned game"
                 completion([:])
                 self.button.isEnabled = false
@@ -552,6 +556,7 @@ extension PlayNowViewController {
                                     } else {
                                         sessionNumber = 0
                                     }
+                                    
                                     if let param = data["gameParam"] as? [String : AnyObject] {
                                         let parameters = param[game]
                                         
