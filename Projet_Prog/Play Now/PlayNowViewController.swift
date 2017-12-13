@@ -643,6 +643,9 @@ extension PlayNowViewController {
             self.mateBioLabel.text = bio
             self.mateProfilePicture.image = profilePic
             
+            self.mateFrequencyValueLabel.text = self.intToFrequence(number: frequency)
+            self.mateSkillValueLabel.text = self.intToLevel(number: level)
+            
             UIView.animate(withDuration: 0.5, delay: 0, options: [.beginFromCurrentState], animations: {() -> Void in
                 
                 self.spinnerLoadingView.alpha = 0
