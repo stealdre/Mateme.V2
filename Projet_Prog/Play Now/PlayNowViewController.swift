@@ -220,6 +220,9 @@ class PlayNowViewController: UIViewController, CircleMenuDelegate {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
+        spinnerLoadingView.isHidden = true
+        spinnerLoadingView.alpha = 0
+        
         self.buttonView.transform = CGAffineTransform(scaleX: 1, y: 1)
         self.button.transform = CGAffineTransform(scaleX: 1, y: 1)
         
@@ -266,7 +269,7 @@ class PlayNowViewController: UIViewController, CircleMenuDelegate {
             if snapshot.exists() {
                 
                 self.infoLabel.text = "Loading your games"
-
+                
                 if let games = snapshot.value as? [String : AnyObject] {
                     
                     if games.count == 0 {
@@ -485,7 +488,7 @@ class PlayNowViewController: UIViewController, CircleMenuDelegate {
                 }
             })
         } else if roomState.joined {
-           roomState.joinedRef.observeSingleEvent(of: .value, with: { (snapshot) in
+            roomState.joinedRef.observeSingleEvent(of: .value, with: { (snapshot) in
                 if snapshot.exists() {
                     self.quitRoom(ref: self.roomState.joinedRef)
                 }
@@ -598,7 +601,7 @@ extension PlayNowViewController {
         
         self.button.alpha = 1
         self.buttonView.isHidden = false
-
+        
         self.buttonView.transform = CGAffineTransform(scaleX: 1, y: 1)
         self.button.transform = CGAffineTransform(scaleX: 1, y: 1)
         
@@ -625,8 +628,7 @@ extension PlayNowViewController {
         self.mateProfilePicture.snp.remakeConstraints { (make) -> Void in
             make.width.equalTo(150)
             make.height.equalTo(150)
-            make.centerX.equalTo(self.view.snp.centerX)
-            make.top.equalTo(self.button.frame.origin.y)
+            make.center.equalTo(self.button.snp.center)
         }
     }
     
@@ -644,7 +646,6 @@ extension PlayNowViewController {
         ref.child("users").child(user.uid).child("history").child(String(describing: date)).child("rate").setValue(0)
         
         getUserInfosFrom(id: mateID, game: game) { (name, profilePic, bio, rate, frequency, level, sessionNumber) in
-            
             self.infoLabel.fadeTransition(0.4)
             self.infoLabel.text = name
             
@@ -660,17 +661,19 @@ extension PlayNowViewController {
                 self.button.alpha = 0
                 self.tapToDismisslabel.alpha = 0
                 
+                self.infoLabel.frame.origin.y -= self.view.frame.height * 0.12
+                
+            }, completion: {(_ finished: Bool) -> Void in
+                
                 self.buttonView.transform = CGAffineTransform(scaleX: 1, y: 1)
                 self.button.transform = CGAffineTransform(scaleX: 1, y: 1)
                 
-                self.infoLabel.frame.origin.y -= self.view.frame.height * 0.12
                 self.infoLabel.snp.remakeConstraints {(make) -> Void in
                     make.width.equalTo(self.view.snp.width).multipliedBy(0.9)
                     make.height.equalTo(30)
                     make.centerX.equalTo(self.view.snp.centerX)
                     make.centerY.equalTo(self.view.snp.centerY).offset(-150 - self.view.frame.height * 0.12)
                 }
-            }, completion: {(_ finished: Bool) -> Void in
                 
                 self.spinnerLoadingView.isHidden = true
                 self.tapToDismissView.isHidden = true
@@ -692,10 +695,12 @@ extension PlayNowViewController {
             self.buttonView.isHidden = true
             let y = self.mateProfilePicture.frame.origin.y
             UIView.animate(withDuration: 0.5, delay: 0, options: [.beginFromCurrentState], animations: {() -> Void in
+                
                 self.mateProfilePicture.frame.origin.y = self.mateProfilePicture.frame.origin.y * 0.7
                 self.mateProfileView.isHidden = false
                 self.mateProfileView.alpha = 1
                 self.mateBioLabel.alpha = 1
+                
             }, completion: {(_ finished: Bool) -> Void in
                 self.mateSessionsValueLabel.countFrom(0, to: CGFloat(sessions), withDuration: 2.0)
                 self.mateRateValueLabel.countFrom(0, to: CGFloat(rate), withDuration: 2.0)
@@ -704,7 +709,7 @@ extension PlayNowViewController {
                     make.width.equalTo(150)
                     make.height.equalTo(150)
                     make.centerX.equalTo(self.view.snp.centerX)
-                    make.top.equalTo(y * 0.7)
+                    make.top.equalTo(self.mateProfilePicture.frame.origin.y)
                 }
             })
         })
@@ -919,14 +924,22 @@ extension PlayNowViewController {
             
             if let value = snapshot.value as? [String : Int] {
                 
-                ret = false
                 
                 let newMateId = value.keys.first
                 
-                ref.child(newMateId!).setValue(1)
-                ref.removeObserver(withHandle: handle)
-                
-                completion(true, newMateId!)
+                if (newMateId) != nil {
+                    
+                    ref.child(newMateId!).setValue(1)
+                    ref.removeObserver(withHandle: handle)
+                    if ret {
+                        completion(true, newMateId!)
+                        ref.removeObserver(withHandle: handle)
+                        self.removeRoom(ref: ref)
+                    }
+                    ret = false
+
+                    return
+                }
                 return
                 
             } else { // waiting
@@ -949,28 +962,31 @@ extension PlayNowViewController {
     
     func createRoom(gameID: String, completion: @escaping (_ answer: Bool, _ userId: String) -> Void) {
         
-        let newRef = ref.child("matchmaking").child(gameID).child("rooms").child(user.uid)
-        newRef.setValue(0)
-        
-        roomState.created = true
-        roomState.createdRef = newRef
-        
-        waitingForPlayer(ref: newRef) { (answer, mateId) in
-            if answer {
-                self.infoLabel.fadeTransition(0.4)
-                self.infoLabel.text = "Your mate has been found"
-                print("Linking users...")
-                print("Mate: \(mateId)")
-                completion(true, mateId)
-                return
-            } else {
-                self.infoLabel.fadeTransition(0.4)
-                self.infoLabel.text = "No mate found"
-                self.timeOut(delay: 2) { time in
-                    if time {
-                        self.stopSearch()
-                        completion(false, "")
-                        return
+        if roomState.created == false {
+            
+            let newRef = ref.child("matchmaking").child(gameID).child("rooms").child(user.uid)
+            newRef.setValue(0)
+            
+            roomState.created = true
+            roomState.createdRef = newRef
+            
+            waitingForPlayer(ref: newRef) { (answer, mateId) in
+                if answer {
+                    self.infoLabel.fadeTransition(0.4)
+                    self.infoLabel.text = "Your mate has been found"
+                    print("Linking users...")
+                    print("Mate: \(mateId)")
+                    completion(true, mateId)
+                    return
+                } else {
+                    self.infoLabel.fadeTransition(0.4)
+                    self.infoLabel.text = "No mate found"
+                    self.timeOut(delay: 2) { time in
+                        if time {
+                            self.stopSearch()
+                            completion(false, "")
+                            return
+                        }
                     }
                 }
             }
@@ -995,7 +1011,7 @@ extension PlayNowViewController {
                     self.ref.child("matchmaking").child(self.mateGameID).child("rooms").child(self.mateID).removeValue()
                 }
             })
-          
+            
         } else if roomState.created {
             removeRoom(ref: roomState.createdRef)
         }
@@ -1153,7 +1169,7 @@ extension PlayNowViewController {
             make.width.equalTo(view.snp.width).multipliedBy(0.85)
             make.height.equalTo(view.snp.height).multipliedBy(0.9)
             make.centerX.equalTo(view.snp.centerX)
-            make.top.equalTo(infoLabel.snp.bottom).offset(10)
+            make.top.equalTo(view.snp.top).offset(120)
         }
         mateGameLabel.snp.makeConstraints {(make) -> Void in
             make.width.equalTo(mateProfileView.snp.width).multipliedBy(0.7)
