@@ -984,12 +984,11 @@ extension PlayNowViewController {
                 
                 if snapshot.exists() {
                     
-                    self.quitRoom(ref: self.roomState.joinedRef)
+                    self.ref.child("matchmaking").child(self.mateGameID).child("rooms").child(self.mateID).removeValue()
                 }
             })
           
         } else if roomState.created {
-            print("zadzad")
             removeRoom(ref: roomState.createdRef)
         }
         

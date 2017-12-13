@@ -47,6 +47,11 @@ class ProfileViewController: UIViewController, UITableViewDataSource, UIImagePic
 		ref = Database.database().reference()
 		storage = Storage.storage()
 		storageRef = storage.reference()
+        
+        refreshControl = UIRefreshControl()
+        refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh")
+        refreshControl.addTarget(self, action: #selector(refresh), for: UIControlEvents.valueChanged)
+        historyTableView.addSubview(refreshControl) // not required when using UITableViewController
 		
 		picker?.delegate = self
 		
@@ -90,31 +95,9 @@ class ProfileViewController: UIViewController, UITableViewDataSource, UIImagePic
 		view.setNeedsUpdateConstraints()
 		
 		profilePic.addTarget(self, action: #selector(setProfilePic), for: .touchUpInside)
-		
-		getProfileData() { profileInfo in
-			self.profileDB = profileInfo
-			var array = self.profileDB.historiesArray
-			for i in 0..<array.count {
-				self.getValueFromID(type: "users", id: array[i].mateID) { userName in
-					self.profileDB.historiesArray[i].mateName = userName
-                    
-					self.getValueFromID(type: "games", id: array[i].gameID) { gameName in
-                        self.profileDB.historiesArray[i].gameName = gameName
-                        
-                        let url = "gamesIcon/\(array[i].gameID).png"
-                        self.getStorageImage(url: url) { image in
-                            print(image)
-                            self.profileDB.historiesArray[i].icon = image
-                            self.historyTableView.reloadData()
-                        }
-					}
-				}
-			}
-			self.profileName.text = self.profileDB.name //"UserName"
-			self.getStorageImage(url: self.profileDB.profilPicPath) { image in
-				self.profilePic.setImage(image, for: .normal)
-			}
-		}
+        
+		refresh()
+
 	}
 	override func viewDidLayoutSubviews() {
 		profilePic.layer.masksToBounds = true
@@ -137,8 +120,38 @@ extension ProfileViewController {
 			}
 		}
     }
+    
+    @objc func refresh() {
+        
+        getProfileData() { profileInfo in
+            self.profileDB = profileInfo
+            var array = self.profileDB.historiesArray
+            for i in 0..<array.count {
+                self.getValueFromID(type: "users", id: array[i].mateID) { userName in
+                    self.profileDB.historiesArray[i].mateName = userName
+                    
+                    self.getValueFromID(type: "games", id: array[i].gameID) { gameName in
+                        self.profileDB.historiesArray[i].gameName = gameName
+                        
+                        let url = "gamesIcon/\(array[i].gameID).png"
+                        self.getStorageImage(url: url) { image in
+                            self.profileDB.historiesArray[i].icon = image
+                            self.historyTableView.reloadData()
+                            if self.refreshControl.isRefreshing {
+                                self.refreshControl.endRefreshing()
+                            }
+                        }
+                    }
+                }
+            }
+            self.profileName.text = self.profileDB.name //"UserName"
+            self.getStorageImage(url: self.profileDB.profilPicPath) { image in
+                self.profilePic.setImage(image, for: .normal)
+            }
+        }
+    }
 	
-	func getProfileData(completion: @escaping (_ data: Profile) -> Void) {
+    func getProfileData(completion: @escaping (_ data: Profile) -> Void) {
 		
         ref.child("users").child(user.uid).observeSingleEvent(of: .value, with: { (snapshot) in
 			let data = Profile(snapshot: snapshot)
